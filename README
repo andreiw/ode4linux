@@ -1,0 +1,22 @@
+ODE 4 Linux
+===========
+
+This gets the OSF Open Development Environment tools building on a recent
+Linux with a recent GCC (4.8).
+
+It's unclear how functional any of the tools are. But it does build on x64.
+A lot of code cleanup is necessary - ideally this should build without any
+warnings.
+
+Building
+========
+
+You need the obvious - gcc, typical libs, groff, nothing crazy.
+
+Run ./build.sh. The output is under obj/${context} where
+${context} is at386_linux for x86 and x64.
+
+Contact Info
+============
+
+Andrei Warkentin <andrey.warkentin@gmail.com>
