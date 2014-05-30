@@ -159,7 +159,7 @@ main ( int argc, char ** argv )
 
   char * project;
   char * sub_project;
-  char * dir;
+  char * dir = (char *)".";
   char * set;
   char * backing_project;
   char * backing_build;
@@ -188,8 +188,6 @@ main ( int argc, char ** argv )
   	if (sb_current_dir ( sandbox, basedir, &dir ) != TRUE)
 		current_set(&set, &dir, &sandbox, &usr_rcfile);
   }
-  if (dir == NULL)
-	dir = (char *)".";
   prj_read ( sb_full_path ( basedir, sandbox ), dir, &project, &sub_project );
   sb_conf_read_chain ( &sb_contents, sb_full_path ( basedir, sandbox ), project,
                        sub_project );
