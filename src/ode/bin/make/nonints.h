@@ -56,7 +56,7 @@
 char **brk_string _args_((char *, int *));
 char *emalloc _args_((u_int));
 void enomem _args_((void));
-char *strndup _args_((const char *, int));
+/* char *strndup _args_((const char *, int)); */
 int   Str_Match _args_((const char *, const char *));
 
 struct Path;			/* internal to Dir module */

@@ -91,13 +91,14 @@ static char     sccsid[] = "@(#)str.c	5.8 (Berkeley) 6/1/90";
 
 Hash_Table stringHashTable;
 
+
 /*-
  * strndup --
  *	allocate and return a copy of the string s of length n.
  *
  * returns --
  *	the resulting string in allocated space.
- */
+ *
 char *
 strndup(const char *s, int n)
 {
@@ -108,6 +109,8 @@ strndup(const char *s, int n)
 	r[n] = '\0';
 	return(r);
 }
+
+ */
 
 /*-
  * string_concat --
