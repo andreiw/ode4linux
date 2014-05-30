@@ -53,7 +53,7 @@
 #include <ode/odedefs.h>
 #include <string.h>
 #include <unistd.h>
-#include <varargs.h>
+#include <stdarg.h>
 
 char ** va_argv ( ap )
 va_list ap;

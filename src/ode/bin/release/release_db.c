@@ -99,7 +99,7 @@ static char rcsid[] = "@(#)$RCSfile: release_db.c,v $ $Revision: 1.8.2.4 $ (OSF)
 #include <sys/errno.h>
 extern int errno;
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 #ifndef	USE_REFERENCE_COUNTING
 #define	USE_REFERENCE_COUNTING	1
 #endif	/* USE_REFERENCE_COUNTING */

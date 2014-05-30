@@ -100,5 +100,5 @@ replace setenv BACKED_SOURCEDIR ${source_base}
 replace setenv SOURCEDIR ""
 replace setenv INCDIRS "-I${export_base}/usr/include"
 replace setenv LIBDIRS "-L${export_base}/usr/lib"
-setenv USE_DASH_I_DASH 1
+setenv USE_DASH_I_DASH 0
 setenv IDL_GEN_AUX_FILES 1

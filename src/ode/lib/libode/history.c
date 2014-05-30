@@ -1250,7 +1250,7 @@ int buf_lines;
  */
 STATIC
 char *
-getline( char *buf, int bufsiz, FILE *fp, int sameline, ERR_LOG *log )
+getlin( char *buf, int bufsiz, FILE *fp, int sameline, ERR_LOG *log )
 {
   if (!sameline) {
     if (fgets(buf, bufsiz, fp) == NULL) {
@@ -1302,7 +1302,7 @@ int search_for(
    /*
     *  Good leader required
     */
-    while ((res = getline(buf, size, inf, reuse, log)) != NULL) {
+    while ((res = getlin(buf, size, inf, reuse, log)) != NULL) {
       reuse = FALSE;
       *good_leader = (strncmp(buf, leader, lead_len) == 0);
       if (*good_leader) {
@@ -1321,7 +1321,7 @@ int search_for(
     *  Good leader not required
     */
   case 2:
-    while ((res = getline(buf, size, inf, reuse, log)) != NULL) {
+    while ((res = getlin(buf, size, inf, reuse, log)) != NULL) {
       reuse = FALSE;
       if ((*ptr = strstr(buf, search)) != NULL) {
         *good_leader = (strncmp(buf, leader, lead_len) == 0);
@@ -1334,7 +1334,7 @@ int search_for(
     * Look on immediate line only
     */
   case 3:
-    if ((res = getline(buf, size, inf, reuse, log)) != NULL) {
+    if ((res = getlin(buf, size, inf, reuse, log)) != NULL) {
       reuse = FALSE;
       *good_leader = (strncmp(buf, leader, lead_len) == 0);
       if ((*ptr = strstr(buf, search)) != NULL) {

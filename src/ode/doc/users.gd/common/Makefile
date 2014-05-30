@@ -82,7 +82,7 @@ VPATH		= ../../../man/man1:../../../man/man5
 ILIST		= UsersGuide.ps UsersGuide.appendixA.ps
 IDIR		= /doc/
 EROFF		?= eroff
-_EROFFFLAGS_	= -mm
+_EROFFFLAGS_	?= -mm
 PIC		= pic
 TBL		= tbl
 

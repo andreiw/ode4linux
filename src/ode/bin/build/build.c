@@ -162,7 +162,7 @@ static const char * rcsid =
 #include <sys/time.h>
 #include <sys/wait.h>
 #include <errno.h>
-#include <varargs.h>
+#include <stdarg.h>
 #include <a.out.h>
 #include <pwd.h>
 #include <grp.h>

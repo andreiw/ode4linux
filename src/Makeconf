@@ -339,6 +339,11 @@ TARGET_MACHINE=AT386
 target_machine=at386
 TARGET_CPU=I386
 target_cpu=i386
+PORTING_OFILES=va_argv.o
+SUP_TARGET_LIBS=-lcrypt
+EROFF=groff
+_EROFFFLAGS_=
+CFLAGS+= -Wall -Wstrict-prototypes -Wpointer-arith
 CENV= -DNO_STATVFS -DINC_VFS -DUSE_BSIZE -DVA_ARGV_IS_RECAST -DNO_POLL
 
 .elif (${context} == "ppc_linux")
@@ -350,6 +355,7 @@ target_cpu=ppc
 PORTING_OFILES=va_argv.o
 SUP_TARGET_LIBS=-lcrypt
 EROFF=groff
+_EROFFFLAGS_=
 CFLAGS+= -Wall -Wstrict-prototypes -Wpointer-arith
 CENV= -DNO_STATVFS -DINC_VFS -DUSE_BSIZE -DNO_POLL 
 

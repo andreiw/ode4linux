@@ -78,7 +78,7 @@ odexm.map_IDIR	= /server/
 IDIR		= /doc/
 
 EROFF           ?= eroff
-_EROFFFLAGS_    = -mm
+_EROFFFLAGS_    ?= -mm
 PIC             = pic
 TBL             = tbl
 
