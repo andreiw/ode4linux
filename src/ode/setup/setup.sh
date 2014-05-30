@@ -360,6 +360,14 @@ cp ${objdir}/ode/bin/build/build ${bindir}/build
 rm -rf ${objdir}/ode/bin/build
 
 #
+# program to workon sandbox
+#
+(cd ode/bin/workon; \
+ make ${MAKEOPTIONS} workon)
+cp ${objdir}/ode/bin/workon/workon ${bindir}/workon
+rm -rf ${objdir}/ode/bin/workon
+
+#
 # program to install in non-sandbox environment
 #
 (cd ode/bin/release; \
