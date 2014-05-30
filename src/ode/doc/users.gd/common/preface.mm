@@ -181,7 +181,6 @@ the control key while pressing \fB<c>\fR.
 .P
 The following reference pages relate to ODE:
 .br
-.1C
 \fBbci(1)\fR
 .br
 \fBbco(1)\fR
@@ -225,7 +224,6 @@ The following reference pages relate to ODE:
 \fBuptodate(1)\fR
 .br
 \fBworkon(1)\fR
-.1C
 .P
 These can be found in appendix A of this document.
 Reference pages also exist in Section 3 for the library routines found

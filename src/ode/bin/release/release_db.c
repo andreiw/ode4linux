@@ -126,6 +126,9 @@ extern char *ttyname();
 
 extern int debug;
 
+#define _getshort(cp) ((cp)[0] << 8 | (cp)[1])
+#define putshort(s, cp) do { (cp)[0] = (s) >> 8; (cp)[1] = (s); } while (0)
+
 #if	USE_REFERENCE_COUNTING
 #define	INCREF(x)	\
 { \

@@ -341,6 +341,18 @@ TARGET_CPU=I386
 target_cpu=i386
 CENV= -DNO_STATVFS -DINC_VFS -DUSE_BSIZE -DVA_ARGV_IS_RECAST -DNO_POLL
 
+.elif (${context} == "ppc_linux")
+MACHINE=ppc
+TARGET_MACHINE=PPC
+target_machine=ppc
+TARGET_CPU=PPC
+target_cpu=ppc
+USE_FRSIZE=0
+PORTING_OFILES=va_argv.o
+SUP_TARGET_LIBS=-lcrypt
+EROFF=groff
+CFLAGS+= -Wall -Wstrict-prototypes -Wpointer-arith
+
 .elif (${context} == "pmax_decosf1")
 MACHINE=mips
 TARGET_MACHINE=PMAX

@@ -77,8 +77,8 @@ ILIST		= sag.ps odexm.map
 odexm.map_IDIR	= /server/
 IDIR		= /doc/
 
-EROFF           = eroff
-_EROFFFLAGS_    = -p -mm
+EROFF           ?= eroff
+_EROFFFLAGS_    = -mm
 PIC             = pic
 TBL             = tbl
 

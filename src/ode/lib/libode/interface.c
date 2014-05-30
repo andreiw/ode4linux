@@ -700,7 +700,7 @@ vadcl
       ">> DEBUG INFO"                                              /* VDEBUG */
     };
 
-    static      FILE    * outfile[] = {               /* placement of output */
+    FILE    * outfile[] = {                           /* placement of output */
       stdout,                                                     /* VALWAYS */
       stderr,                                                      /* VERROR */
       stderr,                                                      /* VFATAL */

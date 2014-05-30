@@ -146,7 +146,7 @@ typedef struct err_type * ERR_LOG;
 
 struct err_type  {
   int ode_errno;
-  int errno;
+  int r_errno;
   char * e_str;
   ERR_LOG next;
 };
@@ -211,7 +211,7 @@ err_set_report ( (void) report_func ( ERR_LOG *) )
 int
 err_errno ( ERR_LOG log )
 {
-  return ( log -> errno );
+  return ( log -> r_errno );
 } /* end err_errno */
 
 int
