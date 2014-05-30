@@ -193,6 +193,20 @@ then
 else
     mkdir ${objdir}
 fi
+log=${base}/log
+if [ -d ${log} ]
+then 
+    true
+else
+    mkdir ${log}
+fi
+logdir=${log}/${context}
+if [ -d ${logdir} ]
+then
+    true
+else
+    mkdir ${logdir}
+fi
 exp=${base}/export
 if [ -d ${exp} ]
 then

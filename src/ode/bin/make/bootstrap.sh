@@ -143,6 +143,10 @@ case $context in
 			TARGET_FLAGS="-DNO_RANLIB"
 			ARCHIVE_FORMAT=BSDARCH;
 			CC=cc;;
+	"ppc_linux")	MACHINE="ppc"
+			TARGET_FLAGS="-DNO_RANLIB"
+			ARCHIVE_FORMAT=LINUXARCH;
+			CC=cc;;
 	"pmax_ultrix")	MACHINE="mips" ;
 			ARCHIVE_FORMAT=BSDARCH ;
 			NO_STRDUP=NO_STRDUP ;
