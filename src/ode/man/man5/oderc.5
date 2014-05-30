@@ -1,0 +1,387 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: oderc.5,v $
+.\" Revision 1.7.4.1  1993/12/15  21:58:33  marty
+.\" 	CR # 623 - Update oderc.5 for ode2.3.
+.\" 	[1993/12/15  21:58:10  marty]
+.\"
+.\" Revision 1.7.2.2  1992/12/03  17:25:39  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:50  damon]
+.\" 
+.\" Revision 1.7  1991/12/05  21:17:24  devrcs
+.\" 	Changed name to oderc
+.\" 
+.\" 	Updated for ODE2.1
+.\" 	[1991/11/05  21:44:04  mckeen]
+.\" 
+.\" 	Update for Tools II changes
+.\" 	[91/01/29  12:53:55  randyb]
+.\" 
+.\" 	Updated the information on the variables in build's rc_files/shared.
+.\" 	[90/12/10  16:27:53  randyb]
+.\" 
+.\" Revision 1.5  90/12/06  14:21:49  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:48:06  gm]
+.\" 
+.\" Revision 1.4  90/10/07  21:59:25  devrcs
+.\" 	Pre OSF1.0 changes
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH oderc 5 11/5/91
+.SH NAME
+oderc \- description of internals of ODE rc files
+.SH SYNOPSIS
+.IP \fI/sandbox/\fBrc_files/sets\fR
+.IP \fI/sandbox/\fBrc_files/\fI<project_name>\fB/sb.conf\fR
+.IP \fI/sandbox/\fBsrc/\fI<project_name>\fB/Buildconf\fR
+.IP \fI/sandbox/\fBsrc/\fI<project_name>\fB/Buildconf.exp\fR
+.IP \fI/sandbox/\fBrc_files/projects\fR
+.IP \fB/project/projects/build_list\fR
+.IP \fB${HOME}/.sandboxrc\fR
+
+.SH DESCRIPTION
+There are two types of rc files described in this document;
+the rc files which are part of a sandbox and the rc files
+which are associated with a user.
+.P
+The rc files that are associated with sandboxes include:
+.ti 7
+.IP \fI/sandbox/\fBrc_files/\fI<project_name>\fB/sb.conf\fR
+.ti 7
+.IP \fI/sandbox/\fBsrc/\fI<project_name>\fB/Buildconf\fR
+.ti 7
+.IP \fI/sandbox/\fBsrc/\fI<project_name>\fB/Buildconf.exp\fR
+.ti 7
+.IP \fI/sandbox/\fBrc_files/sets\fR
+.ti 7
+.IP \fI/sandbox/\fBrc_files/projects\fR
+.ti
+.IP /project/projects/build_list
+.P
+The rc file associated with the user is \fB${HOME}/.sandboxrc\fR.
+
+.SS "RC File: \fI/sandbox/\fBrc_files/\fI<project_name>\fB/sb.conf\fR"
+.P
+The rc file
+.B "\fI/sandbox/\fBrc_files/\fI<project_name>\fB/sb.conf\fR"
+is used to define the behavior of a particular sandbox.
+It describes where the backing chain is and indicates whether
+the source control and/or the build mechanism is turned on or off.
+The entries in this  file has the following syntax.
+.P
+Each line is of one of two forms:
+.ti 7
+.B "<variable> <value>*"
+.sp 0
+or
+.ti 7
+.B "<key word>* <variable> [<value>*]"
+.P
+An example of the first case is:
+.ti 7
+rcs_owner devrcs
+.sp 0
+or
+.ti 7
+replace source_base ${sandbox_base}/src
+.sp 1
+In the first example, the value of the variable is checked.
+If it is already set, its value is not changed.
+If, however, it is not set, it is given the value of \fIvalue\fR.
+.P
+In the second example, the variable is simply set
+to the value of \fIvalue\fR.
+.P
+A value can be a string, or an shell variable.
+Strings containing spaces should be surrounded by quotes.
+A shell variable starts with a '$' and is expanded;
+if the variable is not set, the value will be left empty.
+.P
+Legal key word for this file is:
+.IP "\fBreplace\fR"
+puts the current value into variable.
+.P
+A typical \fBsb.conf\fR file contains the following information:
+.sp
+.ti 7
+replace backing_project \fIproject_name\fR 
+.ti 7
+replace backing_build   \fIpath-to-backing-tree\fR 
+.ti 7
+replace \fIproject_name\fR_sc  true
+.ti 7
+replace \fIproject_name\fR_build_env   true
+.P
+Sandboxes used in the \fBode\fR project (backed by the backing 
+tree \fB/project/ode/build/ode2.3.4\fR) have the following information:
+.sp
+.ti 7
+replace backing_project ode
+.ti 7
+replace backing_build   /project/ode/build/ode2.3.4
+.ti 7
+replace ode_sc  true
+.ti 7
+replace ode_build_env   true
+.P
+
+.SS "RC File: \fI/sandbox/\fBsrc/\fI<project_name>\fB/Buildconf\fR"
+
+The rc files
+.B "\fI/sandbox/\fBsrc/\fI<project_name>\fB/Buildconf"
+and
+.B "\fI/sandbox/\fBsrc/\fI<project_name>\fB/Buildconf.exp"
+can be used to  customize the behavior of a particular sandbox.
+
+Legal key words for these files are:
+.IP \fBinclude\fR
+used to include another file in the current rc file.
+This key word takes an argument which is the filename to include.
+.IP \fBsetenv\fR
+makes the variable an environment variable.
+.IP "\fBon \fImachine\fR"
+indicates the entry is to be used only when the current system
+matches the machine type.  It should be noted that this key word
+only differentiates hardware platforms.  It cannot distinguish
+between different operating systems that run on the same hardware
+platform.
+
+.P
+The file \fBBuildconf.exp\fR contains variables that are to be  expanded
+at each level in the backing chain.  The entries you will typically see are: 
+.sp 1
+.nf
+.ti 7
+replace object_base ${sandbox_base}/obj/${context}
+.ti 7
+replace export_base ${sandbox_base}/export/${context}
+.ti 7
+replace source_base ${sandbox_base}/src
+.ti 7
+replace setenv EXPORTBASE ${export_base}
+.ti 7
+replace setenv SOURCEBASE ${source_base}
+.ti 7
+replace setenv MAKESYSPATH ${source_base}/ode/mk:${MAKESYSPATH}
+.ti 7
+replace setenv SOURCEDIR ${BACKED_SOURCEDIR}
+.ti 7
+replace setenv BACKED_SOURCEDIR ${source_base}:${SOURCEDIR}
+.ti 7
+replace setenv INCDIRS "-I${export_base}/usr/include ${INCDIRS}"
+.ti 7
+replace setenv LIBDIRS "-L${export_base}/usr/lib ${LIBDIRS}"
+.ti 7
+.fi
+.P
+The file \fBBuildconf\fR contains variables that are to be defined once and
+are not expected to change.  The entries you will typically see are: 
+.sp 1
+.in 7
+.nf
+setenv target_machine not_used_set_in_makeconf
+on alpha setenv context alpha_osf1
+on mips setenv context pmax_ultrix
+on mmax setenv context mmax_osf1
+on i386 setenv context at386_osf1
+on RIOS setenv context rios_aix
+on sparc setenv context sparc_sunos
+on mac2 setenv context mac2_osf1
+on hp700 setenv context hp700_hpux
+replace setenv OBJECTDIR ../obj/${context}
+build_list /project/projects/build_list
+build_makeflags -r
+setenv PROJECT_NAME ODE
+setenv project_name ode
+setenv RULES_MK osf.rules.mk
+replace tools_base ${sandbox_base}/tools/${context}
+replace object_base ${sandbox_base}/obj/${context}
+replace source_base ${sandbox_base}/src
+replace export_base ${sandbox_base}/export/${context}
+setenv SOURCEBASE ${source_base}
+setenv EXPORTBASE ${export_base}
+replace setenv MAKESYSPATH ${source_base}/ode/mk
+replace setenv BACKED_SOURCEDIR ${source_base}
+replace setenv SOURCEDIR ""
+replace setenv INCDIRS "-I${export_base}/usr/include"
+replace setenv LIBDIRS "-L${export_base}/usr/lib"
+setenv USE_DASH_I_DASH 1
+.fi
+.in -7
+.P
+.SS "RC File: \fI/sandbox/\fBrc_files/sets\fR"
+.P
+.I "Sets"
+are the logical working areas inside a sandbox.  
+A set can contain any number of files.  The list of files in a particular set
+is kept in the file
+\fI/sandbox/src/.BCSset-\fIuser_setname\fR.
+A default set is created by
+.B "mksb"
+at the time the sandbox is created and usually has the same name
+as the sandbox.
+The
+.B "sets"
+rc file contains the names of all sets created in the sandbox
+and their default set directories.
+.P
+When a new set is created by \fBworkon,\fR it is added to the \fBsets\fR rc file.
+\fBmksb\fR also puts the name of the default set into this file with
+the keyword \fBdefault\fR.
+.P
+The syntax for this file is:
+.sp 1
+.in 7
+.nf
+\fBdefault \fIsetname\fR
+\fBset \fIsetname\fR \fIsetdir\fR
+\fBset \fIsetname\fR \fIsetdir\fR
+.fi
+.in -7
+.P
+The first line defines the default set, the set in this sandbox to use.
+Each line after that gives the name of the set and its set directory.
+The set directory always starts with a period, ".", so if there is no
+set directory, the line will look something like:
+.sp
+.ti 7
+.B "set motif ."
+.P
+There is a line in this format for each set which has been created in the
+sandbox.
+When the user does a \fBworkon\fR to the setname, workon cd's to the
+setdir under the sandbox's source directory.
+.P
+.SS "RC File: \fI/sandbox/\fBrc_files/projects\fR"
+.P
+It is possible to have a sandbox backed by multiple backing trees.
+This is done by creating more than one version of the \fBlocal\fR
+rc file and using the file \fBprojects\fR to tie the version of
+\fBlocal\fR to the directories under \fBsrc\fR.
+.P
+The \fBprojects\fR file has a list of directories followed by the
+name of the sandbox rc file to associate with the directory.
+The two fields are tab separated.
+For example:
+.sp
+.ti 7
+ ./kernel \ \ osc kernel
+.ti 7
+ . \ \ \ \ \ \ \ ode
+.P
+In this example, if the developer in or under the directory \fBsrc/kernel\fR,
+instead of using the sandbox rc file \fIsandbox/\fBrc_files/\fI<project_name>/\fBsb.conf\fR, 
+the tools would use
+\fBrc_files/osc/kernel/sb.conf\fR.
+If the developer was in any other directory, the default sandbox rc file
+\fBrc_files/ode/sb.conf\fR
+would be used.
+.P
+.SS "RC File: \fB/project/projects/build_list\fR
+.P
+This file contains the name, configuration information, and base
+directory of each build the site supports.
+The actual name and location of this file is determined by the
+sandbox variable \fBbuild_list\fR but defaults to
+\fB/project/projects/build_list\fR.
+Normally, there is only one copy of this file and it is mounted on all
+systems using ODE.
+.P
+The file allows many of the ODE commands to know where to access builds
+and what source control revisions to associate with check-outs without
+the user having to enter all the information.
+.P
+.SS "RC File: \fB${HOME}/.sandboxrc\fR"
+.P
+Each user has one rc file for sandbox information
+which, if it doesn't exist, will be created by \fBmksb\fR.
+The default location and name of the file is \fB${HOME}/.sandboxrc\fR
+but the \fB-rc \fIfilename\fR
+option allows users to specify alternate versions of this file.
+.P
+This file contains information needed by all the ode tools.
+It contains the name of the default sandbox and
+and it contains the mapping between the sandboxes and where they are located. 
+The mappings between sandboxes and bases is done using wildcards.
+It also contains a list of the sandboxes and fields for
+creating and populating new sandboxes which only \fBmksb\fR uses.
+.P
+The following is an example of a \fB.sandboxrc\fR file:
+.in 7
+.nf
+  # the default sandbox; if environment variable SANDBOX is not set, use
+  # this sandbox
+default symphony
+
+  # base directory for each sandbox; use wild cards to expand sandbox
+  # names
+base concerto /project/osc/sandboxes/shared
+base song /users/suzieq
+base *motif /project/osc/sandboxes/suzieq/motif
+base * /project/osc/sandboxes/suzieq
+
+  # list of sandboxes 
+sb serenade
+sb symphony
+sb concerto
+sb concerto-motif
+sb song
+
+  # default values for individual commands;
+  # these values are used just as if they were entered on the command line
+mksb -dir /project/osc/sandboxes/suzieq
+mksb -m pmax:mmax
+mksb -tools c
+mksb -obj l /pmax/usr/include:/mmax/usr/lib/libsys
+mksb -src b /
+bsubmit -fn "Suzie Que" -auto
+.fi
+.in -7
+.P
+In this example,
+the default sandbox is \fBsymphony\fR.
+\fBconcerto\fR, another sandbox, has a base directory of
+/project/osc/sandboxes/shared while the sandbox \fBsong\fP has
+the base directory /users/suzieq.
+Any sandbox whose name ends in \fBmotif\fR
+has a base directory of /project/osc/sandboxes/suzieq/motif.
+Finally, any sandbox which has not yet been designated and
+which didn't match a wild card entry has the base directory
+/project/osc/sandboxes/suzieq
+(symphony, and serenade fall into this category).
+.P
+The remainder of the file contain the names of the sandboxes
+and default values for individual commands.
+Comments start with a '#' character.
+
+
+Before each tool reads the command line, it reads the .sandboxrc file
+for default values.
+Each line which begins with the name of the command is read, and the
+arguments entered the same as if they had been placed on the command line.
+Since the .sandboxrc file is read before the command line, values placed
+on the command line will override those in the .sandboxrc file.
+
+.SH "RELATED INFORMATION"
+mksb(1),
+workon(1).

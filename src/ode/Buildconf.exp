@@ -1,0 +1,53 @@
+# COPYRIGHT NOTICE
+# Copyright (c) 1993, 1992, 1991, 1990  
+# Open Software Foundation, Inc. 
+#  
+# Permission is hereby granted to use, copy, modify and freely distribute 
+# the software in this file and its documentation for any purpose without 
+# fee, provided that the above copyright notice appears in all copies and 
+# that both the copyright notice and this permission notice appear in 
+# supporting documentation.  Further, provided that the name of Open 
+# Software Foundation, Inc. ("OSF") not be used in advertising or 
+# publicity pertaining to distribution of the software without prior 
+# written permission from OSF.  OSF makes no representations about the 
+# suitability of this software for any purpose.  It is provided "as is" 
+# without express or implied warranty. 
+#
+# HISTORY
+# $Log: Buildconf.exp,v $
+# Revision 1.1.6.1  1993/11/12  20:14:55  root
+# 	CR 803. Added alpha_osf1, removed references to host includes and libs
+# 	[1993/11/12  20:14:29  root]
+#
+# Revision 1.1.4.1  1993/07/27  14:18:06  damon
+# 	CR 611. Fixed BACKED_SOURCEDIR
+# 	[1993/07/27  14:17:55  damon]
+# 
+# Revision 1.1.2.3  1993/05/27  20:29:14  damon
+# 	CR 541. Cleaned up a bit more
+# 	[1993/05/27  20:28:33  damon]
+# 
+# Revision 1.1.2.2  1993/05/27  14:50:40  damon
+# 	CR 541. Cleaned up Buildconf* files
+# 	[1993/05/27  14:50:06  damon]
+# 
+# Revision 1.1.2.3  1993/02/01  19:57:52  damon
+# 	CR 417. Moved object_base from Buildconf to Buildconf.exp
+# 	[1993/02/01  19:57:30  damon]
+# 
+# Revision 1.1.2.2  1993/02/01  19:36:09  damon
+# 	CR 417. Move build information into Buildconf*
+# 	[1993/02/01  19:35:34  damon]
+# 
+# $EndLog$
+#replace tools_base ${sandbox_base}/tools/${context}
+replace object_base ${sandbox_base}/obj/${context}
+replace export_base ${sandbox_base}/export/${context}
+replace source_base ${sandbox_base}/src
+replace setenv EXPORTBASE ${export_base}
+replace setenv SOURCEBASE ${source_base}
+replace setenv MAKESYSPATH ${source_base}/ode/mk:${MAKESYSPATH}
+replace setenv SOURCEDIR ${BACKED_SOURCEDIR}
+replace setenv BACKED_SOURCEDIR ${source_base}:${SOURCEDIR}
+replace setenv INCDIRS "-I${export_base}/usr/include ${INCDIRS}"
+replace setenv LIBDIRS "-L${export_base}/usr/lib ${LIBDIRS}"

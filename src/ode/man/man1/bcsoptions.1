@@ -1,0 +1,154 @@
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"  
+.\" Copyright (c) 1992 Carnegie Mellon University 
+.\" All Rights Reserved. 
+.\"  
+.\" Permission to use, copy, modify and distribute this software and its 
+.\" documentation is hereby granted, provided that both the copyright 
+.\" notice and this permission notice appear in all copies of the 
+.\" software, derivative works or modified versions, and any portions 
+.\" thereof, and that both notices appear in supporting documentation. 
+.\"  
+.\" CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" 
+.\" CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR 
+.\" ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE. 
+.\"  
+.\" Carnegie Mellon requests users of this software to return to 
+.\"  
+.\" Software Distribution Coordinator  or  Software_Distribution@CS.CMU.EDU 
+.\" School of Computer Science 
+.\" Carnegie Mellon University 
+.\" Pittsburgh PA 15213-3890 
+.\"  
+.\" any improvements or extensions that they make and grant Carnegie Mellon 
+.\" the rights to redistribute these changes. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: bcsoptions.1,v $
+.\" Revision 1.5.8.1  1993/09/03  14:39:30  marty
+.\" 	CR # 632 - Removed -sb_rc option.
+.\" 	[1993/09/03  14:39:13  marty]
+.\"
+.\" Revision 1.5.6.1  1993/08/23  18:24:36  marty
+.\" 	Fix references to "local" file.
+.\" 	[1993/08/23  18:24:02  marty]
+.\" 
+.\" Revision 1.5.4.4  1993/04/20  18:18:41  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/20  18:17:52  damon]
+.\" 
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/19  21:14:13  damon]
+.\" 
+.\" Revision 1.5.4.3  1993/04/19  18:24:24  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/19  18:23:56  damon]
+.\" 
+.\" Revision 1.5.4.2  1993/04/19  15:22:22  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/19  15:22:06  damon]
+.\" 
+.\" Revision 1.5.2.4  1992/12/02  20:49:55  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/02  20:46:53  damon]
+.\" 
+.\" Revision 1.5.2.3  1992/10/19  19:04:21  damon
+.\" 	CR 83. CR 272. bco updates for 2.2
+.\" 	[1992/10/19  19:00:25  damon]
+.\" 
+.\" Revision 1.5  1991/12/05  21:14:37  devrcs
+.\" 	added blank line for readability
+.\" 	[1991/11/06  14:52:25  hester]
+.\" 
+.\" 	fixed typo
+.\" 	[1991/11/05  23:22:31  hester]
+.\" 
+.\" 	added -normal, -verbose and removed -newpath and fixed font change
+.\" 	[1991/11/05  21:23:08  hester]
+.\" 
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:14:53  mckeen]
+.\" 
+.\" Revision 1.4  90/12/06  14:20:50  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:45:21  gm]
+.\" 
+.\" Revision 1.3  90/10/07  21:56:09  devrcs
+.\" 	Added EndLog Marker.
+.\" 	[90/09/29  14:12:06  gm]
+.\" 
+.\" Revision 1.2  90/05/24  23:13:17  devrcs
+.\" 	Fixed -sb_rc description
+.\" 	[90/05/15  11:03:08  mckeen]
+.\" 
+.\" 	final draft before release
+.\" 	[90/05/15  08:47:39  mckeen]
+.\" 
+.\" 	Second draft, split out options into include files
+.\" 	[90/05/04  13:34:27  mckeen]
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.RS -.5i
+\fI sandbox_options\fP - Defaults may be modified and/or overridden with
+the following switches.
+.RE
+.IP "\fB\-rc\fP \fIsandbox_rc_file\fP" 8
+Specifies an alternate sandbox rc file.  The defaults is 
+\fI$HOME/.sandboxrc\fP.
+.IP "\fB\-sb\fP \fIsandbox_name\fP"
+Name of the sandbox to use.  If this option is not used, the sandbox will be 
+determined by the environment variable \fBSANDBOX\fP or, if that is not 
+set,  by the user's default sandbox as specified in the sandbox rc file.
+.IP "\fB\-set\fR \fIset_name\fR"
+Performs operation on \fIset_name\fR instead of the  current default set.
+.PP
+.RS -.5i
+\fI ODE_options\fP - Defaults may be modified and/or overridden with the 
+following switches.
+.RE
+.IP "\fB\-auto\fR" 8
+Automatically choose the default answer to any question asked by a
+command.
+If the default answer requires manual intervention of some sort
+(e.g. to edit a file), then revert to interactive mode for the
+duration of the remaining operations for the current \fIfile\fP
+and only return to automatic mode after proceeding to the next
+\fIfile\fP in the list.
+.IP "\fB\-fast\fR"
+Always choose the default answer to any question asked by a
+command.
+If the default answer requires manual intervention of some sort
+(e.g. to edit a file), then abort the operation on the current
+\fIfile\fP instead and proceed to the next \fIfile\fP
+in the list.
+.IP \fB\-debug\fR
+Enable debugging code.
+.IP "\fB\-quiet\fR"
+Be less verbose about actions taken.
+.IP "\fB\-verbose\fR"
+Be more verbose about actions taken.
+.IP "\fB\-normal\fR"
+Give normal amount of output, the default verbosity level.
+.IP "\fB\-version\fR"
+Give the ODE version number for this command.
+.IP "\fB\-usage\fR"
+Print the accepted options for this command.
+.PP

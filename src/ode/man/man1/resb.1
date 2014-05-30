@@ -1,0 +1,159 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: resb.1,v $
+.\" Revision 1.6.6.2  1993/09/14  15:09:40  marty
+.\" 	CR # 623 - remove references to shared and local.
+.\" 	[1993/09/14  15:09:27  marty]
+.\"
+.\" Revision 1.6.6.1  1993/09/14  00:41:35  marty
+.\" 	CR # 623
+.\" 	[1993/09/14  00:39:35  marty]
+.\" 
+.\" Revision 1.6.4.2  1993/04/21  18:42:25  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/21  18:39:42  damon]
+.\" 
+.\" Revision 1.6.2.2  1992/12/03  17:24:33  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:22  damon]
+.\" 
+.\" Revision 1.6  1991/12/05  21:15:35  devrcs
+.\" 	Fixed up description, examples, and adherence to
+.\" 	typographic conventions
+.\" 	[1991/11/06  23:13:33  robert]
+.\" 
+.\" 	Upgraded to Tools II interface
+.\" 	[90/12/28  15:32:57  randyb]
+.\" 
+.\" Revision 1.5  90/12/06  14:21:22  devrcs
+.\" 	Pre-OSF/1 changes.
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH resb 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+resb \- retarget a sandbox to use a new backing tree
+.SH SYNOPSIS
+.IP \fBresb\fP 5
+ \fInew_backing_tree\fR
+.IP "\fIODE opts\fR:" 10
+[\fB-info -quiet -normal -verbose -usage -version\fP]
+.br
+[\fB-sb \fIsandbox\fR] [\fB-rc \fIrcfile\fP]
+.P
+.SH FLAGS
+.IP "\fInew_backing_tree\fP"
+Full path or name of backing tree to retarget the sandbox to.
+.P
+.ti 2
+\fIODE opts\fR:
+.IP "\fB\-info\fR"
+\fB-info\fR gives the user information on what \fBresb\fR would do
+without actually doing anything.
+The \fB-info\fR option works in conjunction with the verbosity options.
+.IP "\fB\-quiet\fR"
+One of three levels of verbosity.
+\fB-quiet\fR prints only the information which the user must always
+receive including all fatal error messages.
+.IP "\fB\-normal\fR"
+One of three levels of verbosity.
+\fB-normal\fR is the default verbosity and prints out the significant
+steps the program is taking and warnings.
+It also prints out all information \fB-quiet\fR prints.
+.IP "\fB\-verbose\fR"
+One of three levels of verbosity.
+\fB-verbose\fR prints out detailed information on what steps the program
+is taking and all diagnostic errors.
+It also prints out all information \fB-quiet\fR and \fB-normal\fR prints.
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-version\fR"
+Prints the revision information.
+.IP "\fB\-sb \fIsandbox\fR"
+Use of this option overrides the default sandbox \fBresb\fR
+tries to read from the
+environment variable \fB$SANDBOX\fR or a default entry
+in \fB$HOME/.sandboxrc\fR.
+.IP "\fB-rc \fIrcfile\fR"
+Use of this option overrides the default sandbox rc file, 
+\fB$HOME/.sandboxrc\fR.
+.SH DESCRIPTION
+.PP
+\fBresb\fP retargets a sandbox to use the new backing tree by 
+saving the old sandbox rc_files, changing the sandbox link to point at the new
+backing tree, and regenerating the sandbox rc_files from the 
+backing tree templates.
+The full path name of the new backing tree can be given on the
+command line or, the short-hand name can be used if the backing
+tree has an entry in the build list file 
+(\fB/project/projects/build_list\fR). 
+.P
+A sandbox populated with
+links may need to be repopulated after a \fBresb\fR command to
+pick up new files, or accommodate changes in existing files' pathnames. 
+Refer to the \fBmklinks\fR command for repopulating a sandbox
+with links. Local modifications to sandbox rc_files are
+not preserved across \fBresb\fR commands, and will need to be
+integrated by the user after retargeting a sandbox. 
+.P
+Like other OSF Development Environment commands, \fBresb\fP uses the -sb flag,
+the environment variable \fB$SANDBOX\fR, or the default found in
+\fB$HOME/.sandboxrc\fR (in that order) to determine the current sandbox.
+.SH EXAMPLES
+Retarget the current working sandbox 
+to the backing tree 
+listed in the build list file as \fBlatest\fR:
+.ti 5
+\fBresb latest\fR
+.P
+Retarget the current working sandbox
+to be backed
+by (the sandbox) \fB/sandboxes/suzieq/symphony\fR:
+.ti 5
+\fBresb /sandboxes/suzieq/symphony\fR
+.P
+Retarget the current working sandbox
+to be backed by the backing
+tree with absolute path \fB/project/osc/build/osc1.1\fR.
+The sandbox description will be read from the (non-default)
+sandbox rc file, \fB/tmp/.sandboxrc\fR. Verbose information
+will be given by the \fBresb\fR command as work progresses: 
+.ti 5
+\fBresb -verbose -rc /tmp/.sandboxrc /project/osc/build/osc1.1\fR 
+.SH FILES
+.P
+.IP \fB$HOME/.sandboxrc\fP 
+the default path and file name of the sandbox rc file whose contents describes
+one or more sandboxes 
+.IP \fIsandbox\fP\fB/rc_files/*\fP
+sandbox configuration files recreated by \fBresb\fP.
+.IP \fIsandbox\fP\fB/link\fP
+the link modified by \fBresb\fR that defines a sandbox's backing tree
+.IP \fBproject/projects/build_list\fP
+the list of valid backing trees searched by \fBresb\fR and other ODE commands
+for a backing trees short-hand name, path name, and other information
+.P
+.SH RELATED INFORMATION
+.P
+mksb(1),
+mklinks(1),
+sbinfo(1),
+sandboxrc(5)

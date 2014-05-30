@@ -1,0 +1,506 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: interface.3,v $
+.\" Revision 1.2.2.3  1992/12/03  17:25:02  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:34  damon]
+.\"
+.\" Revision 1.2.2.2  1992/11/19  20:21:36  damon
+.\" 	CR 12. Added description of POSIX behaviour
+.\" 	[1992/11/19  20:21:19  damon]
+.\" 
+.\" Revision 1.2  1991/12/05  21:16:24  devrcs
+.\" 	Man page for the entire interface module including general
+.\" 	information and a function-by-function description.
+.\" 	[91/01/30  16:48:30  randyb]
+.\" 
+.\" $EndLog$
+.\" 
+.\" $EndLog$
+.\"
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH interface 3 1/28/91
+.SH NAME
+interface \- user interface routines for all ODE commands
+.SH SYNOPSIS
+.B "# include <ode/interface.h>
+.IP "\fBint ui_init ( argc, argv, initct, init, posix_ct, posix_ops )\fR"
+.sp 0
+.B "int argc;"
+.sp 0
+.B "char ** argv;"
+.sp 0
+.B "int initct;"
+.sp 0
+.B "UIINIT * init;"
+.sp 0
+.B "int posix_ct;"
+.sp 0
+.B "UIINIT * posix_ops;"
+.IP "\fBvoid ui_set_progname ( newname )\fR"
+.sp 0
+.B "char * newname;"
+.IP "\fBvoid ui_restore_progname ( )\fR"
+.IP "\fBvoid ui_print ( verlevel, format, argslist )\fR"
+.sp 0
+.B "int verlevel;"
+.sp 0
+.B "char * format;"
+.sp 0
+.B "va_list * arglist;"
+.IP "\fBint ui_unset ( pattern )\fR"
+.sp 0
+.B "char * pattern;"
+.IP "\fBint ui_load ( pattern, argct, arglist )\fR"
+.sp 0
+.B "char * pattern;"
+.sp 0
+.B "int argct;"
+.sp 0
+.B "va_list * arglist;"
+.IP "\fBBOOLEAN ui_is_set ( pattern )\fR"
+.sp 0
+.B "char * pattern;"
+.IP "\fBint ui_entry_cnt ( pattern )\fR"
+.sp 0
+.B "char * pattern;"
+.IP "\fBint ui_arg_cnt ( pattern, entry_num )\fR"
+.sp 0
+.B "char * pattern;"
+.sp 0
+.B "int entry_num;"
+.IP "\fBchar * ui_entry_value ( pattern, entry_num )\fR"
+.sp 0
+.B "char * pattern;"
+.sp 0
+.B "int entry_num;"
+.IP "\fBchar * ui_arg_value ( pattern, entry_num, arg_num )\fR"
+.sp 0
+.B "char * pattern;"
+.sp 0
+.B "int entry_num;"
+.sp 0
+.B "int arg_num;"
+.IP "\fBint ui_entries_to_argv ( pattern, entries )\fR"
+.sp 0
+.B "char * pattern;"
+.sp 0
+.B "char *** entries;"
+.IP "\fBint ui_args_to_argv ( pattern, entry_num, arguments )\fR"
+.sp 0
+.B "char * pattern;"
+.sp 0
+.B "int entry_num;"
+.sp 0
+.B "char *** arguments;"
+.IP "\fBchar *  ui_ver_switch ( )\fR"
+.IP "\fBint ui_ver_level ( )\fR"
+.IP "\fBBOOLEAN ui_is_auto ( )\fR"
+.IP "\fBBOOLEAN ui_is_info ( )\fR"
+
+.SH DESCRIPTION
+\fBinterface\fR (\fBui\fR) is a set of functions to comprehensively handle the
+user interface from rc files and the command line.
+It provides an easy way for the programmer to designate the legal
+options for the program, searches for those options both in an
+appropriate rc file and from the command line, checks syntax, stores
+the information in a sorted form, and gives the programmer an interface
+to retrieve the sorted information.
+.P
+Because \fBui\fR is a fundamental part of the ODE tools, it
+has built into it a number of options which are always available.
+These include:
+.IP "\fB-rc \fIrc_file\fR"
+This option specifies the rc file to read for initial input.
+The file defaults to $HOME/.\fIprogname\fBrc\fR.
+If that file does not exist, then the file \fB$HOME/.sandboxrc\fR is checked
+(this is an ODE specific file).
+The rc file syntax is: program name followed by one or more options.
+There can be more than one line with the program name.
+Since the rc file is read before the command line, arguments in the
+rc file can be overridden by command line options.
+.IP "\fB-sb_rc \fIsandbox_rc_file\fR"
+This is an ODE option for setting the sandbox rc file which sets the
+variables for a sandbox.
+It defaults to \fI/sandbox\fB/rc_files/local\fR and can be overridden
+with this option.
+.IP "\fB-info\fR"
+Within the ODE tools, when this option is set, the program indicates
+what it will do but does not actually perform any operations.
+.IP "\fB-auto\fR \fB-noauto\fR"
+Within the ODE tools, when this option is set, instead of prompting
+the user for input, the default value is used whenever it is available.
+\fB-noauto\fR will turn \fB-auto\fR off.
+.IP "\fB-usage\fR"
+When this option is given, \fBui\fR calls the routine \fBprint_usage\fR
+and exits.
+If the programmer has not provided a real function, the dummy function
+in libsb.a is used.
+That function does nothing.
+The programmer should create this routine which gives the user basic
+information on how to use the program.
+.IP "\fB-rev\fR"
+When this option is given, \fBui\fR calls the routine
+\fBprint_revision\fR and exits.
+If the programmer has not provided a real function, the dummy function
+in libsb.a is used.
+That function does nothing.
+The programmer should create this routine which gives the user revision
+information on the program.
+.IP "\fB-quiet\fR \fB-normal\fR \fB-verbose\fR \fB-debug\fR"
+\fBui\fR supports four user options for levels of verbosity.
+Different levels of verbosity should produce different levels of
+information from the program.
+There are actually nine verbosity options the programmer can use for printing
+standard messages, warnings, diagnostics, and errors.
+These are defined in the \fBui\fR header file \fB<ode/interface.h>\fR.
+See the description of the function \fBui_print\fR for details.
+.P
+When using \fBui\fR, the program needs to include the header
+file \fB<ode/interface.h>\fR.
+It contains a number of defines and the definition of the structure
+used to initialize \fBui\fR.
+An array of this structure should be declared and initialized with one
+array element for each pattern \fBui\fR must recognize.
+The fields for each element which must be initialized are:
+.IP "\fBchar * pattern\fR"
+The pattern to match for a particular option.
+In the case of most patterns, this is simply the name of the option such
+as \fB-info\fR.
+However, \fBui\fR supports wildcarding.
+The symbol "*" standards for any number of any character;
+"?" stands for any one character;
+"[]" can be used to designate a set of characters such as [adfi28];
+"-" can be used with the square brackets to denote a range of character,
+[a-z0-9];
+"!" can be used as the first character to indicate logical \fBnot\fR for
+the entire pattern;
+and "\\" can be used to make the next character literal.
+To have a pattern which matches all dash options, for example, use "-*".
+A pattern to match all non-dash options would be "!-*".
+Since matches for patterns are searched in the order they are initialized,
+more specific patterns should proceed less specific,
+for example "-file" should be declared before "-f*".
+Within ODE tools, patterns are defined in header files so that
+hard-coded strings are not used.
+Definitions for the built-in options listed above are in the header
+file \fBui.h\fR.
+\fB-info\fR, for example, is referred to as \fBINFO_OP\fR in ODE source.
+.IP "\fBint max_entries\fR"
+Most options take only one entry so this value is normally one.
+There would be no reason to have, for example, two separate entries for
+\fB-auto\fR.
+However, wildcard patterns often take more than one entry.
+The non-dash option "!-*" can be used to accumulate all the non-dash options
+into a single pattern, for example.
+In this case, each command line argument will be different and needs to
+be stored as a separate entry for the pattern.
+In this circumstance, the value of \fBmax_entries\fR is usually set to
+\fBUNLIMITED\fR, a specially defined value for \fBui\fR.
+This value can be set to an arbitrary limit as well, so, for example,
+if the program required a list of five files but no more, \fBmax_entries\fR
+would be set to five.
+.IP "\fBint duplicates\fR"
+Some options have arguments, such as \fB-rc \fIrc_file\fR.
+This field tells \fBui\fR what to do with the arguments when it
+receives the same option more than once (not uncommon since the command
+line is used to override the rc files).
+There are three possible values to \fBduplicates\fR; \fBOVERWRITE\fR
+which indicates the existing argument(s) should be replaced by
+the new argument(s);
+\fBACCUM\fR which indicates the new arguments should be added to the 
+existing list of arguments;
+and \fBTOGGLE\fR which indicates that an option which was turned on
+should be turned off and vice versa.
+\fB-rc \fIrc_file\fR is an example of a pattern set to \fBOVERWRITE\fR;
+each time \fBui\fR reads this option it overwrites the value of
+\fIrc_file\fR so only the last value entered is used.
+Collecting compiler option, \fB-l\fIlibrary\fR for example, would be a
+way to use \fBACCUM\fR.
+Each time the user entered \fB-l\fIlibrary\fR the \fIlibrary\fR would
+be added to the list of libraries to use.
+\fBTOGGLE\fR could have been used to implement \fB-auto\fR (though it
+wasn't) when the user wants to be able to turn the option on and off.
+With this type of implementation, if \fB-auto\fR was already set, entering
+\fB-auto\fR again would unset it.
+.IP "\fBint min_args\fR"
+This field indicates the minimum number of arguments which are associated
+with each invocation of the pattern.
+For example, if the value of \fBmin_args\fR for pattern \fB-list\fR is two,
+then, each time \fB-list\fR is entered, it must be followed by at least
+two arguments.
+.IP "\fBint max_args\fR"
+This field indicates the maximum number of arguments associated with
+each entry for the pattern.
+Whether the arguments are obtained from a single invocation of the entry
+or are accumulated over multiple invocations using \fBACCUM\fR, the
+total number of arguments associated with the entry cannot exceed this value.
+.IP "\fBchar * legal_args\fR"
+This field is similar to \fBpattern\fR but holds the legal values for
+the arguments.
+It accepts the same wildcards as \fBpattern\fR.
+There is one difference between \fBlegal_args\fR and \fBpattern\fR;
+\fBpattern\fR is a single entry while \fBlegal_args\fR can be a
+space-separated list of the legal arguments, for example:
+"[0-9] \ [0-9][0-9] \ [0-9][0-9][0-9]" could be used to limit legal arguments
+to any number from 0 to 999.
+.P
+An easy way to initialize a program to use \fBui\fR is to define
+the array of patterns in the global space.
+For example:
+.sp
+.ti 7
+UIINIT init [] {
+.ti 8
+{ "-copy", 1, OVERWRITE, 0, "" },
+.ti 8
+{ "-list", 1, OVERWRITE, UNLIMITED, "!-*" },
+.ti 8
+{ "!-*", UNLIMITED, OVERWRITE, 0, "" }
+.ti 7
+}
+.P
+This sets up a user interface which accepts the "-copy" option with no
+arguments, the "-list" option with any number of arguments which cannot
+be accumulated, and the final pattern which collects all non-dash entries,
+none of which have arguments.
+.SH FUNCTIONS
+The following is a function-by-function description of \fBui\fR.
+.SS \fBui_init\fR
+Used to initialize \fBui\fR, \fBui_init\fR determines the correct
+rc file, reads it, reads the command line arguments, and then sorts the
+input into the appropriate entries and arguments.
+This should be one of the very first lines in any program using \fBui\fR.
+It takes as arguments \fBargc\fR and \fBargv\fR from \fBmain\fR;
+the number of patterns entered, and array of the structure \fBUIINIT\fR.
+You can optionally invoke a posix parser to do the actual parsing. The
+posix parser is getopt. If you do not want posix behaviour, set posix_ct
+and posix_ops to 0 and NULL respectively. Otherwise, pass in a \fBUIINIT\fR
+structure containing the posix options in posix_ops and the number of
+posix options in posix_ct.
+Both \fBUIINIT\fR structures should already be initialized as shown above.
+The number of patterns to entered must agree with the number of
+arrays entries in \fBUIINIT\fR.
+In the example above, the number would be 3.
+.SS \fBui_set_progname\fR
+This function can be used to temporarily change the name of the global
+variable \fBchar * progname\fR.
+Each program using \fBui\fR needs to declare and set \fBprogname\fR
+as a global variable using a line like:
+.sp
+.ti 7
+\fBchar * progname = "wakeup";
+.P
+\fBprogname\fR is used by some of the \fBui\fR routines, such
+as error reporting, when they need to print out the name of the program.
+To change this name temporarily, use this function.
+It takes as an argument the new name to set \fBprogname\fR to.
+.SS \fBui_restore_progname\fR
+If \fBprogname\fR has been changed using \fBui_set_progname\fR, this
+routine will return it to the previous value.
+.SS \fBui_print\fR
+This is the print routine for \fBui\fR.
+It supports nine different print specifications, the specification being
+the first argument to \fBui_print\fR.
+These values are defined in \fB<ode/interface.h>\fR.
+.IP "\fBVALWAYS\fR"
+Always print this message.
+Print it to stdout and do not add any formatting.
+.IP "\fBVFATAL\fR"
+Always print this message.
+Print it to stderr and add formatting which indicates an error condition
+and the \fBprogname\fR.
+.IP "\fBVQUIET\fR"
+This specification is not used by the programmer.
+It exists to provide a corresponding level to the user option \fB-quiet\fR.
+.IP "\fBVWARN\fR"
+Print this message when the verbosity level is \fB-normal\fR or higher.
+Print it to stderr and add formatting which indicates a warning condition
+and the \fBprogname\fR.
+.IP "\fBVNORMAL\fR"
+Print this message when the verbosity level is \fB-normal\fR or higher.
+Print it to stdout and do not add any formatting.
+.IP "\fBVDIAG\fR"
+Print this message when the verbosity level is \fB-verbose\fR or higher.
+Print it to stderr and add formatting which indicates a diagnostic error
+condition and the \fBprogname\fR.
+.IP "\fBVDETAIL\fR"
+Print this message when the verbosity level is \fB-verbose\fR or higher.
+Print it to stdout and add a prefix of "> " to indicate detailed
+information.
+.IP "\fBVDEBUG\fR"
+Print this message when the verbosity level is \fB-debug\fR.
+Print it to stderr and add formatting which indicates a debugging message
+and the \fBprogname\fR.
+.IP "\fBVCONT\fR"
+Print this message at the same level of verbosity as the previous message
+and to the same device.
+Do not, however, duplicate any error or warning conditions or the
+\fBprogname\fR.
+Do add the appropriate "> " type prefix, if any, to indicate a continuation
+of the previous message.
+.P
+The second argument to \fBui_print\fR is the format followed by the correct
+number of arguments with the values to put inside the format statement.
+This syntax is identical to \fBprintf\fR.
+.P
+The reason for using \fBui_print\fR instead of \fBprintf\fR and \fBfprintf\fR
+is that \fBui_print\fR checks the verbosity level the
+user wants so the programmer does not have to constantly test to see if
+the command line arguments included \fB-verbose\fR or \fB-quiet\fR.
+The programmer merely indicates at what level of verbosity this particular
+message should be printed.
+.SS \fBui_unset\fR
+This function unsets all entries and arguments to a particular pattern.
+The result is the same as if the pattern had never been entered 
+either in the rc file or on the command line.
+It takes as an argument the pattern to unset.
+.SS \fBui_load\fR
+This function allows the programmer to set a pattern from within the
+program just as if it had been entered on the command line.
+The first argument is the pattern to set.
+This argument cannot contain wildcards so only patterns which can be
+matched identically can be set from within a program.
+The second argument is the number of arguments being passed to the pattern
+and the arguments after that form the argument list being passed.
+If the pattern requires no arguments, the number of arguments being passed
+is set to O and there are no additional arguments.
+.SS \fBui_is_set\fR
+This function returns a boolean TRUE (1) if the pattern is set,
+FALSE (0) otherwise.
+A pattern is set if it has been entered from an rc file, the command line,
+or by using \fBui_load\fR.
+It is unset if it was never entered.
+It can also be unset after being set by using \fBui_unset\fR or having
+the pattern toggled off.
+The argument to \fBui_is_set\fR is the pattern to check.
+.SS \fBui_entry_cnt\fR
+This function checks the number of entries for the pattern given as the
+argument.
+If there are no entries, i.e. the pattern is not set, it returns 0,
+otherwise it returns the number of entries.
+If the pattern is set, even if the pattern does not use wildcards, it
+has at least one entry.
+If the pattern passed in with the function does not match any of the
+initialized patterns, \fBui_entry_cnt\fR returns ERROR (-1).
+.SS \fBui_arg_cnt\fR
+Similar to \fBui_entry_cnt\fR, \fBui_arg_cnt\fR returns the number of
+arguments for a particular entry.
+The first argument passed to \fBui_arg_cnt\fR is the pattern to match,
+the second is the number of the entry with the arguments to count.
+\fBui_arg_cnt\fR returns 0 if the pattern is not set, ERROR if the pattern
+passed in does not match any of the initialized patterns or if the entry
+number is higher than the number of entries currently set in the pattern.
+.SS \fBui_entry_value\fR
+This function returns a pointer to a string with the value of a particular
+entry for a particular pattern.
+If, for example, the pattern was \fB-l*\fR and five entries has been made,
+to find out the value of the third entry the call would be:
+.sp
+.ti 7
+\fBui_entry_value ( "-l*", 3 );
+.P
+The return pointer would have a value like \fB"-lm"\fR.
+\fBui_entry_value\fR returns NULL if the pattern is not set,
+there is no such pattern, or if the entry number is higher than the number
+of entries currently set in the pattern.
+.SS \fBui_arg_value\fR
+Similar to \fBui_entry_value\fR, this function returns a pointer to a
+string with the value of a particular argument for a particular entry.
+Like \fBui_entry_value\fR, it returns NULL if the pattern is not found or
+set or if the entry or argument count is too high.
+.SS \fBui_entries_to_argv\fR
+This function places all the entries for a particular pattern into a
+\fBchar **\fR similar to the \fBargv\fR list passed into \fBmain\fR.
+It returns the number of entries in the list, 0 if none, and ERROR if
+the pattern was not found.
+.SS \fBui_args_to_argv\fR
+This function is the argument version of \fBui_entries_to_argv\fR.
+It puts the arguments for a particular entry into a char **, \fBargv\fR type,
+list.
+It returns the number of arguments in the list, 0 if none, and ERROR if
+the pattern or entry number was not found.
+.SS \fBui_ver_switch\fR
+This function returns a pointer to a string which contains the current
+verbosity level.
+The string will contain either \fB-quiet\fR, \fB-normal\fR, \fB-verbose\fR,
+or \fB-debug\fR.
+.SS \fBui_ver_level\fR
+This function returns the same information as \fBui_ver_switch\fR
+except it returns the integer value of the verbosity level instead
+of the string.
+The integer values can be compared with the list of defines in the
+\fBinterface.h\fR file.
+.SS \fBui_is_auto\fR
+This is a short cut procedure to determine if the \fB-auto\fR option is
+set.
+It returns TRUE if it is, FALSE otherwise.
+.SS \fBui_is_info\fR
+This is a short cut procedure to determine if the \fB-info\fR option is
+set.
+It returns TRUE if it is, FALSE otherwise.
+.SH FILES
+.IP \fBlibsb.a\fR
+library containing these routines
+
+.SH EXIT VALUES
+\fBui_init\fR returns '0' upon successful completion, '-1' otherwise.
+.br
+\fBui_set_progname\fR does not return a value.
+.br
+\fBui_restore_progname\fR does not return a value.
+.br
+\fBui_print\fR does not return a value.
+.br
+\fBui_unset\fR returns '0' upon successful completion, '-1' otherwise.
+.br
+\fBui_load\fR returns '0' upon successful completion, '-1' otherwise.
+.br
+\fBui_is_set\fR returns TRUE if pattern is set, FALSE if not.
+.br
+\fBui_entry_cnt\fR returns the number of entries which match the
+pattern, '0' if none, '-1' if there was no matching pattern.
+.br
+\fBui_arg_cnt\fR returns the number of arguments in the
+entry, '0' if none, '-1' if there was no matching pattern or entry number.
+.br
+\fBui_entry_value\fR returns a pointer to a string with the value of the
+entry; NULL if no such pattern or entry number or the pattern was not matched.
+.br
+\fBui_arg_value\fR returns a pointer to a string with the value of the
+argument; NULL if no such pattern, entry number, or argument number, or
+the pattern was not matched.
+.br
+\fBui_entries_to_argv\fR returns the number of entries put into the
+\fBchar ** entries\fR list, '0' if no entries, '-1' if there was no matching
+pattern.
+.br
+\fBui_args_to_argv\fR returns the number of arguments put in the
+\fBchar ** argument\fR list, '0' if no arguments, '-1' if there was no
+matching pattern or entry number.
+.br
+\fBui_ver_switch\fR returns a pointer to the string which holds the
+name of the argument for the current verbosity level.
+.br
+\fBui_ver_level\fR returns the current verbosity level as an integer.
+.br
+\fBui_is_auto\fR returns BOOLEAN TRUE if auto is set, FALSE otherwise.
+.br
+\fBui_is_info\fR returns BOOLEAN TRUE if info is set, FALSE otherwise.

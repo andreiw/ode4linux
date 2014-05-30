@@ -1,0 +1,194 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: odexm.tbl,v $
+.\" Revision 1.1.8.1  1995/05/22  19:45:08  robert
+.\" 	Change/permute instances of Ode 2.2 -> Ode 2.3.4.
+.\" 	[1995/05/22  17:12:47  robert]
+.\"
+.\" Revision 1.1.6.1  1993/08/26  14:37:01  marty
+.\" 	CR # 628 - Update to ODE 2.3
+.\" 	[1993/08/26  14:36:31  marty]
+.\" 
+.\" Revision 1.1.4.4  1993/06/07  20:35:52  damon
+.\" 	CR 458. Added reference to tcp_service_number
+.\" 	[1993/06/07  20:35:39  damon]
+.\" 
+.\" Revision 1.1.4.3  1993/06/04  20:41:19  damon
+.\" 	CR 458. refers to odexm.map in server dir
+.\" 	[1993/06/04  20:41:12  damon]
+.\" 
+.\" Revision 1.1.4.2  1993/04/22  15:28:17  damon
+.\" 	CR 458. Updated for 2.3
+.\" 	[1993/04/22  15:24:17  damon]
+.\" 
+.\" 	CR 458. Added index entries
+.\" 
+.\" Revision 1.1.2.5  1993/01/04  18:12:11  damon
+.\" 	CR 332. Updated for 2.2
+.\" 	[1993/01/04  18:11:37  damon]
+.\" 	.\"
+.\" 	Revision 1.1.2.4  1992/12/03  19:09:26  damon
+.\" 	ODE 2.2 CR 346. Expanded copyright
+.\" 	[1992/12/03  18:40:55  damon]
+.\" 
+.\" Revision 1.1.2.3  1992/12/02  18:01:56  damon
+.\" 	CR 344. Fixed repeating field two of odexm.conf pg. 12
+.\" 	[1992/12/02  18:01:43  damon]
+.\" 
+.\" Revision 1.1.2.2  1992/11/18  22:30:17  damon
+.\" 	CR 332. Added new chapter on odexm which incorporates
+.\" 	kxctd information taken from back.tree.mm and src.cntrl.tbl
+.\" 	and converted to odexm as well as new information about odexm.
+.\" 	[1992/11/18  22:29:12  damon]
+.\" 
+.\" $EndLog$
+.\"
+...\"*********************************************************************
+...\"          Set page information
+...\"*********************************************************************
+.EH "'\s10\\\\nP''\fBChapter 4: Setting up odexm\s0\fR'"
+.OH "'\fB\s10Chapter 4: Setting up odexm\fR''\\\\nP\s0'"
+.SK
+...\"*********************************************************************
+...\"          Contents of ODE/SAG: Backing Build Configuration
+...\"*********************************************************************
+.iX "odexm"
+.iX "distributed development"
+.H 1 "Setting up the ODE execution monitor, odexm"
+This chapter describes how to set up odexm to provide a distributed
+development environment. If you won't be using the source control component
+of ODE you can safely skip this chapter.
+.P
+You will need to read chapters 5 and 6 before actually using the material
+in this chapter, but it is a good idea to read this chapter first.
+.H 2 "Making odexm available as an inetd service"
+.iX "inetd"
+.iX "/etc/services"
+.iX "services file"
+All ODE server machines need to have odexm installed and available. This
+consists of adding an entry for \fBodexm\fR in the
+\fB/etc/services\fR and \fBinetd.conf\fR files, and installing odexm.
+The line for the \fB/etc/services\fR file should have the form:
+.sp
+.ti 2
+\fBodexm \ \ \fIN\fB/tcp\fR
+.P
+.iX "SERV_NUM"
+.iX "oxm_relay_tcp.c"
+.iX "configuration files" "sc.conf"
+.iX "sc.conf"
+.iX "tcp_service_number"
+where \fIN\fR is the service number. 
+There should be whitespace, usually a single tab, between the two parts of the
+entry.
+.P
+The service number needs to be unique to odexm in /etc/services so the system
+administrator should be consulted to make sure the number is correct.
+This number can be set via the \fBtcp_service_number\fR entry
+in the \fBsc.conf\fR file of the backing
+build or by changing the \fBSERV_NUM\fR definition in the program
+ode/lib/oxm_relay_tcp.c.   It is recommended that the service number
+be defined in the \fBsc.conf\fR file.
+.P
+The line to be added to \fB/etc/inetd.conf\fR is:
+.iX "/etc/inetd.conf"
+.iX "inetd.conf"
+.P
+\fBodexm   stream  tcp     nowait  /etc/odexm      odexm\fR
+.P
+\fBNote:\fR This is an example, please follow the configuration in
+your \fB/etc/inetd.conf\fR file.
+Some files may require the addition of a user-id (root) between
+the fourth and fifth (\fBnowait\fR and \fB/etc/odexm\fR) fields. If
+you see other entries in the \fBinetd.conf\fR file with the user-id field,
+you will need to put it in your entry as well.
+Copy odexm into /etc.
+The \fBinetd\fR daemon must then be restarted on the system.
+.H 2 "odexm configuration files"
+There are a minimum of two configuration files which the user needs to install
+on each ODE server. These are the odexm configuration file, odexm.conf;
+and the odexm mapping file(s). Generally, there is only one mapping file and
+it is called odexm.map. However, odexm.conf can refer to as many mapping files
+as needed.
+.H 3 "odexm.conf"
+.iX "configuration files" "odexm.conf"
+.iX "/etc/odexm.conf"
+.iX "odexm.conf"
+.P
+The odexm.conf file provides odexm with information about rcs, src, and logs
+directories for source control and builds. It must be installed in the /etc
+directory. Each line contains 5 fields.
+Field one is a unique identifier. It consists of three parts; an rcs, src, or
+logs directory; the project name; and the build name. Each of these are
+separated by a '/'. For instance, information regarding the src directory
+on the source server for the ode2.2.1 build of project ode would start with
+the field 'src/ode/ode2.2.1' .
+.P
+The second field specifies the physical location of the odexm accessible
+directory. The third field specifies the physical location of any tools
+that odexm will need in order to fulfill a request. The fourth field is
+the owner of the directory. The last field indicates the location of the
+odexm mapping file.
+.P
+.iX "tools" "server"
+As an example, let's assume that the source control and build servers for
+a particular build are on the same machine and that there is just one
+tools directory, /u0/tools/ode. The rcs files are in /u0/rcs/ode, the src and
+logs directories
+are in /u0/build/ode2.2.1. Our odexm.conf file would look like this:
+.P
+.TS H
+tab(@);
+l l l l l.
+.TH
+.iX "/etc/odexm.conf" "example"
+.iX "odexm.conf" "example"
+.iX "odexm.map"
+.iX "/etc/odexm.map"
+rcs/ode/ode2.3.4@/u0/rcs/ode@/u0/tools/ode@devrcs@/etc/odexm.map
+src/ode/ode2.3.4@/u0/build/ode2.3.4/src@/u0/tools/ode@devsrc@/etc/odexm.map
+logs/ode/ode2.3.4@/u0/build/ode2.3.4/logs@/u0/tools/ode@devsrc@/etc/odexm.map
+.TE
+.P
+.H 3 "odexm.map"
+.iX "odexm.map"
+.iX "/etc/odexm.map"
+.iX "configuration files" "odexm.map"
+The mapping file maps command requests into the actual programs that will
+satisfy those requests. In most cases, the request will map to a program of
+the same name. In other cases, the request will map to srcacl or rcsacl
+which do some parameter checking before calling a program of the same name
+as the request.
+.P
+.iX "odexm.map" "template"
+.iX "templates" "odexm.map"
+An odexm.map file is provided in \fBode/doc/sag/templates\fR. It can be
+copied without change into /etc. This file is also available in the install
+tree in the \fBserver\fR directory. Each line of the odexm.map file has three
+fields.
+.P
+.iX "authentication"
+The first field in odexm.map is the name of a request. The second field is the
+program
+to execute when the request comes in. The third field is for authentication
+purposes. Currently, ODE does not provide authentication as-is. The third
+field is provided for historical reasons and will most likely be removed
+in a future release of ODE. For an example, take a look at the odexm.map
+file provided as a template.

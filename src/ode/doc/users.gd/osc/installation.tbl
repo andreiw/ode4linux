@@ -1,0 +1,649 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: installation.tbl,v $
+.\" Revision 1.2.2.2  1992/12/03  19:13:20  damon
+.\" 	ODE 2.2 CR 346. Expanded copyright
+.\" 	[1992/12/03  18:42:49  damon]
+.\"
+.\" Revision 1.2  1991/12/05  20:57:58  devrcs
+.\" 	Kill multiple occurrence of Endlog, HISTORY, or copyright header
+.\" 	[91/02/04  17:46:47  robert]
+.\" 
+.\" 	Separated DUG into common DUG and OSC Supplemental
+.\" 	[91/01/25  08:05:48  randyb]
+.\" 
+.\" $EndLog$
+...\"*********************************************************************
+...\"          Set page information
+...\"*********************************************************************
+.EH "'\s10\\\\nP''\fBChapter 5: Installation\s0\fR'"
+.OH "'\fB\s10Chapter 5: Installation\fR''\\\\nP\s0'"
+.SK
+...\"*********************************************************************
+...\"          Contents of OSC DUG: Installation
+...\"*********************************************************************
+.H 1 "Installation"
+The vast majority of the installation information is in the supplemental-DUGs
+as this process is so different for each project.
+The common DUG provides a brief overview of the OSF in-house method
+for creating release areas;
+other than that, all OSC installation information is in this document.
+.P
+This is the final step in creating an OSF operating system.
+It involves getting the OSF binaries onto the user's system
+in the correct directories with the correct modes so the user can
+boot and run the OSF os.
+If the system is new or not already running an OSF os, the process
+is referred to as installation.
+If the system is already running an OSF os, the process is referred to
+as updating.
+.P
+Within OSF, developers have access to the \fBrelease\fR areas referred
+to in the common DUG.
+The release areas are used for both installations and updates.
+The licensees, who do not already have these areas, must use a slightly
+different process, essentially creating the release area on the system disk.
+Both developers and licensees can create these release areas;
+the general process is described in the common DUG.
+.P
+The second section covers installations both for the OSF and non-OSF user.
+Installations for OSF discusses ways to install selected parts of the
+os, using the \fBsup\fR tools, and other internal options.
+The installation process for non-OSF users is not so versatile
+and is more of a cookbook approach.
+.P
+For users who are already running an OSF os but would like to get a
+more recent revision, the third section of the chapter covers updating.
+At this time, OSF does not provide an updating process for users outside OSF
+but this process will be forthcoming.
+
+.H 2 "Creating a Release Area"
+The information for this section can be found in the common DUG.
+The installation scripts invoked by licensees use much the same process
+as described in that document so licensees can create release areas
+as well.
+Those scripts set some of the environment, do checking, and end up creating
+the release area on the system disk.
+
+.H 2 "Installation"
+The installation process covers the steps for putting the
+OSF/1 operating system binaries in place so OSF/1 boots and runs.
+There are different processes and requirements for users working within OSF
+from those who are not so this section has been broken into two parts.
+.P
+Each part covers the requirements and processes for getting the
+os in place and running.
+Each assumes a build area is available and, for in-house, a release area.
+.P
+It is best practice to review the entire installation process before
+doing any of it.
+Hints and suggestions for recovery cannot always be written exactly in the
+spot the user needs them.
+.P
+Throughout the installation procedure there are references to the following:
+.VL 12
+.LI "/osf_build"
+The top of the completed OSF/1 build tree.
+This is created by following the instructions on building OSF/1 in previous
+sections of the release notes.
+.LI "/osf_root"
+The mount point for the root partition that OSF/1 is going
+to be installed onto.
+.LI "<machine>"
+The machine type that the build/install is being done for.
+For the reference platforms, this is AT386, MMAX, or PMAX.
+.LE
+
+.H 3 "Installation Within OSF"
+.H 4 "Systems Availability"
+
+.H 4 "Installation Requirements"
+
+.H 4 "Installation Collections"
+
+.H 4 "Installing on an Encore Multimax"
+
+.H 4 "Installing on a DEC Pmax"
+
+.H 4 "Installing on an Intel 386"
+
+.H 3 "Installation Outside OSF"
+For users who are not tied into ODE and therefore do not have established
+release areas and \fBsup\fR tools, the installation is based on a number
+of conditions.
+It is, however, still a straight forward process.
+.H 4 "Installation Requirements"
+This process requires an empty disk that can be partitioned to match
+the structure of the OSF/1 hierarchy.
+After the installation, the partition which has been chosen to hold "/"
+must be able to be booted as the root partition.
+The disk should have the following four partitions with at least 
+this much space available:
+.BL
+.LI
+/{root} 16 mb 9must be a bootable partition)
+.LI
+/usr 100 mb
+.LI
+/var 1 mb (plus room to write system logs)
+.LI
+/paging 32-64 mb (size depends on hardware configuration)
+.LE
+.P
+This disk needs to be connected to a system which has access to a complete
+OSF/1 build.
+The build should be complete and the object tree fully populated.
+The system also needs to have local copies of the setup scripts which
+should be found in the OSF sources under \fIbuild\fB/src/setup\fR.
+These scripts only exist for the reference platforms: AT386, MMAX, and PMAX.
+If the system being installed is not one of these, one set of these scripts
+should be used as templates, and the engineer edit them to create
+appropriate install scripts.
+.P
+.P
+To eliminate the /var partition, the user may move it onto the
+/usr partition by creating a /usr/var directory and placing a symbolic
+link between /var and /usr/var.
+It can also be placed on the root partition by creating a /var directory
+on the "/" filesystem and not mounting any partition on it.
+Note: the size of the var partition expands as system logs are written
+so any partition it is on may fill up.
+.P
+The paging partition is where the "space" file lives that is used by
+the pager to allocate disk space to store paged out memory.
+It is recommended that this be a separate partition that is of an appropriate
+size relative to the machine's memory.
+Most disks have a "b" partition that is meant to hold the paging partition.
+However, the user can specify a location other than "/paging/space" to page to.
+The paging location is specified in the post-install process, documented below.
+The paging partition does not have anything installed to it, and the rc scripts
+take care of mounting and clearing the partition at boot time.
+.P
+New file systems should be created on all of the above partitions with
+\fBnewfs\fR or whatever the host operating system uses to create new file
+systems.
+Mount them under a pseudo-root in the appropriate structure.
+
+.H 4 "Installing the OSF OS"
+The following are the steps to do an installation.
+The examples are based on running in the Bourne shell but, with
+appropriate modification for redirection of output, any shell can be used.
+In this example /osf_root is the pseudo-root, an empty directory used as
+a mount point.
+.P
+After creating the file systems, the first step is to mount the four
+partitions the installation will go onto:
+.BL
+.LI
+mkdir /osf_root /osf_root/usr /osf_root/var
+.LI
+mount /dev/\fIroot-partition\fR /osf_root
+.LI
+mount /dev/\fIusr-partition\fR /osf_root/usr
+.LI
+mount /dev/\fIvar-partition\fR /osf_root/var
+.LE
+.P
+Next, change directories to the directory above the setup scripts.
+This will be the build's src directory:
+.BL
+.LI
+cd \fI/osf_build\fR/src
+.LE
+.P
+Run the primary installation script which will install all the
+commands and libraries from the object tree into the target root:
+.BL
+.LI
+sh -x setup/\fImachine\fR/install.sh /osf >../logs/\fImachine\fR/install.log 2>&1 &
+.LE
+.P
+As this will take at least half-an-hour, longer over a network, this
+is a good time to have lunch.
+You can do also:
+.BL
+.LI
+tail -f ../logs/\fImachine\fR/install.log
+.LE
+.P
+to keep track of the installation's progress.
+After this step completes, be sure to check the log for any errors
+usually signified by the message:
+.P
+.ti 2
+\fB*** Exit 1\fR
+.P
+Any errors which occurred in compiling the build will, of course, show
+up in the installation as the files won't be found.
+Be sure that, if there are failures during install, none of the files
+which failed to install are essential to booting and logging into a system.
+.P
+Now install the kernel:
+.P
+.BL
+.LI
+sh setup/PMAX/installk.sh /osf_root \fIkernel_configuration\fR >/osf_root/installk.log 2>&1 &
+.LE
+.P
+The argument \fIkernel_configuration\fR specifies the kernel configuration.
+The default configuration created by kernel.sh is named \fBDEFAULT\fR.
+If the user wishes to configure the kernel differently,
+refer to the \fBPORTABILITY Guide\fR.
+The configuration log can be monitored although it is much shorter than the
+install.log and takes far less time to run.
+.P
+When this step has completed, the user will have an OSF/1 kernel in /osf_root
+named vmunix and linked to vmunix.OSF1.<kernel_configuration>.
+.P
+The next step is to run the post-install script which performs tasks to
+complete the bootable tree.
+Postinstall is an interactive script
+that helps configure the site specific files.
+The information needed to running postinstall includes:
+.BL
+.LI
+Machine name
+.LI
+Machine IP address
+.LI
+Device name of root partition
+.LI
+Device name of usr partition
+.LI
+Device name of var partition
+.LI
+Location of paging file
+.LI
+Device name of paging partition
+.LI
+Device type of paging partition
+.LI
+Minimum and maximum size of paging file
+.LI
+Network device type
+.LI
+Display type (mono, color, none)
+.LE
+.P
+The site specific files created during this step are
+etc/rc.config, etc/fstab, and etc/hosts.
+If these files already exist, postinstall will query to overwrite them.
+.P
+Postinstall will also go into /osf_root/dev and run MAKEDEV std to create
+the devices needed to boot.
+If dev/console is not create before OSF/1 is rebooted, OSF/1 will hang
+before entering single user mode.
+.P
+Options for this command include:
+.VL 12
+.LI "-noconfig:"
+Tell postinstall not to ask site specific configuration questions and
+not to create site specific files (/etc/rc.config, /etc/fstab, /etc/hosts).
+.LI "-nodev:"
+do not create the device drivers; leave the directory \fB/dev\fR empty.
+.LI "-X11:"
+add links to support X11.
+X11 will still have to be gotten from another source and installed under
+/usr/X11.
+X11 usually requires about 75 mega-bytes of space.
+.LI "-gcc:"
+add links to support the gcc development tools used by OSF.
+gcc binaries will still have to be gotten from another location and place
+in /usr/ccs/gcc/.
+gcc takes approximately 5 mega-bytes.
+.LI "-security:"
+do postinstall processing to support a secure installation.
+This option should only be used when a secure (with sec_level defined)
+build has been done.
+See sections below on secure installation.
+.LE
+.P
+Determine the options needed and run the post-install script.
+For example:
+.BL
+.LI
+/osf_root/postinstall -X11 -gcc /osf_root
+.LE
+.P
+The script is interactive and will ask question such as:
+.P
+.ti 2
+\fBWhat is the Internet host name of this system?\fR
+.P
+and
+.ti 2
+\fBWhat is the Internet host address of your system?\fR
+.P
+Answer these based on the system's configuration.
+.P
+Now install the boot programs in the root partition as described below
+for the three reference platforms.
+.H 4 "Installing Bootstrap Programs on the Digital DECstation System"
+The boot programs reside in the tools directory in the build tree.
+To copy the new boot file to the beginning of the root file system
+device, enter:
+.BL
+.LI
+cp /osf_build/tools/pmax/boot/secboot /osf_root/secboot
+.LI
+dd if=/secboot of=/dev/\fIdevice-name\fP count=16 bs=512
+.LE
+.P
+The device name depends on the the kind of disk installed on the DECstation.
+The boot program needs to be copies to the root directory.
+That can be done with the following command:
+.BL
+.LI
+cp /osf_build/tools/pmax/boot/osf_boot /osf_root/osf_boot
+.LE
+.H 4 "Installing Bootstrap programs on the Encore Multimax System"
+
+.H 4 "Installing Bootstrap programs on the Intel 386 System"
+
+.H 3 "Bringing Up the Installed System"
+Once the boot programs are in place, shut the system down and reboot it
+\fBinto single user mode\fR.
+Be sure to reboot the \fBvmunix\fR from the new root partition.
+These operations are machine specific; no attempt is made to
+give exact instructions.
+.P
+Once in single user mode, the partitions need to be checked by running:
+.BL
+.LI
+/sbin/fsck -p
+.LE
+.P
+The first time through this process, fsck may report errors regarding
+impossible values in some superblock fields.
+If this occurs, simply specify that this should be fixed.
+These errors exist because OSF/1 uses fields in the superblock
+that are not used by the host operating systems.
+Halt the system without syncing the disks:
+.BL
+.LI
+halt -n
+.LE
+.P
+To remount the OSF/1 partitions under the host operating system,
+it may be necessary to to specify an alternative superblock when running
+fsck on the host operating system.
+This is usually done with the -b32 switch to fsck;
+check the documentation for the host operating system.
+.P
+The other (non-root) partitions may have the same error, but it is not
+necessary to halt the system to fix them; fsck will take care of the problem.
+.P
+By default the root partition is only mounted read-only in single user mode.
+If for some reason the root partition needs to be changed while in single
+user mode, it will need to be mounted (\fBafter\fR running fsck on it):
+.BL
+.LI
+mount -u /
+.LE
+.P
+When satisfied that the partitions have been checked, go to multi-user
+mode.
+Do this by typing control-D.
+.BL
+.LI
+^D
+.LE
+.P
+As the system proceeds through the startup procedure, note any errors
+reported by the startup scripts.
+If the errors are non-critical, fix them after logging into OSF/1 in
+multi-user mode.
+For critical errors that prevent the system from coming up, reboot into
+OSF/1 single user mode or back to the host operating system to fix the problem.
+.P
+Once OSF/1 is up in multiuser mode, run the last install script, postboot.
+It is in the root directory on OSF/1.
+This script creates the terminfo database, the spelling dictionaries,
+and the lint libraries.
+Postboot allows any of these steps to be skipped.
+.BL
+.LI
+cd /
+.LI
+/postboot
+.LE
+.P
+The system is now installed and ready for individual configuration.
+
+.H 2 "Updating"
+The difference between updating and installing is that installations
+are made on new systems or systems not running OSF/1 while updates
+are made on system which are already running the os.
+Within OSF, updating generally means getting files from the most
+current release area for a self-hosted system.
+Outside of OSF, updating is will probably not be used until post-OSF/1
+snapshots and releases are available.
+
+.H 3 "Updating Within OSF"
+Within OSF there is a process for updating existing self-host environments
+to reflect the most current release available.
+The \fBsup\fR utility is the principal program for doing this,
+and, if not available locally, can be found on server5 in /u4/sup/bin.
+The sup program enables users to upgrade collections of files on a
+target machine from collections of files stored on a host machine.
+Sup keeps track of all updates and only transfers files which are
+newer than the files on the system it is updating.
+
+.H 4 "Preparing a supfile"
+To simplify the task of updating a system, a \fBsupfile\fR should be
+created in advance.
+The supfile contains the list of areas which should be updated, for
+example the man pages or the kernel.
+The available areas are determined by \fBsup collections\fR which
+are normally created by Release Engineering.
+Engineers, however, can create their own collections (see section below).
+.P
+The format for each line of a supfile is:
+.DS
+.TS
+l l.
+collection name	name of the sup collection
+host=	name of the server for this collection
+hostbase=	location of the sup collection on server
+release=	which release to use
+base=	where to put log files
+prefix=	location for files on target machine
+password=	encryption password. required by sup server
+.TE
+.DE
+.P
+A generic supfile is located on server5 in /u4/release/supfile
+and contains the following entries:
+.S -2
+.P
+root host=server5 hostbase=/u4/release release=default base=/var/adm prefix=/ crypt=qwerty
+.br
+usr host=server5 hostbase=/u4/release release=default base=/var/adm prefix=/usr crypt=qwerty
+.br
+ccs host=server5 hostbase=/u4/release release=default base=/var/adm prefix=/usr/ccs crypt=qwerty
+.br
+share host=server5 hostbase=/u4/release release=default base=/var/adm prefix=/usr/share crypt=qwerty
+.br
+var host=server5 hostbase=/u4/release release=default base=/var/adm prefix=/var crypt=qwerty
+.br
+kernel host=server5 hostbase=/u4/release release=default base=/var/adm prefix=/ crypt=qwerty
+.br
+X11 host=server2 hostbase=/u1/release base=/var/adm prefix=/usr/X11 crypt=qwerty
+.br
+local host=server2 hostbase=/u1/release base=/var/adm prefix=/usr/local crypt=qwerty
+.br
+man host=server2 hostbase=/u1/release base=/var/adm prefix=/usr/share/man crypt=qwerty
+.S +2
+.P
+The above supfile contains all of the available collections, but only the
+collections referenced in the user's, actual supfile will be updated.
+.P
+The contents of each of the collections is:
+.VL 7
+.LI \fBroot\fR
+the root file system.
+.LI \fBusr\fR
+The /usr directory excluding sub-directories in other collections.
+.LI \fBccs\fR
+the C compilation system including the gcc the build was created with.
+.LI \fBshare\fR
+The /usr/share directory.
+.LI \fBvar\fR
+The /var directory.
+.LI \fBkernel\fR
+vmunix.
+.LI \fBX11\fR
+The X11 programs.
+.LI \fBlocal\fR
+The /usr/local directory.
+.LI \fBman\fR
+The /usr/share/man directory.
+.LE
+.P
+When updating a non-boot disk, preface each prefix entry with the mount point
+for the disk.
+For instance, for a disk mounted on /update.mnt the prefixes
+for root, usr, and var would be /update.mnt, /update.mnt/usr, and
+/update.mnt/var respectively.
+
+.H 4 "Preparing the System"
+Sup can replace running executables.
+When running executables are replaced, the disk space used by the program
+is not released until the program stops.
+Because most root sup collections already use most of the space on their
+root partitions, to avoid running out of space it is advisable to sup from
+single user mode.
+In single user mode the executables being replaced are not running,
+avoiding the problem of limited disk space.
+It is not necessary to be in single user mode to update non-boot drives.
+.P
+To get to single user mode and have access to the network, do:
+.P
+.AL
+.LI
+check to see that no one is on the system
+.LI
+become root
+.BL
+.LI
+su 
+.LE
+.LI
+bring the system down
+.BL
+.LI
+shutdown -h now
+.LE
+.LI
+reboot it into single user mode
+.BL
+.LI
+boot
+.LE
+.LI
+check the disks
+.BL
+.LI
+/sbin/fsck -p
+.LE
+.LI
+halt
+.LI
+boot
+.LI
+fix the terminal:
+.BL
+.LI
+/sbin/stty sane /* enables carriage return */
+.LI
+/sbin/stty dec  /* enables backspace */
+.LE
+.LI
+Fix the path:
+.BL
+.LI
+set PATH = /sbin:$PATH
+.LI
+export
+.LE
+.LI
+start the network:
+.BL
+.LI
+mount -u /
+.LI
+mount /var
+.LI
+/sbin/init.d/inet start force
+.LI
+/sbin/named /* starts name daemon */
+.LE
+.LI
+mount /usr and /usr/local:
+.BL
+.LI
+mount /usr
+.LI
+mount /usr/local
+.LE
+.LE
+
+.H 4 "Performing the Update"
+If the sup binary and supfile are not in the root partition,
+move to where they are located or mount them and run the sup program.
+At the very least the kernel, root, and var partitions should be updated.
+The general syntax for sup is:
+.P
+.ti 2
+sup [-v -d -o] supfile <collection1> <collection2>...
+.ti 3
+-v verbose
+.ti 3
+-d outdate: Files no longer in the collection will be deleted if found on the
+.ti 6
+target machine.
+.ti 3
+-o old: Check all files in the collection for changes.
+.P
+To perform a minimum update, issue the command:
+.P
+.ti 2
+\fBsup -v -d -o supfile kernel root var\fR
+.P
+When the files on the system have been updated, execute:
+.BL
+.LI
+halt
+.LI
+boot
+.LI
+login
+.LE
+.P
+If there were no problems during the update process and the login
+proceeded properly, the update is finished.
+
+.H 3 "Sup Collections"
+
+.H 3 "Updating Outside OSF"
+At this time, there is no process for non-OSF users to update an OSF/1
+operating system.
+To get a newer revision of the os, the user should do an installation
+or copy files into place.

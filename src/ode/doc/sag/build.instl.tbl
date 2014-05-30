@@ -1,0 +1,353 @@
+.\" 
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1995, 1994, 1993, 1992, 1991, 1990
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\" HISTORY
+.\" $Log: build.instl.tbl,v $
+.\" Revision 1.2.12.4  1995/05/22  19:45:06  robert
+.\" 	Add number for diskspace rquired to build upon sparc_sunos.
+.\" 	[1995/05/22  17:19:28  robert]
+.\"
+.\" Revision 1.2.12.3  1995/05/20  01:44:36  robert
+.\" 	Change order of listed minimal tools.
+.\" 
+.\" 	Clarify what config files are needed under rc_files, and
+.\" 	when/how it is necessary to edit them.
+.\" 
+.\" 	Mention option of editting OWNER and GROUP during install.
+.\" 	[1995/05/20  01:43:49  robert]
+.\" 
+.\" Revision 1.2.12.2  1995/05/18  21:43:42  ezf
+.\" 	updated for at386_linux platform
+.\" 	[1995/05/18  21:43:06  ezf]
+.\" 
+.\" Revision 1.2.12.1  1995/05/17  19:42:26  robert
+.\" 	check in for free & unenc. release
+.\" 	[1995/05/17  19:33:25  robert]
+.\" 
+.\" Revision 1.2.10.1  1993/12/23  17:46:42  marty
+.\" 	CR # 667 - Make corrections suggested by Sean Mullan (HP).
+.\" 	[1993/12/23  17:46:25  marty]
+.\" 
+.\" Revision 1.2.8.2  1993/08/26  15:46:24  marty
+.\" 	CR # 628 - Update ODE 2.3
+.\" 	[1993/08/26  15:46:09  marty]
+.\" 
+.\" Revision 1.2.8.1  1993/08/26  14:12:24  marty
+.\" 	CR # 628 - Update to ODE 2.3.
+.\" 	[1993/08/26  14:12:02  marty]
+.\" 
+.\" Revision 1.2.6.3  1993/06/07  20:35:54  damon
+.\" 	CR 458. Added reference to tcp_service_number
+.\" 	[1993/06/07  20:35:21  damon]
+.\" 
+.\" Revision 1.2.6.2  1993/06/04  20:38:32  damon
+.\" 	CR 458. Added reference platforms
+.\" 	[1993/06/04  20:38:26  damon]
+.\" 
+.\" Revision 1.2.2.4  1993/01/07  20:35:34  marty
+.\" 	Fixed reference to kxct.c
+.\" 	[1993/01/07  20:34:25  marty]
+.\" 
+.\" Revision 1.2.2.3  1992/12/03  19:09:15  damon
+.\" 	ODE 2.2 CR 346. Expanded copyright
+.\" 	[1992/12/03  18:40:47  damon]
+.\" 
+.\" Revision 1.2.2.2  1992/03/18  17:52:36  damon
+.\" 	Updated to reflect new build procedure re: SETUP_ALL
+.\" 	[1992/03/18  17:49:41  damon]
+.\" 
+.\" Revision 1.2  1991/12/05  20:59:52  devrcs
+.\" 	removed obsolete paragraph, changed kbytes to Mbytes
+.\" 	[1991/11/06  18:49:01  hester]
+.\" 
+.\" 	incorporated Andy's changes for context naming configuration
+.\" 	[91/10/23  13:15:28  hester]
+.\" 
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:09:53  mckeen]
+.\" 
+.\" 	changes for sag update
+.\" 	[91/07/30  10:24:44  hester]
+.\" 
+.\" 	added ademola's changes
+.\" 	[91/05/13  16:32:47  hester]
+.\" 
+.\" 	first take at revisions for SAG update
+.\" 	[91/05/03  16:57:39  hester]
+.\" 
+.\" 	Adding changes made from Mark's trip to Austin.
+.\" 	[91/02/11  16:45:27  marty]
+.\" 
+.\" $EndLog$
+.\"
+...\"*********************************************************************
+...\" Set page information
+...\"*********************************************************************
+.EH "'\s10\\\\nP''\fBChapter 3: Building and Installing the ODE Tools\s0\fR'" 
+.OH "'\fB\s10Chapter 3: Building and Installing the ODE Tools\fR''\\\\nP\s0'" 
+.SK
+...\"*********************************************************************
+...\" Contents of ODE/SAG: Building and Installing the ODE Tools
+...\"*********************************************************************
+.H 1 "Building and Installing the ODE Tools" 
+.P 
+This chapter describes
+how to unload the OSF Development Environment (ODE) from the
+distribution tape and how to build and install it on the reference
+platforms.  Each task (unloading the tape, building, and installing)
+is covered in a separate section.  Each section outlines the
+requirements and the commands that are used to perform that step.
+The command lines shown in this chapter use the syntax of the Bourne
+shell; however they could easily be modified to be run under any
+shell.
+.P
+The instructions in Section 3 assume the reader is familiar
+with some basic system administration commands for a UNIX environment.
+
+.H 2 "Building ODE"
+.P
+This section describes the requirements for building ODE and
+then provides the specific commands to perform the build.  
+.P
+The build process begins by using a script called \fBsetup.sh\fP to 
+build a few of the commands that are necessary to bootstrap the remainder
+of the tools.  Once the minimal subset of ODE tools has been built,
+they are used to build the remaining tools.
+
+.H 3 "Requirements for Building"
+.P
+This version of ODE has been ported to the following platforms;
+approximate amounts of disk space required for building are listed
+below for some platforms.
+.P
+.TS
+box;
+cb|cb|cb
+l|c|l.
+Platform	Disk Space (MB)	Context Name
+=
+Intel 386 running OSF/1 1.3 or mk6.1	15	at386_osf1
+_
+HP 9000/700 running HP-UX 9.05	21	hp700_hpux
+_
+IBM RISC System/6000 running AIX 3.2	17	rios_aix
+_
+Sparc system running SunOS 4.1.3	16	sparc_sunos
+_
+DEC 3000 M400 running OSF/1 V3.2	17	alpha_osf1
+_
+DECstation 3100 system running ULTRIX 4.1	19	pmax_ultrix
+_
+Intel 386 system running SINIX 5.41	15	at386_sinix
+_
+Intel 386 system running linux 1.2.3
+from slackware 2.2 distribution *	10	at386_linux
+.TE
+
+* Note: only minimal tools built by \fBsetup.sh\fR have been ported.
+  
+It is possible to port ODE to other platforms by making appropriate
+source code modifications.  Refer to Appendix A for more detailed
+information on building ODE.
+
+.H 3 "Building the Minimal ODE Build Environment (Running setup.sh)"
+.P
+The first step in building ODE is to run the \fBsetup.sh\fR script.
+This script will build a minimal set of tools required to bootstrap 
+building the full set of ODE tools.
+.P
+The specific programs built by \fBsetup.sh\fR are:
+\fBbuild\fR, \fBgenpath\fR, \fBmake\fR, \fBmakepath\fR, \fBmd\fR, and
+\fBrelease\fR. A temporary \fBlibode.a\fR is also built during
+this step. It is removed at the end of the \fBsetup.sh\fR script.
+When built using the \fBsetup.sh\fR script, these programs are compiled
+with the \fB-D_BLD\fR switch; this switch builds versions of the 
+programs that minimally depend upon \fBlibode.a\fR (the ODE library).  
+This minimal subset of ODE tools will be rebuilt and replaced once the
+complete set of build and source control tools is built (as described
+in the next section).
+
+The \fBsetup.sh\fR script (located in /\fIode-path\fB/ode/src/ode/setup\fR)
+takes the context name as an argument.  Please refer to the previous table
+for a list of supported context names.  
+Use the following procedure to run \fBsetup.sh\fR, using the appropriate
+values from the table above for the context name.
+.P
+First create a directory to save the logs in (this only needs to be done
+once per platform):
+.P
+.ti 2
+\fBmkdir /\fIode-path\fB/ode/logs\fR
+.ti 2
+\fBmkdir /\fIode-path\fB/ode/logs/<\fIcontext-name>\fR
+.P
+Then run the \fBsetup.sh\fR script:
+.P
+.ti 2
+\fBcd /\fIode-path\fB/ode/src\fR
+.ti 2
+\fBsh -x ode/setup/setup.sh <\fIcontext-name>\fP > ../logs/<\fIcontext-name\fP>/setup.log \ 
+.ti 2
+2>&1\fR
+.P
+Once \fBsetup.sh\fR has completed, examine the \fBsetup.log\fR file to
+check for any error messages.  If any errors have occurred, they must be
+corrected and the \fBsetup.sh\fR script should be rerun before proceeding to
+the next step.  The \fBsetup.log\fR may be monitored while \fBsetup.sh\fR is
+running by placing the above command in the background and using
+\fBtail -f\fR to display the log file as the script is running.
+.P
+After running \fBsetup.sh\fP, verify that the \fBbuild\fR, \fBgenpath\fR,
+\fBmake\fR, \fBmakepath\fR, \fBmd\fR, and \fBrelease\fR binaries
+have been created under \fIode-path\fB/ode/tools\fI/<context_name>\fB/bin\fR.
+.P
+Once the \fBsetup.sh\fR script has finished successfully, continue on to the
+next section.
+
+.H 3 "Building the Complete ODE Build and Source Control Environments"
+.P
+After successful completion of the \fBsetup.sh\fR script, the minimal set 
+of ODE build tools (\fBbuild\fR, \fBgenpath\fR, \fBmake\fR, \fBmakepath\fR,
+\fBmd\fR, \fBrelease\fR) should be found under:
+.P
+.ti 2
+/\fIode-path\fB/ode/tools\fI/<context_name>\fB/bin\fR
+.P
+This section describes how to build
+a full ODE distribution including all the build tools, source control
+tools, and various other utility programs (e.g. sup and supfilesrv).
+The full build of ODE requires the successful completion of
+the \fBsetup.sh\fR script (as described in the previous section).
+Hence, if you have any doubts about the results of \fBsetup.sh\fR,
+you should verify/test your work before continuing.
+(For instance, when porting ODE to a different platform, you should
+first resolve any build errors or warnings before proceeding).
+.P
+It is not necessary to build the full ODE distribution in order
+to build an OSF technology (such as a Mach micro-kernel distribution).
+That is, if you are only interested in building the source code for an OSF
+technology distribution and/or snapshot, but do not plan to subsequently
+use the ODE build or source control environments, then \fBsetup.sh\fR
+has already produced the minimal set of tools you will require.  The release
+notes for a specific OSF technology should include a description of
+how to build the source code distribution using this minimal set
+of ODE build tools.
+.P
+Also, if you plan to use the full ODE build environment, but do not
+intend to use the source code control component of ODE, you may want
+to set the environment variable \fBNO_RCS\fR before
+building ODE.  This will prevent the building of the RCS code.
+(ODE build and source control components are completely independent).
+.P
+ODE uses simple configuration files to augment building. 
+.P
+Either create a new \fB/.sandboxrc\fR file
+or modify the existing \fB/.sandboxrc\fR file (that is included
+with the ODE distribution) under /\fIode-path\fB/ode/.sandboxrc\fR
+to contain the following three lines:
+.ti 2
+.P
+\fBdefault ode
+.ti 2
+base * /\fIode-path\fB
+.ti 2
+sb ode\fR
+.P
+Set up the the minimal ODE configuration files in the
+/\fIode-path/\fBode/rc_files\fR directory.  For the purposes
+of bootstrapping ODE, you will only need:
+.ti 2
+/\fIode-path/\fBode/rc_files\fR/\fBprojects\fR
+.ti 2
+/\fIode-path/\fBode/rc_files/ode\fR/\fBsb.conf\fR
+.P
+If your ODE distribution does not already
+include these files, then refer to the complete  
+description of how to set up these \fBrc\fR files in section 5.4,
+\fIrc File Setup\fR.
+.P
+The ODE commands will complain if the contents of your \fB/.sandboxrc\fR 
+and \fBrc_files\fR are incorrect or do not agree with the location of
+your ODE distribution under \fIode-path\fB/ode/src\fR.
+These errors should be self-explanatory.
+.P
+Follow these steps to build ODE:
+.P
+.ti 2
+\fBcd /\fIode-path\fB/ode/src\fR
+.ti 2
+\fBPATH="/\fIode-path\fB/ode/tools/<\fIcontext-name>\fB/bin:$PATH"
+.ti 2
+\fBbuild -rc \fI/ode-path\fB/ode/.sandboxrc > ../logs/<\fIcontext-name\fP>/cmds.log 2>&1\fR
+.P
+Once again, review the resulting log file for any errors.  If you encounter
+any errors, you will need to correct them and then run \fBbuild\fR again
+to build those components that failed the first time.
+(You might want to consult the Porting Hints in Appendix A to resolve
+build errors).  After running \fBbuild\fR, all libraries,
+programs and documentation should have been built successfully.
+
+Once ODE has been successfully built, proceed to the
+next section which provides details on how to install ODE.
+
+.H 2 "Installation"
+.P
+This section describes how to start installing ODE on your system by using
+a script called \fBinstall.sh\fR.
+There are other parts to installing the ODE RCS servers and creating
+builds that are covered in chapters 4 and 5.
+
+.H 3 "Requirements for Installation"
+.P
+In order to install ODE you must have successfully completed building
+the ODE project (see the previous section on Building ODE).
+To install ODE you must be logged in as root.
+
+The installed ODE tools require approximately 5 to 10 Mb of disk space.
+
+.H 3 "Installing the Tools Binaries (Running install.sh)"
+.P
+The \fBinstall.sh\fR script is located in the same directory as the
+\fBsetup.sh\fR script.  \fBinstall.sh\fR takes two arguments: the
+first one is the context name (as specified to \fBsetup.sh\fR).
+The second argument is optional and represents the absolute path to the
+location where the tools are to be installed.  If the second argument
+is omitted the install location will default to \fB/usr/ode\fR.
+
+The following commands will install ODE in /\fIode-install-path\fB/ode/release\fR
+.P
+.ti 2
+\fBsu root\fR
+.ti 2
+\fBmkdir /\fIode-install-path\fR
+.ti 2
+\fBcd /\fIode-path\fB/ode/src\fR
+.ti 2
+\fBsh -x ode/setup/install.sh <\fIcontext-name>\fP   /\fIode-install-path\fB \\
+.ti 3
+> ../logs/<\fIcontext-name\fP>/install.log 2>&1 \fR
+.P
+Any commands that previously failed to build when building the ODE project
+will also appear as errors in install.log.
+.P
+The \fBinstall.sh\fR script sets the variables OWNER and GROUP to "bin"
+for the ODE binaries.  If these values are incorrect for your 
+cite/installation, then change them appropriately.
+.P  
+Once you have built and installed the ODE tools proceed to the
+following chapters of this guide which provide details on how to
+create an ODE RCS server and backing builds.

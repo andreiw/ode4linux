@@ -1,0 +1,173 @@
+
+README.top						 5/26/1995
+
+Introduction:
+------------
+
+This README.top describes the top level ODE 2.3.4 distribution, as
+currently organized on the FTP server riftp.osf.org.  There are
+additional README files with more detail under the ./src, ./doc,
+and ./bin subdirectories.
+
+These README files correspond to the current release of ODE 2.3.4A Spring 1995.
+The instructions below describe how to retrieve and unload the compressed tar
+archives for this distribution.  Refer to the ODE System Administration 
+Guide (SAG), for complete porting, building and installation instructions.
+
+Compressed source code tar archives are located in the /pub/ode/src
+subdirectory on the server riftp.osf.org (130.105.99.2).  PostScript versions
+of the ODE documents reside in riftp.osf.org:/pub/ode/doc.  ODE binaries
+can be found under riftp.osf.org:/pub/ode/bin organized per platform
+(where available).
+
+The remainder of this README.top file describes the compressed source 
+code archives.
+
+
+Compressed Tar Archives on ri.ftp.org:/pub/ode/src:
+--------------------------------------------------
+
+The ODE source code is logically separated into 2 archives: the original 
+2.3.4 release and patches/enhancements used by the RI.  For convenience,
+we have also provided an additional source archive locally with the
+current revision control system (RCS 5.6).  The RCS distribution is
+available from FSF and several mirror FTP sites.
+
+
+                                                      COMPRESSED  UNCOMPRESSED
+   ARCHIVE                  DESCRIPTION                   SIZE        SIZE 
+
+234src.1.tar.Z	Primarily the ODE 2.3.4 release of	 ~1.9M       ~5.3M 
+		1 year ago with additional changes
+		for porting to other platforms
+		(source and doc files to build).
+
+234src.2.tar.Z	Enhancements added to ODE 2.3.4 by	 ~240K       ~690K 
+		OSF RI (source and doc files to 
+		build).
+
+rcs5.6.tar.Z	RCS 5.6 and diff utilities.		 ~700K	     ~1.8M
+
+
+
+Accessing & Unloading Compressed ODE Source Archives:
+----------------------------------------------------
+
+Previous versions of the ODE System Administration Guide (SAG section 1.1.2,
+page 6, step #5) direct you to:
+
+- - - - - - - - - SAG excerpt for extracting tar archives - - - - - - - - - - -
+
+5. Use tar to unload the ODE archive
+
+	tar xvpf /dev/<non-rewinding tape device>
+
+If the tar completes without errors, proceed to the next section on
+building ODE.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+A copy of the ODE SAG is not required to follow these instructions, although
+you may subsequently wish to refer to the SAG when building the ODE sources.
+
+The two compressed tar source archives can be combined to form a complete
+source tree, or the original compressed tar archive can be built alone.
+
+If you would like to match as closely as possible the previous release of 
+ODE 2.3.4 (originally released a year ago), then you need only extract the
+first compressed tar archive, 234src.1.tar.Z.  To include the ODE enhancements
+and modifications made by the OSF Research Institute, you should also untar
+the 2nd compressed tar archive, 234src.2.tar.Z and overlay the contents
+on top of the tree obtained from the first archive.  In other words,
+the ODE 2.3.4A Spring 1995 source tree, as currently used by OSF RI,
+is obtained by first extracting 234src.1.tar (a fully populated ODE archive)
+followed by extracting 234src.2.tar (a partial ODE patch archive) within
+the same full ODE source tree.
+
+Please consult the table above to ensure that there is enough disk space on
+your system to accommodate both the compressed archives (retrieved via FTP)
+and the uncompressed, fully expanded ODE source tree.
+
+Change your working directory to the destination where the ODE sources will
+reside.  This path is denoted as <ode-source> and this path is assumed to
+end in a directory named "ode".  For example, if you wanted to store the
+ODE sources under a subdirectory named /usr/local, the pathname for
+<ode-source> might be "/usr/local/ode".
+
+% cd <ode-source>
+ 
+% ftp riftp.osf.org
+Connected to riftp.osf.org.
+220-WELCOME to this FTP server!
+220-
+220 riftp FTP server (Version wu-2.1c(2) Sun Feb 2 16:36:09 EST 1992) ready.
+Name (riftp.osf.org:anonymous):
+331 Guest login ok, send your complete e-mail address as password.
+Password:
+230 Guest login OK.  Access restrictions apply.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> cd pub/ode
+250 CWD command successful.
+ftp> ls
+200 PORT command successful.
+150 Opening ASCII mode data connection for /bin/ls.
+total 32
+-rw-r--r--  1 robert   system      29609 May 19 16:25 README.top
+drwxr-xr-x  2 robert   system        512 May 17 16:37 bin
+drwxr-xr-x  2 robert   system        512 May 17 16:37 doc
+drwxr-xr-x  2 robert   system        512 May 19 15:57 src
+226 Transfer complete.
+ftp> cd src
+250 CWD command successful.
+ftp> ls
+200 PORT command successful.
+150 Opening ASCII mode data connection for /bin/ls.
+total 2776
+-rw-r--r--  1 robert   system    1887237 May 22 16:20 234src.1.tar.Z
+-rw-r--r--  1 robert   system     230369 May 22 16:20 234src.2.tar.Z
+-rw-r--r--  1 robert   system     695950 May 22 16:20 rcs5.6.tar.Z
+226 Transfer complete.
+ftp> get 234src.1.tar.Z
+200 PORT command successful.
+150 Opening BINARY mode data connection for 234src.1.tar.Z (1887237 bytes).
+226 Transfer complete.
+1887237 bytes received in 7.7 seconds (2.4e+02 Kbytes/s)
+ftp> get 234src.2.tar.Z
+200 PORT command successful.
+150 Opening BINARY mode data connection for 234src.2.tar.Z (230369 bytes).
+226 Transfer complete.
+230369 bytes received in 0.84 seconds (2.7e+02 Kbytes/s)
+ftp> bye
+221 Goodbye.
+
+% zcat < 234src.1.tar.Z | tar xvpf -
+
+This command will uncompress and extract the sources with verbose output.
+(The full list of the archive contents is shown at the end of this note).
+
+% ls -a
+./               .sandboxrc       234src.2.tar.Z   src/
+../              234src.1.tar.Z   rc_files/
+
+As mentioned above, the 2nd source archive can be overlaid directly
+on top of the full ODE tree (created by extracting the 1st source archive).
+This will provide the changes/enhancements made to ODE by the OSF RI.
+
+To conserve disk space, you can remove 234src.1.tar.Z at this point.
+
+(optional, % rm 234src.1.tar.Z)
+
+% zcat < 234src.2.tar.Z | tar xvpf -
+
+(The full list of contents of the 2nd archive is shown at the end).
+
+% ls -a
+./               .sandboxrc       234src.2.tar.Z   src/
+../              234src.1.tar.Z   rc_files/
+
+If the tar commands complete without errors, both the *.tar.Z files can be
+deleted, and you should proceed to Section 2 of the ODE System Administration
+Guide: Building and Installing ODE.  You can obtain the updated PostScript
+version of SAG, sag.ps, from riftp.osf.org:/ode/doc/*
+along with other related ODE documentation.

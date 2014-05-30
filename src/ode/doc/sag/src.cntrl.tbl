@@ -1,0 +1,399 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\" HISTORY
+.\" $Log: src.cntrl.tbl,v $
+.\" Revision 1.3.7.1  1994/02/15  20:37:08  marty
+.\" 	CR # 1041 - Add info about copyright notices.
+.\" 	[1994/02/15  20:36:53  marty]
+.\"
+.\" Revision 1.3.4.5  1993/06/06  16:28:18  damon
+.\" 	CR 458. Removed logsubmit entry
+.\" 	[1993/06/06  16:28:08  damon]
+.\" 
+.\" Revision 1.3.4.4  1993/06/04  20:57:02  damon
+.\" 	CR 458. Updated for 2.3
+.\" 	[1993/06/04  20:56:56  damon]
+.\" 
+.\" Revision 1.3.4.3  1993/05/17  19:06:33  damon
+.\" 	CR 458. Added *_s files to list of tools needed
+.\" 	[1993/05/17  18:34:49  damon]
+.\" 
+.\" Revision 1.3.4.2  1993/04/22  15:28:12  damon
+.\" 	CR 458. Updated for 2.3
+.\" 	[1993/04/22  15:24:15  damon]
+.\" 
+.\" Revision 1.3.2.7  1993/01/07  19:23:39  damon
+.\" 	CR 332. Added srcacl to list of tools
+.\" 	[1993/01/07  19:23:25  damon]
+.\" 
+.\" Revision 1.3.2.6  1993/01/07  14:43:48  damon
+.\" 	CR 332. Added diff to list of tools
+.\" 	[1993/01/07  14:43:36  damon]
+.\" 
+.\" Revision 1.3.2.5  1993/01/04  18:12:14  damon
+.\" 	CR 332. Updated for 2.2
+.\" 	[1993/01/04  18:11:39  damon]
+.\" 
+.\" Revision 1.3.2.4  1992/11/18  20:22:12  damon
+.\" 	Fixed formatting problem
+.\" 	[1992/11/18  20:21:49  damon]
+.\" 
+.\" Revision 1.3.2.3  1992/11/18  20:12:00  damon
+.\" 	CR 332. Added installation of tools used by odexm
+.\" 	[1992/11/18  20:11:37  damon]
+.\" 
+.\" Revision 1.3.2.2  1992/11/18  19:40:15  damon
+.\" 	CR 332. Replaced kxctd references with odexm ones
+.\" 	[1992/11/18  19:31:58  damon]
+.\" 
+.\" Revision 1.3  1991/12/17  21:01:02  devrcs
+.\" 	corrected typo
+.\" 	[1991/12/09  22:17:10  ezf]
+.\" 
+.\" Revision 1.2  1991/12/05  21:00:15  devrcs
+.\" 	fixed font mistake, removed reference to leader.changes
+.\" 	[1991/11/06  18:53:05  hester]
+.\" 
+.\" 	added reference to the copyright_list description in ch 5
+.\" 	[91/10/28  17:56:28  hester]
+.\" 
+.\" 	clarified descriptions of addheader, etc scripts.
+.\" 	[91/10/18  15:23:27  hester]
+.\" 
+.\" 	some minor updates for SAG update
+.\" 	[91/07/31  10:10:34  hester]
+.\" 
+.\" 	First cut at updates for SAG review.
+.\" 	[91/05/06  08:56:42  hester]
+.\" 
+.\" 	Clarified my discussion regarding the kxct.conf file as per
+.\" 	Simon Patience's comments.
+.\" 	[91/02/19  15:22:37  rec]
+.\" 
+.\" 	Kill multiple occurrence of Endlog, HISTORY, or copyright header
+.\" 	[91/02/04  18:09:34  robert]
+.\" 
+.\" 	Change to reflect the fact the no comment leader templates are used
+.\" 	by the scripts to create the rcs tree.  Also removed the DollarLogDollar
+.\" 	text string and inmbedded them with a \& which is a noop for eroff.
+.\" 	[91/01/29  16:05:36  rec]
+.\" 
+.\" 	chapter 5 of SAG
+.\" 	[91/01/25  19:23:27  hester]
+.\" 
+.\" $EndLog$
+.\"
+...\"*********************************************************************
+...\"          Set page information
+...\"*********************************************************************
+.EH "'\s10\\\\nP''\fBChapter 5: Source Control Server Configuration\s0\fR'"
+.OH "'\fB\s10Chapter 5: Source Control Server Configuration\fR''\\\\nP\s0'"
+.SK
+...\"*********************************************************************
+...\"          Contents of ODE/SAG: Source Control Server Configuration
+...\"*********************************************************************
+.H 1 "Source Control Server Configuration"
+.iX "server" "source control"
+This chapter describes how to set up a source control server and
+how to take your project sources and turn them into an ODE source control
+system.
+The reader should have already built and installed the tools as listed in
+the previous chapters.  You also need to determine what machine will be
+used as your source control server.
+
+.H 2 "Source Control Account"
+The ODE toolset uses an execution monitor that prevents unauthorized
+or accidental access to the source control tree.
+It is therefore recommended to set up a special ODE source control
+account for exclusive use by the ODE programs and the administrator.
+At OSF the account is \fBdevrcs\fR.
+.iX "devrcs"
+.iX "account" "devrcs"
+The source control tree should be owned by this account.
+.P
+To install the account see your system administrator.
+
+.H 2 "Creating the Source Control Tree"
+.iX "RCS"
+ODE uses rcs release 5.6 as the underlying mechanism to manage the
+source control tree.
+This means that the tree is a directory structure with rcs files.
+To create
+an empty source control tree, simply create the directory where the rcs
+files will reside, make it owned by the source control account, and set
+the permissions to 755.
+.P
+The source control configuration is in four places:
+the odexm configuration files, the rcs tools directory, the rc_files directory
+of the backing build and in a set specific directory in the rcs server tree.
+The last two are covered in chapter 6. Some of the set specific setup is
+covered in this chapter in the section called "Source Control Configuration
+files."
+.H 2 "Distributed access setup"
+.H 3 "Making the rcs tree accessible via odexm"
+.iX "odexm"
+In order to allow users to perform source control operations you will need
+to set up odexm and/or add an entry to the odexm.conf file in the /etc
+directory on the rcs server. You will need an entry for the rcs directory with
+an
+appropriate owner. At OSF it is devrcs.
+Refer to Chapter 4 for detailed instructions on how to set up odexm and add an
+entry to odexm.conf .
+.iX "/etc/odexm.conf"
+.iX "odexm.conf"
+.H 3 "Tools needed by odexm for source control"
+There is one remote execution program which needs to be
+available (installed) on each machine that uses ode tools for sandboxes.
+In addition, odexm needs to have access to a number of source control tools.
+.P
+These are:
+.iX "bco_s"
+.iX "bcs_s"
+.iX "blog_s"
+.iX "bmerge_s"
+.iX "bstat_s"
+.iX "bsubmit_s"
+.iX "branch_ci"
+.iX "ci"
+.iX "co"
+.iX "diff"
+.iX "makepath"
+.iX "oxm_relay_tcp"
+.iX "rcs"
+.iX "rcsacl"
+.iX "rcsdiff"
+.iX "rcsstat"
+.iX "rlog"
+.BL
+.LI
+\fBbco_s\fR
+.LI
+\fBbcs_s\fR
+.LI
+\fBblog_s\fR
+.LI
+\fBbmerge_s\fR
+.LI
+\fBbstat_s\fR
+.LI
+\fBbsubmit_s\fR
+.LI
+\fBbranch_ci\fR
+.LI
+\fBci\fR
+.LI
+\fBco\fR
+.LI
+\fBdiff\fR
+.LI
+\fBmakepath\fR
+.LI
+\fBoxm_relay_tcp\fR
+.LI
+\fBrcs\fR
+.LI
+\fBrcsacl\fR
+.LI
+\fBrcsdiff\fR
+.LI
+\fBrcsstat\fR
+.LI
+\fBrlog\fR
+.LE
+.P
+.iX "odexm.conf"
+.iX "/etc/odexm.conf"
+Install these tools in an appropriate tools directory. This should be
+one central place on a machine.
+Make sure that
+the tools directory in the odexm.conf file refers to the directory containing
+these tools. If your source control tree and build tree is on the same
+machine, you can put all of the tools you need in the same directory. E.g.,
+ode2.3tools.
+.H 2 "Source Control Configuration Files"
+.iX "ode2.3_server_base"
+.iX "bsubmit.hold"
+.iX "locking"
+In a future release, the configuration files and rcs files will be in
+separate directories. As it is now, there is a directory called
+\fBode2.3_server_base\fR in the top of the rcs tree which contains the
+source control configuration files. It is called \fBode2.3_server_base\fR
+to emphasize that it is temporary. You will need to create this directory,
+owned by the source control account with permissions of 755. You will
+also need to create a file with the same ownership and permissions within
+this directory called \fBbsubmit.hold\fR. This file is used for locking.
+.P
+Below the ode2.3_server_base directory, create a directory called \fBsets\fR
+with the same ownership and permissions. This directory is used to hold
+set directories which contain configuration files and files containing
+state information used by the ODE tools for recovery operations. The
+instructions in Chapter 6 will assume that the set directory has already been
+created.
+.H 2 "Populating the Source Control Tree"
+When populating a tree there are a number of possible startup conditions.
+One is that a source tree exists and the rcs tree is to be
+derived from that tree.  
+The existing tree might already be managed under a different source control
+system and you may want to run a conversion program to change the files into rcs
+format.  
+For example, there is a program called \fBsccstorcs\fR which
+will convert sccs-formatted files into rcs-formatted files.
+Another startup scenario is that there is no source currently and development
+will begin from scratch.
+In the latter case, read no further.
+.P
+The size of the source tree is not important, nor is its structure; however,
+the source control server and location on the server must be determined.
+
+.H 3 "Creating the rcs files"
+.P
+There are a number of approaches to creating an rcs tree
+and procedures change if some of the source is already under rcs.
+If the project source is not under rcs but currently exists in a source
+tree somewhere, the included scripts described below should be used.
+.AL
+.LI
+After determining what system will host the source control and what
+the location of the tree on that system will be, login 
+into the source control system and become the source control owner
+(devrcs).
+.LI
+Create a directory called \fBrcs\fR and copy (\fBcp\fR or \fBtar\fR)
+the source tree into it.
+.LI
+Change the permissions on the directories and files to give yourself write
+permission on them.
+A simple \fBfind\fR using \fBchown\fR and \fBchmod\fR will work.
+.LI
+In the \fBsetup\fR directory found on the ODE distribution
+there are two shell scripts used to create your rcs tree.
+They are :
+.iX "bldrcstree.sh"
+.iX "add_header.sh"
+.BL
+.LI
+\fBbldrcstree.sh\fR which finds all the files in the tree and calls
+the second script.
+.LI
+\fBadd_header.sh\fR is the second script and it does the real work of
+creating the rcs ,v files.
+.LE
+.P
+The purpose of the scripts is to create rcs files from the project
+source files.
+The rcs files are created in place.
+First, the scripts determine the type of file and tests if it is
+a 'known' format.
+Formats that are known to the script are:  Makefile, Imakefile, .c, .h
+or roff files.
+This information is needed because ODE uses a header in each
+rcs file to store a copyright tag (or embedded copyright) and give 
+the revision history so
+that a user can see the revision history for the file each time 
+it is checked out.
+.iX "@OSF_FREE_COPYRIGHT@"
+.iX "copyright_list"
+If copyrights are to be provided through copyright tags (also known as
+copyright markers) then use the tag \fB@OSF_FREE_COPYRIGHT@\fR.
+If you have a specific need to use a different copyright tag, the 
+\fBadd_header.sh\fR script
+should be changed accordingly; also refer to the \fBbci\fR man page and the
+documentation of the \fIcopyright_list\fR shared rc variable (chapter 5) for
+details on specifying alternate copyright markers on check-in.
+When copyright tags are used
+at OSF we run an awk script over the files to expand this tag when necessary,
+e.g. at release time, to our specific copyright information.
+However, you can expand it to any text that you wish.
+The capability to explicitly
+override this requirement exists, but it is not recommended that a file
+be checked-in without a copyright tag.  
+If using copyright tags is not desirable; users have the option of 
+embedding copyrights directly into the source files.
+.P
+The header itself is enclosed within a comment, hence the comment leader 
+must be known.
+The comment leader is derived from the set of comment leader templates,
+provided with the scripts,
+and is concatenated to the top of all known files in the rcs tree.
+The file is then used to create an rcs file by using the \fBci\fR command.
+An example of a header for a .c file with a copyright tag 
+is shown below.
+.DS
+/*
+ * @OSF_FREE_COPYRIGHT@
+ */
+/*
+ * HISTORY
+ * $Log\&$
+ * $EndLog$
+ */
+.DE
+An example of a header for a .c file with an embedded copyright 
+is shown below.
+.DS
+/*
+ * COPYRIGHT NOTICE
+ * Copyright (c) 1994 Open Software Foundation, Inc.
+ * ALL RIGHTS RESERVED
+ * 
+ */
+/*
+ * HISTORY
+ * $Log\&$
+ * $EndLog$
+ */
+.DE
+
+.iX "FILES_NOT_FOUND"
+.P
+Any file names that are not Makefiles, Imakefiles, .c, .h, or roff format
+files, i.e. not know by the scripts, are placed into a 
+file called \fBFILES_NOT_FOUND\fR.
+These files are not created into rcs files because a comment leader template
+does not exist for them.
+You may add to the list of known files by
+modifying \fBadd_header.sh\fR appropriately to reflect the new comment leader.
+Just follow the examples in the script.
+.P
+\fBNOTE:\fR  Do not place the text $Log\&$
+anywhere in your project source files.
+rcs will expand this to be where your history log information
+is placed.
+.LI
+To run the scripts you just change directory into the \fBsetup\fR directory
+and type:
+.sp
+.ti 2
+\fBbldrcstree.sh <\fIsrc-base>\fR
+.sp 1
+where <\fIsrc-base\fR> is the base of what will be the rcs tree.
+.LI
+When the script finishes, check the \fBFILES_NOT_FOUND\fR file.
+This will be a list of all files whose type was not known to the script and
+were therefore not changed into rcs files.
+You can then rework the script to search for those (by modifying
+the \fBfind\fR) and adding the comment leader template and adding the
+new \fBif\fR statement in the script that searches for that type of file.
+Or, if there are only a few files, you can repeat the process
+described above and illustrated in the scripts by hand.
+.LI
+Once the rcs tree is created, you will want to change permission
+for the directories to 755 (drwxr-xr-x) and files to 444 (-r--r--r--).
+You can also do this with \fBfind\fR.
+.LE
+

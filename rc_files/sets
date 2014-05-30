@@ -1,0 +1,2 @@
+default ODE_PUB_SHARED 
+set ODE_PUB_SHARED .

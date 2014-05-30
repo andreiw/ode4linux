@@ -1,0 +1,3 @@
+default ode 
+base * <path name up to but not including ./ode> 
+sb ode 

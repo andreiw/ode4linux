@@ -1,0 +1,249 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: workon.1,v $
+.\" Revision 1.7.6.1  1993/09/14  00:41:43  marty
+.\" 	CR # 623 - Remove -sb_rc.
+.\" 	[1993/09/14  00:23:54  marty]
+.\"
+.\" Revision 1.7.4.2  1993/04/21  18:42:40  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/21  18:39:49  damon]
+.\" 
+.\" Revision 1.7.2.2  1992/12/03  17:24:52  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:29  damon]
+.\" 
+.\" Revision 1.7  1991/12/05  21:15:52  devrcs
+.\" 	Updated info to match Tools II
+.\" 	[90/12/28  12:39:40  randyb]
+.\" 
+.\" 	Added explanation of environment variable WORKON
+.\" 	[90/11/08  08:00:51  randyb]
+.\" 
+.\" Revision 1.5  90/12/06  14:21:33  devrcs
+.\" 	Pre-OSF1 changes
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH workon 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+workon \- create a new set and put the user in it
+.SH SYNOPSIS
+.IP \fBworkon\fR 10
+[\fB-nosh\fR] [\fB-setdir \fIdirectory\fR] [\fIODE opts\fR] [\fB-set setname\fR]
+.IP \fBworkon\fR 10
+\fB-undo\fR \fIsetname\fR
+.IP \fBworkon\fR 10
+\fB-list\fR
+.IP \fBworkon\fR 10
+\fB-usage\fR | \fB-version\fR
+.IP "\fIODE opts\fR:" 10
+[\fB-info -auto -noauto -quiet -normal -verbose -usage -rev\fP]
+.br
+[\fB-sb \fIsandbox\fR] [\fB-rc \fIrcfile\fP] 
+.SH FLAGS
+.IP "\fB\-nosh\fR"
+After creating the new set, \fBworkon\fR does not create a new shell
+and move the user into it.
+If the set already exists and this option is used, \fBworkon\fR does nothing.
+.IP "\fB\-setdir \fIdirectory\fR"
+When creating a set, this option is used to establish the default
+set directory for the set.
+The default set directory is the directory which \fBworkon\fR creates
+and cd's to when it opens a new shell.
+If this option is used with an existing set, 
+the new directory is created and \fBworkon\fR cd's to
+that directory instead of the default.
+.IP "\fBsetname\fR"
+The name of the set to create or to move into.
+It is not necessary to have the user's login name in front of the set
+name; this will be placed there automatically.
+.IP "\fB\-undo\fR"
+Removes an existing set.
+This option only works if no files have been checked out into the set.
+If files have been checked out, the user will need to do \fBbcs\fR
+with the \fB-o -u\fR options before undoing the set.
+.IP "\fB\-list\fR"
+List the default and available sets for the sandbox.
+.P
+.ti 2
+\fIODE opts\fR:
+.IP "\fB\-info\fR"
+\fB-info\fR gives the user information on what \fBworkon\fR would do
+without actually doing anything.
+The \fB-info\fR option works in conjunction with the verbosity options.
+.IP "\fB\-auto -noauto\fR"
+\fB-auto\fR eliminates any prompting \fBworkon\fR would do.
+If set, \fBworkon\fR will take the default action without asking.
+\fB-noauto\fR toggles \fB-auto\fR off and is most often used to turn
+off \fB-auto\fR when it is set in the user's rc file.
+.IP "\fB\-quiet\fR"
+One of three levels of verbosity.
+\fB-quiet\fR prints only the information which the user must always
+receive including all fatal error messages.
+.IP "\fB\-normal\fR"
+One of three levels of verbosity.
+\fB-normal\fR is the default verbosity and prints out the significant
+steps the program is taking and warnings.
+It also prints out all information \fB-quiet\fR prints.
+.IP "\fB\-verbose\fR"
+One of three levels of verbosity.
+\fB-verbose\fR prints out detailed information on what steps the program
+is taking and all diagnostic errors.
+It also prints out all information \fB-quiet\fR and \fB-normal\fR prints.
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-rev\fR"
+Prints the revision information.
+.IP "\fB\-sb \fIsandbox\fR"
+By default, \fBworkon\fR uses the current sandbox as determined by the
+environment variable \fBSANDBOX\fR or, if that is not set, by
+the default sandbox in the user's rc file.
+If this option is given, the specified sandbox will be used.
+.IP "\fB-rc \fIrcfile\fR"
+By default, \fBworkon\fR uses \fB$HOME/.sandboxrc\fR to determine the
+current sandbox.
+If this option is given, the specified user's rc file will be used.
+.P
+\fBworkon\fR is used to create a new set and to start working within
+existing sets.
+After creating the set, establishing the proper environment, and creating
+and cd'ing to the set's directory, it opens a new shell with the new
+environment in place.
+
+.SH DESCRIPTION
+.P
+\fBworkon\fR is part of the source control mechanism for the OSF
+Development Environment (ODE) and is normally not be used if ODE
+source control is not used.
+\fBworkon\fR has two different but related functions:
+it creates a new set, and it puts a user in that set in the appropriate
+environment.
+.SS "Create Set"
+.P
+\fBworkon\fR first determines if the set the user has specified exists
+by checking the file \fIsbname\fB/rc_files/sets\fR.
+If the user doesn't specify a set, \fBworkon\fR uses the default set for the
+current sandbox (in which case, it certainly ought to exist).
+If the set doesn't exist, \fBworkon\fR will create it and add it to the
+\fIsbname\fB/rc_files/sets\fR file.
+.P
+Set names for \fBworkon\fR are normally given without the user's
+name in front and \fBworkon\fR adds this; so, for example,
+if the set name give by the user, suzieq, was wakeup, \fBworkon\fR
+will create a set called \fBsuzieq_wakeup\fR.
+When the name is entered in the \fIsbname\fB/rc_files/sets\fR and
+when \fBworkon\fR sets the environment variable \fBBCSSET\fR,
+the full set name will be used.
+.B Note:
+an exception to this are set names which being with capital letters, A-Z; 
+these are assumed to be sets for shared use and therefore are not changed.
+User's should not begin a set name with a capital letter unless the
+set is to be shared.
+.P
+As part of the process of creating a new set,
+\fBworkon\fR will create a default directory
+for the set and put that information in the file
+\fI/sandbox\fB/rc_files/sets\fR.
+It is this directory that \fBworkon\fR cd's to just before it opens the
+new shell.
+.SS "Put User in Set"
+.P
+If the user does not specify the \fB-nosh\fR option,
+\fBworkon\fR will continue, after creating the set, to put the user
+in it.
+If the set already exists, this becomes the primary function of \fBworkon\fR.
+.P
+To put a user in a set means to set the environment variables
+\fBSANDBOX\fR and \fBBCSSET\fR to the correct values,
+change directories to the appropriate place and open a new shell.
+(These environment variables may not be set if they have not previously
+been set and are the sandbox's default values.)
+If the user specifies the directory to change to with the \fB-setdir\fR
+option, \fBworkon\fR will create it if necessary and change to it;
+otherwise it uses the default set directory listed in
+the \fI/sandbox\fB/rc_files/sets\fR file.
+.P
+Because \fBworkon\fR uses the sandbox's rc files to establish its environment,
+it actually sets all the "setenv's" in the rc files.
+Then, because it opens a new shell, the variables remain set.
+The final result of this is that any time a developer is in a
+\fBworkon\fR sub-shell, the entire environment will be set.
+.SS "Listing Sets"
+The \fB-list\fR option can be used to list the existing sets within
+a sandbox.
+It takes as an argument, the name of the sandbox or, if not given,
+will default to the current sandbox.
+.SS "Undo Set"
+\fBworkon\fR has an \fB-undo\fR option which will remove the set
+from the sandbox and from the  \fIsbname\fB/rc_files/sets\fR file.
+It only works, however, if no files have been checkout out into the set.
+In that case, it is necessary to use \fBbsubmit\fR to submit the
+files and outdate the set; or, if the files are to be completely ignored,
+they can be outdated using bcs -o.
+.SS "Nested Workon's"
+\fBworkon\fR sets an environment variable, \fBWORKON\fR, each time it
+creates a new shell.
+If \fBWORKON\fR is not previously set, its value is set to 1.
+If it is already set, \fBworkon\fR increments its value.
+Using this variable, it is possible to find out how many levels of workons
+have been called.
+.SH EXAMPLES
+.IP "\fBworkon -sb symphony -setdir /usr/bin wakeup\fR"
+Creates the set
+.B wakeup
+with the default set directory as
+.B /usr/bin.
+The set is associated with the sandbox
+.B symphony.
+If the set already exists,
+it creates the directory
+.B /usr/bin
+if necessary, changes directory to there,
+sets the environment for the set
+.B wakeup,
+and opens a new shell.
+.IP "\fBworkon wakeup\fR"
+Puts the user into the set
+.B wakeup.
+This type of call is normally given when the set already exists.
+If the set doesn't exist,
+this call would create a new set in the current sandbox with
+a set directory of ".",
+i.e. in the sandbox's source directory.
+
+.SH FILES
+.P
+.IP \fB${HOME}/.sandboxrc\fR 
+rc file that specifies default and existing sandboxes.
+.IP \fIsbname\fB/rc_files/sets\fR 
+list of valid sets in each sandbox as well as the default set.
+
+.SH EXIT VALUES
+.P
+\fBworkon\fR returns '0' upon successful completion, '-1' otherwise.
+
+.SH RELATED INFORMATION
+.P
+bcs(1),
+bsubmit(1),
+mksb(1),
+sandboxrc(5).

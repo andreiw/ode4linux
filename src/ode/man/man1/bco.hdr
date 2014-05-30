@@ -1,0 +1,139 @@
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"  
+.\" Copyright (c) 1992 Carnegie Mellon University 
+.\" All Rights Reserved. 
+.\"  
+.\" Permission to use, copy, modify and distribute this software and its 
+.\" documentation is hereby granted, provided that both the copyright 
+.\" notice and this permission notice appear in all copies of the 
+.\" software, derivative works or modified versions, and any portions 
+.\" thereof, and that both notices appear in supporting documentation. 
+.\"  
+.\" CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" 
+.\" CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR 
+.\" ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE. 
+.\"  
+.\" Carnegie Mellon requests users of this software to return to 
+.\"  
+.\" Software Distribution Coordinator  or  Software_Distribution@CS.CMU.EDU 
+.\" School of Computer Science 
+.\" Carnegie Mellon University 
+.\" Pittsburgh PA 15213-3890 
+.\"  
+.\" any improvements or extensions that they make and grant Carnegie Mellon 
+.\" the rights to redistribute these changes. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: bco.hdr,v $
+.\" Revision 1.2.8.1  1995/05/20  00:29:45  robert
+.\" 	add support for -a option
+.\" 	[1995/05/20  00:28:55  robert]
+.\"
+.\" Revision 1.2.6.1  1993/09/13  23:46:25  marty
+.\" 	CR # 623 - remove -sb_rc.
+.\" 	[1993/09/13  23:46:13  marty]
+.\" 
+.\" Revision 1.2.4.3  1993/04/21  14:16:55  damon
+.\" 	CR 421. Fixed typos
+.\" 	[1993/04/21  14:15:17  damon]
+.\" 
+.\" Revision 1.2.4.2  1993/04/19  15:11:32  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/19  15:11:19  damon]
+.\" 
+.\" Revision 1.2.2.5  1992/12/02  20:49:48  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/02  20:46:47  damon]
+.\" 
+.\" Revision 1.2.2.4  1992/10/19  19:04:16  damon
+.\" 	CR 83. CR 272. bco updates for 2.2
+.\" 	[1992/10/19  19:00:16  damon]
+.\" 
+.\" Revision 1.2.2.2  1992/06/24  17:34:19  marty
+.\" 	Added description of the "-undo" option.
+.\" 	[1992/06/24  17:34:01  marty]
+.\" 
+.\" Revision 1.2  1991/12/05  21:14:20  devrcs
+.\" 	removed .CM to get rid of Carnegie-Mellon footer
+.\" 	[1991/11/06  15:05:35  hester]
+.\" 
+.\" 	changed *allb to *alls and removed new{set,config,path}and
+.\" 	added sb_rc
+.\" 	[1991/11/05  22:47:06  hester]
+.\" 
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:14:33  mckeen]
+.\" 
+.\" 	Changes for Reno make
+.\" 	[91/03/22  16:27:44  mckeen]
+.\" 
+.\" Revision 1.5  90/12/06  14:20:37  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:44:57  gm]
+.\" 
+.\" Revision 1.4  90/10/07  21:55:52  devrcs
+.\" 	Added EndLog Marker.
+.\" 	[90/09/29  14:11:39  gm]
+.\" 
+.\" Revision 1.3  90/08/25  12:22:01  devrcs
+.\" 	add -undo documentation
+.\" 	[90/08/10  16:26:01  robert]
+.\" 
+.\" Revision 1.2  90/05/24  23:13:07  devrcs
+.\" 	final draft before release
+.\" 	[90/05/15  08:46:57  mckeen]
+.\" 
+.\" 	Second draft, split out options into include files
+.\" 	[90/05/04  13:33:40  mckeen]
+.\" 
+.\" 	First revision on man page.  Broken up from old combined
+.\" 	bcs.1
+.\" 	[90/05/03  17:09:26  mckeen]
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH bco 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+bco \- check out revisions of files
+.SH SYNOPSIS
+.IP \fBbco\fP 8
+[\fI -read \fP [\fI -r <revision> \fP] [\-a <revision> \fP] [\fIsandbox_options \fP] [\fI ODE_options \fP]
+[\fI file_options \fP] 
+.IP \fBbco\fP 8
+[\fB-version\fP | \fB-usage\fR]
+.IP \fIsandbox_options\fR 8
+[\fB-rc -sb -set \fP]
+.IP \fIODE_options\fR
+[\fB -auto -debug -quiet -normal -verbose \fP]
+.IP \fIfile_options\fR
+[\fB-saved\fP] [\fB-all\fP | \fBfile ... \fP]
+.SH FLAGS
+.IP \fB-read\fR 8
+Checks out the file for reading only. The file is set read-only and there
+is no record of the check out in the source control system.
+.IP "\fB-r <revision>\fR"
+Check out a specific revision. This option can only be used in combination
+with the \fB-read\fR option.
+.IP "\fB-a <revision>\fR"
+Check out a specific file revision from any other branch. The \fBancestor\fR
+option allows you to initialize your branch with files that may not be in the
+purview of your current sandbox and/or backing tree chain. 
+.PP

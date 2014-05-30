@@ -1,0 +1,203 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"  
+.\" Copyright (c) 1992 Carnegie Mellon University 
+.\" All Rights Reserved. 
+.\"  
+.\" Permission to use, copy, modify and distribute this software and its 
+.\" documentation is hereby granted, provided that both the copyright 
+.\" notice and this permission notice appear in all copies of the 
+.\" software, derivative works or modified versions, and any portions 
+.\" thereof, and that both notices appear in supporting documentation. 
+.\"  
+.\" CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" 
+.\" CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR 
+.\" ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE. 
+.\"  
+.\" Carnegie Mellon requests users of this software to return to 
+.\"  
+.\" Software Distribution Coordinator  or  Software_Distribution@CS.CMU.EDU 
+.\" School of Computer Science 
+.\" Carnegie Mellon University 
+.\" Pittsburgh PA 15213-3890 
+.\"  
+.\" any improvements or extensions that they make and grant Carnegie Mellon 
+.\" the rights to redistribute these changes. 
+.\"
+.\" HISTORY
+.\" $Log: supfilesrv.8,v $
+.\" Revision 1.2.2.2  1992/12/02  20:51:29  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/02  20:47:42  damon]
+.\"
+.\" Revision 1.2  1991/12/05  21:17:30  devrcs
+.\" 	 	removed CMU footer, revised description and updated date
+.\" 	[1991/11/05  21:09:06  ezf]
+.\" 
+.\" 	 	removed description of "-s" flag for obsolete system collections
+.\" 	 	[91/10/22  13:48:12  ezf]
+.\" 	[1991/10/22  13:49:53  ezf]
+.\" 
+.\" 	 	manual page for supfilesrv and supscan
+.\" 	 	[91/10/21  14:29:14  ezf]
+.\" 	[91/10/21  17:21:42  ezf]
+.\" 
+.\" $EndLog$
+.TH SUPFILESRV 8 11/01/91
+.SH "NAME"
+supfilesrv, supscan \- sup file server
+.SH "SYNOPSIS"
+supfilesrv
+[
+.I
+-l
+] [
+.I
+-q
+] [
+.I
+-N
+] [
+.I
+-P
+]
+.br
+supscan [
+.I
+-v
+] [
+.I
+collection
+] [
+.I
+basedir
+]
+.SH "DESCRIPTION"
+.I
+Supfilesrv
+is the server process used to interact with
+.I
+sup
+client processes via the TCP/IP network protocol.
+The server
+normally is expected to run on server machines at all times.
+Each machine with files of interest to users on other machines is
+expected to be a file server and should run
+.I
+supfilesrv.
+
+A file server machine will service requests for collections of files.
+The client user is expected to supply all necessary information for
+the file collections.
+Details of setting up a file collection for the file server are
+described in the manual entry for
+.I
+sup(1).
+
+.I
+Supfilesrv
+generally runs as a network server process that listens for connections,
+and for each connection (double-)forks a process to handle the interaction
+with the client.
+However, with the -l flag, no forking will take place:
+the server will listen for a network connection, handle it, and exit.
+This is useful for debugging the server in "live" mode rather than as
+a daemon.
+Log messages are normally printed on the standard output.
+To suppress
+log messages, the -q "quiet" flag can be used.
+
+For debugging purposes, the -P "debugging ports" flag can be used.
+It will cause the selection of an alternate, non-privileged set of
+TCP ports instead of the usual ports, which are reserved for the
+active server processes.  The -N "network debugging" flag can be used
+to produce detailed information describing the network communication
+progress and status.
+
+It is possible to pre-compile a list of the files in a collection
+to allow
+.I
+supfilesrv
+to service that collection much faster.  This can be done by running
+.I
+supscan
+on the desired collection on the repository machine.  This produces a
+list of all the files in the collection at the time of the
+.I
+supscan;
+subsequent upgrades are based on this list of files rather than
+actually scanning the disk at the time of the upgrade.
+The upgrade will consequently bring a client machine up to the status
+of the repository machine as of the time of the
+.I
+supscan
+rather than as of the time of the upgrade; hence, if
+.I
+supscan
+is used, it should be run periodically on the
+collection.
+This facility is useful for large file collections
+that are upgraded frequently.
+The "verbose" flag
+.I
+-v
+will cause
+.I
+supscan
+to produce output messages as it scans the files in the collection.
+The
+.I
+basedir
+parameter must be specified for file collections when the base
+directory is not the default.
+.SH "FILES"
+.TP
+/usr/<collection>
+default base directory for a collection
+.TP
+<base-directory>/sup/<collection>/*
+files used by file server (see
+.I
+sup(1))
+.TP
+<base-directory>/sup/<collection>/list
+list file used by
+.I
+supscan
+to create file list
+.TP
+<base-directory>/sup/<collection>/scan
+file list created by
+.I
+supscan
+from list file
+.i0
+.DT
+.PP
+.SH "SEE ALSO"
+sup(1)
+.br
+.I
+The SUP Software Upgrade Protocol,
+S.
+A.
+Shafer, CMU Computer Science Dept., 1985.
+.SH "DIAGNOSTICS"
+The file server process places log messages on the
+standard and diagnostic output files.
+The process name and process
+id number generally accompany each message for diagnostic purposes.

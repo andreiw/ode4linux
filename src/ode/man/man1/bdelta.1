@@ -1,0 +1,190 @@
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\" HISTORY
+.\" $Log: bdelta.1,v $
+.\" Revision 1.1.2.3  1992/12/03  17:23:49  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:01  damon]
+.\"
+.\" Revision 1.1.2.2  1992/12/01  23:11:34  pnh
+.\" 	First revision.
+.\" 	[1992/12/01  23:03:38  pnh]
+.\" 
+.\" $EndLog$
+.TH bdelta 1 12/01/92
+.SH NAME
+bdelta \- print changes between versions correlated to change requests
+.SH SYNOPSIS
+.IP \fBbdelta\fP 6
+[\fB-all\fP] [\fB-start\fP \fIsdate\fP | \fB-end\fP \fIedate\fP] 
+[\fB-o\fP \fIdir\fP] [\fIrlog_options\fR] [\fIphase_options\fR] [\fIfile...\fP]
+.IP \fIrlog_options\fR:
+[\fB -c -w -r\fR]
+.IP \fIphase_options\fR:
+[\fB-tableonly -patchesonly\fR]
+.SH FLAGS
+.IP "\fB-all\fP"
+Creates patch files for all files listed in the \fBbsubmit.log\fP file.  This
+is the default.
+.IP "\fB-c\fP \fIn\fP"
+Displays \fIn\fP context lines with each output line: this is passed verbatim
+to the \fBbdiff\fP command.
+.IP "\fB-end\fP \fIedate\fP"
+Create patch files for submissions dated before or on \fIdate\fP.
+.IP "\fB-o\fP \fIdir\fP"
+Use \fIdir\fP as the parent directory to use in creating a
+shadow hierarchy of patch files.  The default is the current working
+directory.
+.IP "\fB-patchesonly\fP"
+Create the patchfiles in the hierarchy on the basis of the existing
+\fBbdelta.table\fP file.
+.IP "\fB-r\fP \fIsymbolic_name\fP"
+If specified, the previous version against which the file is \fBbdiff\fP'd is not
+the immediate predecessor RCS version
+as recorded in the \fBbsubmit.log\fP file, but the version associated
+with \fIsymbolic_name\fP.
+.IP "\fB-start\fP \fIsdate\fP"
+Create patch files for submissions dated on or after \fIdate\fP.
+.IP "\fB-tableonly\fP"
+Create the \fBbdelta.table\fP but do not generate patch files in a hierarchy.
+.IP "\fB-w\fP"
+Causes whitespace to be ignored: this is
+passed verbatim to the \fBbdiff\fP command.
+.SH DESCRIPTION
+.PP
+The \fBbdelta\fP command creates a shadow hierarchy of patch files on the
+basis of information in the \fBbsubmit.log\fP for the current build.
+It does this via the intermediate step of generating an ASCII flat file
+called \fBbdelta.table\fP which makes the information available for \fBawk\fP,
+\fBgrep\fP or other utilities.
+This \fBbdelta.table\fP is generated from specific
+\fBbsubmit.log\fP information of the
+following format (one for each file submitted).  Note that
+\fIcheckedin_vnum\fR and \fIprevious_vnum\fR are the current and previous
+RCS version numbers for the file \fIfname\fR.
+.nf
+.ft CW
+
+Submission Log *****
+  Date: <date>; Time: <time>
+  Defect number: <crnum>, <crnum>
+  List of files and revisions:
+<fname> <checkedin_vnum> <previous_vnum>
+Detailed description:
+End Log *****
+
+.ft R
+.fi
+.P
+The first \fBbdelta\fP parameter (\fB-all\fP or 
+\fB-start\fP \fIsdate\fP and/or \fB-end\fP \fIedate\fP)
+determines the extent of the tables and patch files that the tool produces.
+If \fB-all\fP is specified, the tool processes the entire \fBbsubmit.log\fP
+file
+and produces output that reflects all the changes covered in that
+log file.  This is the default.
+If the \fB-start\fP and \fB-end\fP option
+is used, the \fBbsubmit.log\fP file would only
+be processed within the range of the start date and end date.  The
+\fBstart\fP and \fBend\fP flags may be used individually or in combination.
+.PP
+The \fB-o\fP option specifies the name of the parent directory that will
+house the output files from the tool (see below for the definition of
+the output files).  This defaults to the current directory if not 
+specified.
+.PP
+The \fB-r\fP option specifies that the 
+\fBbdiff\fP should be performed against the
+version of the file associated with the symbolic name represented by the
+option's value.  For example, to obtain patches reflecting changes between 
+the current build and OSF/1 version 1.1, use the flag "-rOSC1_1".
+See the project-specific documentation or consult Release and Tools
+personnel for more information on this feature.
+.PP
+There are two kinds of output files.
+The \fBbdelta.table\fP file contains one line for each submitted
+file, such that each line is a record with tab-separated fields representing
+a file, the number of the change request resolved by the submission,
+the number of the previous RCS version and the number of the RCS version of
+the submission, as in the following example.
+Note that if a submission has been associated with more
+than one CR number, then a line will be generated for each of the CRs
+listed after the "Defect number" field.
+.nf
+.ft CW
+
+/pathA/filename.c        7077    1.27.22.2       1.27.22.3
+/pathB/otherfile.c       7077    1.31.2.5        1.31.2.6
+/pathA/filename.c        7023    1.27.22.3       1.27.22.4
+/pathB/filenm3.c 7023    1.13.15.9       1.13.15.10
+/pathA/filename.c        7134    1.27.22.4       1.27.22.5
+/pathB/otherfile.c       7064    1.31.2.6        1.31.2.7
+/pathB/filenm3.c 7110    1.13.15.10      1.13.15.11
+
+.ft R
+.fi
+.PP
+The columns in the file correspond directly to the fields in the 
+\fBbsubmit.log\fP lines.  
+This file can be searched for information such as which
+files were modified to resolve a particular change request, 
+which change requests required changes to a particular file,
+and which revisions were involved in changes to a CR or file.
+The order of the filenames in the file indicate the chronological order
+of the revisions to the files.
+.PP
+The other files that \fBbdelta\fP produces are in 
+a shadow hierarchy, under \fIdir\fP as specified with the \fB-o\fP
+flag, which mirrors the
+hierarchy implied by all the paths listed in
+\fBbdelta.table\fP. In
+the place of the actual files at the leaf points, 
+\fBbdelta\fP generates a set of
+files that contain the differences for each CR affecting that file.
+The filenames for these patches have the form 
+.IR filename.crnumber.index ,
+where 
+.I index
+is an integer greater than 1 and less than 1000000.  The index is
+necessary to provide unique filenames in the event that multiple 
+submissions where made against the same file and the same CR in a
+single build or build period.
+.PP
+Older versions of \fBbsubmit\fR do not write previous RCS version number
+information to the \fBbsubmit.log\fR file.  Their file revision lines
+only provide filename and submitted RCS version number information.
+In this case \fBbdelta\fR
+uses the \fBbstat\fR command to determine the previous version number,
+relying on the \fB-r\fR flag with an option derived from the 
+\fIcheck_out_config\fR variable in the \fBrc_files/shared\fR file to
+trace back through a list of previous builds until the previous
+version is found.  If this command fails for any reason, a warning
+message is sent to standard error and a heuristic algorithm is used to
+determine the previous version.
+.PP
+It is normal for this utility to make a directory in the \fB/tmp\fR 
+directory because it uses the ODE environment.  Note that you must 
+give the \fBworkon\fR command in order to set up your environment properly
+for using this command.  See the ODE documentation for more information.
+.SH FILES
+.IP \fBbsubmit.log\fR
+Input file for \fBbdelta\fP.
+.IP \fBbdelta.table\fR
+Table output by \fBbdelta\fP presenting information on individual submissions.
+.SH LIMITATIONS
+.PP
+At the moment, \fBbdelta\fR does no processing of defuncted files.

@@ -1,0 +1,330 @@
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" (c) Copyright 1992, 1991, 1990 OPEN SOFTWARE FOUNDATION, INC. 
+.\" ALL RIGHTS RESERVED 
+.\" HISTORY
+.\" $Log: buildstruct.troff,v $
+.\" Revision 1.2.2.2  1992/12/03  19:10:47  damon
+.\" 	ODE 2.2 CR 346. Expanded copyright
+.\" 	[1992/12/03  18:41:35  damon]
+.\"
+.\" Revision 1.2  1991/12/05  20:56:09  devrcs
+.\" 	Added header.
+.\" 	[1991/11/08  23:07:08  alan]
+.\" 
+.\" $EndLog$
+... 0 3 400 387
+... 0.000i 4.800i 5.000i 0.000i
+.nr 00 \n(.u
+.nf
+.PS 4.800i 5.000i 
+.br
+\h'0.600i'\v'0.900i'\l'0.700i'
+.sp -1
+\h'0.600i'\v'1.600i'\l'0.700i'
+.sp -1
+\h'0.600i'\v'2.100i'\v'-.25m'\L'0.500i\(br'\v'.25m'
+.sp -1
+\h'0.600i'\v'2.600i'\l'0.700i'
+.sp -1
+\h'4.500i'\v'1.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0build_product\s0\fP'u/2u'\fH\s0build_product\s0\fP\h'-\w'\fH\s0build_product\s0\fP'u/2u'
+.sp -1
+\h'4.500i'\v'1.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0export_libraries\s0\fP'u/2u'\fH\s0export_libraries\s0\fP\h'-\w'\fH\s0export_libraries\s0\fP'u/2u'
+.sp -1
+\h'4.500i'\v'0.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0export_includes\s0\fP'u/2u'\fH\s0export_includes\s0\fP\h'-\w'\fH\s0export_includes\s0\fP'u/2u'
+.sp -1
+\h'4.500i'\v'2.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0install_product\s0\fP'u/2u'\fH\s0install_product\s0\fP\h'-\w'\fH\s0install_product\s0\fP'u/2u'
+.sp -1
+\h'2.600i'\v'2.000i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0(mimics\s0\fP'u/2u'\fH\s0(mimics\s0\fP\h'-\w'\fH\s0(mimics\s0\fP'u/2u'
+.sp -1
+\h'2.700i'\v'2.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0installation\s0\fP'u/2u'\fH\s0installation\s0\fP\h'-\w'\fH\s0installation\s0\fP'u/2u'
+.sp -1
+\h'2.700i'\v'2.200i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0structure)\s0\fP'u/2u'\fH\s0structure)\s0\fP\h'-\w'\fH\s0structure)\s0\fP'u/2u'
+.sp -1
+\h'1.700i'\v'1.600i'\l'0.500i'
+.sp -1
+\h'2.600i'\v'1.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0libraries\s0\fP'u/2u'\fH\s0libraries\s0\fP\h'-\w'\fH\s0libraries\s0\fP'u/2u'
+.sp -1
+\h'2.600i'\v'0.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0includes\s0\fP'u/2u'\fH\s0includes\s0\fP\h'-\w'\fH\s0includes\s0\fP'u/2u'
+.sp -1
+\h'1.900i'\v'2.100i'\l'0.300i'
+.sp -1
+\h'2.700i'\v'1.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0(mimics src\s0\fP'u/2u'\fH\s0(mimics src\s0\fP\h'-\w'\fH\s0(mimics src\s0\fP'u/2u'
+.sp -1
+\h'2.800i'\v'1.700i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0structure)\s0\fP'u/2u'\fH\s0structure)\s0\fP\h'-\w'\fH\s0structure)\s0\fP'u/2u'
+.sp -1
+\h'3.300i'\v'0.600i'\l'-0.300i'
+.sp -1
+\h'3.300i'\v'1.100i'\l'-0.300i'
+.sp -1
+\h'3.500i'\v'0.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0...\s0\fP'u/2u'\fH\s0...\s0\fP\h'-\w'\fH\s0...\s0\fP'u/2u'
+.sp -1
+\h'3.500i'\v'1.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0...\s0\fP'u/2u'\fH\s0...\s0\fP\h'-\w'\fH\s0...\s0\fP'u/2u'
+.sp -1
+\h'2.200i'\v'0.600i'\D'l-0.200i 0.000i'
+.sp -1
+\h'2.000i'\v'0.600i'\v'-.25m'\L'0.500i\(br'\v'.25m'
+.sp -1
+\h'2.000i'\v'1.100i'\D'l0.200i 0.000i'
+.sp -1
+\h'1.900i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'1.600i'\v'0.900i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0export\s0\fP'u/2u'\fH\s0export\s0\fP\h'-\w'\fH\s0export\s0\fP'u/2u'
+.sp -1
+\h'1.500i'\v'1.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0obj\s0\fP'u/2u'\fH\s0obj\s0\fP\h'-\w'\fH\s0obj\s0\fP'u/2u'
+.sp -1
+\h'1.600i'\v'2.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0install\s0\fP'u/2u'\fH\s0install\s0\fP\h'-\w'\fH\s0install\s0\fP'u/2u'
+.sp -1
+\h'1.900i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.100i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.300i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.500i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.700i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.900i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.100i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.300i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.500i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.700i'\v'1.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'1.900i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.100i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.300i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.500i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.700i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.900i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.100i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.300i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.500i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.700i'\v'1.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'1.900i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.100i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.300i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.500i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.700i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.900i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.100i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.300i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.500i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.700i'\v'2.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.300i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.500i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.700i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.900i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.100i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.300i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.500i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.700i'\v'0.900i'\D'l0.100i 0.000i'
+.sp -1
+\h'1.900i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.100i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.300i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.500i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.700i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'2.900i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.100i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.300i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.500i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'3.700i'\v'0.400i'\D'l0.100i 0.000i'
+.sp -1
+\h'1.500i'\v'2.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0src\s0\fP'u/2u'\fH\s0src\s0\fP\h'-\w'\fH\s0src\s0\fP'u/2u'
+.sp -1
+\h'3.500i'\v'3.300i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0subdir.2\s0\fP'u/2u'\fH\s0subdir.2\s0\fP\h'-\w'\fH\s0subdir.2\s0\fP'u/2u'
+.sp -1
+\h'1.500i'\v'3.300i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0subdir.1\s0\fP'u/2u'\fH\s0subdir.1\s0\fP\h'-\w'\fH\s0subdir.1\s0\fP'u/2u'
+.sp -1
+\h'4.500i'\v'3.300i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0...\s0\fP'u/2u'\fH\s0...\s0\fP\h'-\w'\fH\s0...\s0\fP'u/2u'
+.sp -1
+\h'1.500i'\v'3.000i'\l'2.000i'
+.sp -1
+\h'3.500i'\v'3.000i'\D'l0.000i 0.200i'
+.sp -1
+\h'1.500i'\v'2.700i'\v'-.25m'\L'0.500i\(br'\v'.25m'
+.sp -1
+\h'2.500i'\v'3.800i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0subdir.1.3\s0\fP'u/2u'\fH\s0subdir.1.3\s0\fP\h'-\w'\fH\s0subdir.1.3\s0\fP'u/2u'
+.sp -1
+\h'0.500i'\v'3.800i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0subdir.1.1\s0\fP'u/2u'\fH\s0subdir.1.1\s0\fP\h'-\w'\fH\s0subdir.1.1\s0\fP'u/2u'
+.sp -1
+\h'3.500i'\v'3.800i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0...\s0\fP'u/2u'\fH\s0...\s0\fP\h'-\w'\fH\s0...\s0\fP'u/2u'
+.sp -1
+\h'0.500i'\v'3.700i'\D'l0.000i -0.200i'
+.sp -1
+\h'0.500i'\v'3.500i'\l'2.000i'
+.sp -1
+\h'2.500i'\v'3.500i'\D'l0.000i 0.200i'
+.sp -1
+\h'0.500i'\v'3.900i'\D'l0.000i 0.000i'
+.sp -1
+\h'1.500i'\v'3.900i'\D'l0.000i 0.000i'
+.sp -1
+\h'1.500i'\v'3.700i'\v'-.25m'\L'-0.300i\(br'\v'.25m'
+.sp -1
+\h'2.500i'\v'4.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0...\s0\fP'u/2u'\fH\s0...\s0\fP\h'-\w'\fH\s0...\s0\fP'u/2u'
+.sp -1
+\h'1.500i'\v'4.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0...\s0\fP'u/2u'\fH\s0...\s0\fP\h'-\w'\fH\s0...\s0\fP'u/2u'
+.sp -1
+\h'0.500i'\v'4.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0...\s0\fP'u/2u'\fH\s0...\s0\fP\h'-\w'\fH\s0...\s0\fP'u/2u'
+.sp -1
+\h'1.500i'\v'3.800i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0subdir.1.2\s0\fP'u/2u'\fH\s0subdir.1.2\s0\fP\h'-\w'\fH\s0subdir.1.2\s0\fP'u/2u'
+.sp -1
+\h'2.500i'\v'3.900i'\D'l0.000i 0.200i'
+.sp -1
+\h'1.500i'\v'3.900i'\D'l0.000i 0.200i'
+.sp -1
+\h'0.500i'\v'3.900i'\D'l0.000i 0.200i'
+.sp -1
+\h'3.500i'\v'3.000i'\l'1.000i'
+.sp -1
+\h'4.500i'\v'3.000i'\v'-.25m'\L'0.300i\(br'\v'.25m'
+.sp -1
+\h'3.500i'\v'3.400i'\v'-.25m'\L'0.400i\(br'\v'.25m'
+.sp -1
+\v'2.700i'\D'l0.000i 0.100i'
+.sp -1
+\v'2.900i'\D'l0.000i 0.100i'
+.sp -1
+\v'3.100i'\D'l0.000i 0.100i'
+.sp -1
+\v'3.300i'\D'l0.000i 0.100i'
+.sp -1
+\v'3.500i'\D'l0.000i 0.100i'
+.sp -1
+\v'3.700i'\D'l0.000i 0.100i'
+.sp -1
+\v'3.900i'\D'l0.000i 0.100i'
+.sp -1
+\v'4.100i'\D'l0.000i 0.100i'
+.sp -1
+\v'4.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'1.000i'\v'3.700i'\D'l0.000i 0.100i'
+.sp -1
+\h'1.000i'\v'3.900i'\D'l0.000i 0.100i'
+.sp -1
+\h'1.000i'\v'4.100i'\D'l0.000i 0.100i'
+.sp -1
+\h'1.000i'\v'4.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'2.000i'\v'3.700i'\D'l0.000i 0.100i'
+.sp -1
+\h'2.000i'\v'3.900i'\D'l0.000i 0.100i'
+.sp -1
+\h'2.000i'\v'4.100i'\D'l0.000i 0.100i'
+.sp -1
+\h'2.000i'\v'4.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'2.700i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'2.900i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'3.100i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'3.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'3.500i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'3.700i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'3.900i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'4.100i'\D'l0.000i 0.100i'
+.sp -1
+\h'3.000i'\v'4.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'2.700i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'2.900i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'3.100i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'3.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'3.500i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'3.700i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'3.900i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'4.100i'\D'l0.000i 0.100i'
+.sp -1
+\h'4.000i'\v'4.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'2.700i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'2.900i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'3.100i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'3.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'3.500i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'3.700i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'3.900i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'4.100i'\D'l0.000i 0.100i'
+.sp -1
+\h'5.000i'\v'4.300i'\D'l0.000i 0.100i'
+.sp -1
+\h'2.700i'\v'4.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0Vertical Structure: Directories within directories.\s0\fP'u/2u'\fH\s0Vertical Structure: Directories within directories.\s0\fP\h'-\w'\fH\s0Vertical Structure: Directories within directories.\s0\fP'u/2u'
+.sp -1
+\h'2.800i'\v'4.800i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0The vertical structure is traversed for each pass.\s0\fP'u/2u'\fH\s0The vertical structure is traversed for each pass.\s0\fP\h'-\w'\fH\s0The vertical structure is traversed for each pass.\s0\fP'u/2u'
+.sp -1
+\h'4.100i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0Horizontal Structure:    Passes (each traverses\s0\fP'u/2u'\fH\s0Horizontal Structure:    Passes (each traverses\s0\fP\h'-\w'\fH\s0Horizontal Structure:    Passes (each traverses\s0\fP'u/2u'
+.sp -1
+\h'4.900i'\v'0.200i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0the vertical structure)\s0\fP'u/2u'\fH\s0the vertical structure)\s0\fP\h'-\w'\fH\s0the vertical structure)\s0\fP'u/2u'
+.sp -1
+\h'0.600i'\h'-0.0m'\v'0.2m'\h'-\w'\fH\s0build/sandbox\s0\fP'u/2u'\fH\s0build/sandbox\s0\fP\h'-\w'\fH\s0build/sandbox\s0\fP'u/2u'
+.sp -1
+\h'0.600i'\v'0.100i'\v'-.25m'\L'2.000i\(br'\v'.25m'
+.sp -1
+\h'0.600i'\v'2.100i'\l'0.700i'
+.sp -1
+.sp 1+4.800i
+.PE
+.if \n(00 .fi

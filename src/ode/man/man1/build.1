@@ -1,0 +1,267 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: build.1,v $
+.\" Revision 1.6.6.2  1993/09/14  14:41:33  marty
+.\" 	CR # 623 - Remove reference to local and shared.
+.\" 	[1993/09/14  14:41:19  marty]
+.\"
+.\" Revision 1.6.6.1  1993/09/14  00:41:20  marty
+.\" 	CR # 623 - Remove -sb_rc
+.\" 	[1993/09/14  00:27:28  marty]
+.\" 
+.\" Revision 1.6.4.2  1993/04/21  18:42:01  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/21  18:39:30  damon]
+.\" 
+.\" Revision 1.6.2.2  1992/12/03  17:23:55  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:05  damon]
+.\" 
+.\" Revision 1.6  1991/12/05  21:15:10  devrcs
+.\" 	Made all Tools II changes.
+.\" 	[91/01/08  10:14:36  randyb]
+.\" 
+.\" Revision 1.5  90/12/06  14:21:07  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:46:10  gm]
+.\" 
+.\" Revision 1.4  90/10/07  21:56:37  devrcs
+.\" 	Pre-OSF/1 changes
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH build 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+build\- build target(s); a sandbox front-end for make
+.SH SYNOPSIS
+.IP \fBbuild\fP 7
+[\fB-here -clean -lint\fP] [\fIODE opts\fP] [\fImake opts\fP] [\fItarget(s)\fP] 
+.IP "\fIODE opts\fR:" 10
+[\fB-info -quiet -normal -verbose -usage -version\fP]
+.br
+[\fB-sb \fIsandbox\fR] [\fB-rc \fIrcfile\fP] 
+.IP "\fImake opts\fR:" 10
+[\fB-\fI* *\fB=\fI*\fR ]
+.SH FLAGS
+.IP "\fB\-here\fR"
+Build, clean, lint all of the \fItargets\fR
+within a subtree of the source area.
+When this switch is specified, \fItargets\fR should be the path to
+the directory that will be the root of the subtree to build. 
+For example, a \fItarget\fR of \fB/usr/cs/include\fR would invoke \fBbuild\fR
+for all the files in \fB/usr/cs/include\fR.
+.IP "\fB\-clean\fR"
+The older form of removing the build objects and rebuilding the targets.
+The newer form: \fBclean_\fItarget\fR is preferred.
+The newer form, however, does not automatically rebuild the target.
+.IP "\fB\-lint\fR"
+The older form of invoking \fBlint\fR on a target.
+The newer form: \fBlint_\fItarget\fR, is preferred.
+.P
+.ti 2
+\fIODE opts\fR:
+.IP "\fB\-info\fR"
+\fB-info\fR gives the user information on what \fBbuild\fR would do
+without actually doing anything.
+The \fB-info\fR option works in conjunction with the verbosity options.
+This option can also be used with \fBmake's -n\fR  option
+to get a listing of what \fBbuild\fR would do followed by what \fBmake\fR
+would do, again, without actually doing anything.
+For example, \fB"build -verbose -info myfile"\fR prints out the
+environment build sets up and the command to execute \fBmake\fR
+with; it then exits before actually calling \fBmake\fR.
+\fB"build -verbose -n myfile"\fR prints out the same information plus executes
+\fBmake\fR with the \fB-n\fR flag.
+\fBmake\fR then prints out what it would do.
+.IP "\fB\-quiet\fR"
+One of three levels of verbosity.
+\fB-quiet\fR prints only the information which the user must always
+receive including all fatal error messages.
+.IP "\fB\-normal\fR"
+One of three levels of verbosity.
+\fB-normal\fR is the default verbosity and prints out the significant
+steps the program is taking and warnings.
+It also prints out all information \fB-quiet\fR prints.
+.IP "\fB\-verbose\fR"
+One of three levels of verbosity.
+\fB-verbose\fR prints out detailed information on what steps the program
+is taking and all diagnostic errors.
+It also prints out all information \fB-quiet\fR and \fB-normal\fR prints.
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-rev\fR"
+Prints the revision information.
+.IP "\fB\-sb \fIsandbox\fR"
+By default, \fBbuild\fR uses the current sandbox as determined by the
+environment variable \fBSANDBOX\fR or, if that is not set, by
+the default sandbox in the user's rc file.
+If this option is given, the specified sandbox will be used.
+.IP "\fB-rc \fIrcfile\fR"
+By default, \fBbuild\fR uses \fB$HOME/.sandboxrc\fR to determine the
+current sandbox.
+If this option is given, the specified user's rc file will be used.
+.P
+.ti 2
+.IP "\fImake opts\fR:"
+\fBbuild\fR accepts any flag, target, or macro which \fBmakes\fR accepts.
+\fBbuild\fR passes these along to \fBmake\fR without changing them.
+The options for \fBmake\fR come in two forms:
+those starting with a dash and those with an equal sign in them.
+.P
+\fBbuild\fR is a cover for \fBmake\fR, reading the sandbox rc files and 
+setting the environment to understand backing trees.
+It then calls \fBmake\fR to do the actual "building."
+
+.SH DESCRIPTION
+.P
+.B build
+uses information from the command line and the sandbox's rc files
+to create the environment 
+.B make
+needs to "build" its targets.
+The output of
+.B build
+is literally a string containing the make command and the targets 
+to create.
+.B build
+also includes in this string any options which it does not understand,
+assuming the options are meant for
+.B make.
+A target can be anything the Makefiles understand how to "build."
+It is frequently the name of the built object, 
+for example, foo would normally be the target to 
+create the executable foo from foo.c.
+However, a target may need
+to be resolved or expanded when it corresponds to a directory name
+containing multiple files or targets to be built.
+Hence, targets may be explicit, individual files
+or subdirectories containing multiple targets.
+.P 
+As a simple example, "build foo" (read as "build target foo") 
+is a single file and might translate into the string
+"make -cF _build_prefix_foo" which 
+.B make
+executes with the target "_build_prefix_foo" interpreted through 
+one of the common makefiles.
+Build will resolve "target foo"
+into its component targets should any exist.
+Next, for each target, build decides on a per-target basis what information 
+should be passed to 
+.B make.
+For example if
+.B build
+is given the line:
+.ti 5
+.B "build foo.lint"
+.P
+.B build
+will interpret "foo.lint" to mean lint the target foo,
+and it will pass this information to
+.B make.
+.P
+.B build
+defines the variables that
+.B make
+uses to determine where targets are located.
+For example,
+.B build
+sets the variable
+.B SOURCEDIR
+so searches for source begin in the local sandbox and
+continue through each backing tree.
+It uses the sandbox's rc files to determine this information.
+.P
+.B build
+obviously understands how to translate targets the user enters
+into the format understood by the common makefiles.
+.B build
+uses a consistent set of rules to do this translation.
+.P
+.B build
+will not invoke
+.B make
+and will report an error if information from the rc files,
+the command line, or the current environment is inconsistent.
+
+.SH "EXAMPLES"
+.P
+Building an explicit target which creates a single object file;
+to create the binary "foo" from "foo.c":
+.ti 5
+.B "build foo"
+.P
+Building a subdirectory which creates multiple object files;
+to create the binaries "foo", "bar", and "fred" from the sources
+"foo.c", "bar.c", and "fred.c" which are in the
+directory "/usr/bin/foobar":
+.ti 5
+from a workon to the directory "/usr/bin"
+.ti 5
+.B "build foobar"
+.P
+Building include file "sys.h"
+.ti 5
+.B "build sys.h"
+.P
+All this target in the Makefile currently does is copy the source header
+file into the object directory.
+.P
+List verbose information about the compile:
+.ti 5
+.B "build C_ARGS=-v foo"
+.P
+Building a file with the debug option instead of the optimize option:
+.ti 5
+.B "build OPT_LEVEL=-g foo"
+
+.SH "FILES"
+.PP
+.B build
+reads information from the sandbox rc files to define
+environment variables and determine the base paths to 
+where source files are located. 
+The \fB\-verbose\fR
+or \fB\-info\fR will explicitly list the environment
+variables and how they are set. 
+.P
+Files are first looked for
+in the current sandbox, which may be resolved through links,
+and next in the backing tree.
+
+.IP \fB${HOME}/.sandboxrc\fR 
+rc file that specifies default sandbox and paths to each sandbox
+.IP \fB/sandbox/rc_files/\fIproject_name\fB/sb.conf\fR 
+rc file that defines local sandbox environment information
+.SH "EXIT VALUES"
+.B build
+exits with "0" if successful; non-zero otherwise.
+If
+.B build
+gets as far as calling
+.B make,
+it will return the same value as
+.B make.
+
+.SH "RELATED INFORMATION"
+.P
+make(1),
+sandboxrc(5),
+sbinfo(1).

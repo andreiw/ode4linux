@@ -1,0 +1,28 @@
+
+README.doc						5/25/1995
+
+This README.doc file describes the subset of ODE documentation that
+currently resides on the FTP server under riftp.osf.org:/pub/ode/doc.
+
+This subdirectory contains documentation in two forms: compressed Postscript
+files and simple, non-graphical ASCII text versions.  The text files are
+abridged, reduced versions of the entire guides provided here for convenience.
+The full, complete version of the documentation (including diagrams) is
+available in the *.ps.Z compressed Postscript files.
+
+If your system provides text formatting tools (e.g. nroff/troff/tbl), you
+can rebuild these documents using the Makefiles in the ./src/ode/doc tree.
+
+
+
+	filename			description
+	========			===========
+
+    README.doc				this file
+    UsersGuide.ps.Z			ODE User's Guide
+    UsersGuide.appendixA.ps.Z		Manual Pages for ODE commands
+    UsersGuide.txt			ODE User's Guide (ASCII version)
+    SysAdminGuide.ps.Z			ODE System Administration Guide
+    SysAdminGuide.txt			ODE SAG (ASCII version)
+    conversion_notes.users.Z		Notes for users on ODE 2.3.4 changes
+    conversion_notes.admins.Z		Administrator's notes on 2.3.4 upgrade

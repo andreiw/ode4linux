@@ -1,0 +1,85 @@
+USING ODE 2.1 THROUGH THE FIREWALL.
+
+An exercise in indirection.
+
+-------------
+Normally, all ODE source-control operations are run remotely, through
+"cover" programs.  These "cover" programs arrange to copy a file to a
+server, execute a command, and copy a file back.
+
+There are three classes of commands: "rcs" commands, "source"
+commands, and "log" commands.
+
+"rcs" commands operate on the change history of various elements, and
+deal with creating/deleting branches, checkin/checkout, ...
+
+"subut" commands are used by bsubmit to coordinate and lock
+submissions from one sandbox to another, by manipulating files in the
+"logs" directory of a shared sandbox.
+
+"source" commands are used by bsubmit to update the shared source
+tree.
+
+For each of these, there is a set of variables defined somewhere in
+the rc_files of a sandbox:
+
+<foo>_cover
+ - "cover" specifies the program, on the *ODE client* system, to
+execute in order to connect to the remote system.
+
+<foo>_host
+ - "host" defines the host to connect to in order to execute the command.
+
+<foo>_owner
+ - "owner" defines the username under which the command runs on the
+target system
+
+<foo>_testdir or <foo>_base
+ - "testdir"/"base" defines the directory in which the files are found
+
+-------- 
+
+On the server, there is a daemon called "kxctd", which looks for a
+file named kxct.conf in the "base" directory.  This contains a series
+of lines, one for each distinct remote command, specifying the program
+to exec to actually execute the command.
+
+--------
+
+Now, for how to "tunnel through the firewall":
+
+I created a program, "rcstramp", which reads a configuration file
+containing environment variable settings (rcstramp.conf), plays some
+games with the argument list (more on this later), and then execs a
+"cover" program specified in the configuration file.
+
+This allows you to relay remote ODE commands through a firewall machine.
+
+Here's how you do it:
+
+ - on the firewall machine, set up three directories .../rcs, .../src, 
+and .../logs.
+
+ - In those directories, set up kxct.conf files for all the commands,
+set to execute "rcstramp" instead of the real command or "rcsacl".
+Also, set up an rcstramp.conf file containing the following environment variables:
+
+AUTHCOVER_HOST=<the real host>
+AUTHCOVER_TESTDIR=<the real base directory>
+AUTHCOVER_USER=<the real remote user>
+RCS_COVER=<the cover program to use>
+
+These values can be extracted from the rc_files/shared and
+rc_files/local in the various sandboxes in use.
+
+In addition, in the "logs" directory, you need to add an additional
+variable of "FAKE_TESTDIR", which is the pathname of the logs
+directory on the firewall machine (this occurs because bsubmit uses an
+absolute pathname in a couple of places, and the rcstramp program thus
+needs to diddle with the command line a little bit in order to deal
+with this).
+
+Once this is set up, you then change the three sets of _host,
+_testdir, and _user variables in the rc_files in the sandbox inside
+the firewall to point at the firewall machine's trampoline
+directories; at that point, you should be in business.

@@ -1,0 +1,255 @@
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" (c) Copyright 1992, 1991, 1990 OPEN SOFTWARE FOUNDATION, INC. 
+.\" ALL RIGHTS RESERVED 
+.\" 
+.\" HISTORY
+.\" $Log: sandbox.pic,v $
+.\" Revision 1.1.2.5  1992/12/03  19:12:44  damon
+.\" 	ODE 2.2 CR 346. Expanded copyright
+.\" 	[1992/12/03  18:42:31  damon]
+.\"
+.\" Revision 1.1.2.4  1992/03/16  15:22:50  hester
+.\" 	small changes
+.\" 	[1992/03/13  19:59:01  hester]
+.\" 
+.\" Revision 1.1.2.3  1992/03/10  23:51:42  hester
+.\" 	fixed fonts, etc.
+.\" 	[1992/03/10  23:51:26  hester]
+.\" 
+.\" Revision 1.1.2.2  1992/03/10  23:17:51  hester
+.\" 	ready for first review - added all Motif-specific
+.\" 	info regarding path's and tools and such
+.\" 	[1992/03/10  22:48:10  hester]
+.\" 
+.\" 	added motif sb picture and info for getting
+.\" 	ode commands
+.\" 	[1992/02/27  23:33:42  hester]
+.\" 
+.\" 	first cut for motif DUG - no picture of sb
+.\" 	structure yet
+.\" 	[1992/02/25  23:03:37  hester]
+.\" 
+.\" $EndLog$
+...\"*********************************************************************
+...\"          Reset page information for chapters in Motif DUG
+...\"*********************************************************************
+.OH "'\fB\s10ODE User\'s Guide for Motif\fR''\\\\nP\s0'"        \"*** Set even page footers
+.EH "'\s10\\\\nP''\fBSandboxes\s0\fR'"       \"*** Set odd page footers
+.SK
+...\"*********************************************************************
+...\"          Contents of Motif DUG: Sandboxes
+...\"*********************************************************************
+.H 1 "Sandboxes"
+There is some specific information regarding Motif sandboxes that is
+different from the sandbox information common to other ODE projects.
+The reader should read Chapter 2, "Sandboxes" of the common DUG to learn about 
+and reference sandboxes, referring to this chapter for specific 
+information on the structure of Motif sandboxes, the location of Motif builds, 
+tools, etc.
+The main thing to keep in mind when reading the common DUG is that some
+of the directories which are set up as part of a sandbox are not applicable
+to Motif sandboxes.  
+Areas where such a distinction can be made are covered here.
+
+.H 2 "What is a sandbox?"
+.P
+Some of the default structures of sandboxes are applicable to features
+that are only present when using the ODE \fBmake\fP.
+Sandboxes are initially created containing no source files.
+However, Motif developers will find it necessary to populate the directories
+that they will be using in their sandboxes with links to the backing build
+(see the section on "Populating a Sandbox").
+If using the ODE \fBmake\fP, it would not be necessary to create the links;
+the files would be found in the backing build transparently.
+
+.H 2 "Components of a sandbox"
+.P
+A sandbox consists of three basic
+components:  a source tree, an area for object modules, and an area to hold
+header files and libraries for commands.
+While Motif sandboxes have these three basic components, they differ
+in structure from the description of the \fBsrc, obj\fP, and \fBexport\fP
+directories given in the common DUG.
+In Motif sandboxes these three functional components are all found within 
+the \fBsrc\fP directory.
+Each build is built for a specific os/hardware platform, as opposed to having
+the machine-specific \fBobj, export\fP directories within a single build.
+.P
+The Motif build process builds the object modules and library archives within 
+the same directory as the sources.
+The header files which are accessed by libraries and programs are linked into
+the \fBsrc/X11\fP directory when the \fBmake includes\fP step (or pass) is run 
+before compiling the rest of Motif.
+In that way, the \fBX11\fP directory performs a similar function to 
+the \fBexport\fP directory in the ODE build environment.
+Any libraries that are used to build Motif clients or programs are accessed
+by the pathname where they were built.
+All of the pathnames for accessing libraries are set in the \fBimake\fP 
+configuration files and templates.  
+The appropriate \fBClientLibs\fP to link a program with is specified in 
+the \fBImakefile\fP.
+.P
+The layout of a Motif sandbox is shown in Figure 1.
+.DS
+.ce
+\fBSandbox Directory Structure\fR
+.SP 5
+.PS
+scale = 80
+line   from 247, 67 \
+	to 335, 3 
+line   from 247, 67 \
+	to 335, 35 
+line   from 247, 67 \
+	to 335, 67 
+line   from 247, 67 \
+	to 335, 91 
+line   from 247, 67 \
+	to 335, 131 
+line   from 279, 227 \
+	to 335, 163 
+line   from 279, 227 \
+	to 335, 195 
+line   from 279, 227 \
+	to 335, 227 
+line   from 279, 227 \
+	to 335, 259 
+line   from 279, 227 \
+	to 335, 291 
+line   from 151, 227 \
+	to 215, 75 
+line   from 151, 227 \
+	to 215, 227 
+line   from 151, 227 \
+	to 215, 363 
+line   from 39, 227 \
+	to 71, 187 
+line   from 39, 227 \
+	to 71, 227 
+line   from 39, 227 \
+	to 71, 259 
+"\fH\s0src\s0\fP"  at 231, 67
+"\fH\s0rc_files\s0\fP"  at 247, 227
+"\fH\s0sboxN\s0\fP"  at 15, 227
+"\fH\s0<machine-1>\s0\fP"  at 111, 267
+"\fH\s0<machine-2>\s0\fP"  at 111, 227
+"\fH\s0<machine-3>\s0\fP"  at 111, 187
+"\fH\s0link -> backing_tree\s0\fP"  at 287, 371
+"\fH\s0.BCSlock\s0\fP"  at 359, 99
+"\fH\s0.BCSlog-user_sbox3\s0\fP"  at 391, 67
+"\fH\s0.BCSset-user_sbox3\s0\fP"  at 391, 35
+"\fH\s0Makeconf\s0\fP"  at 367, 3
+"\fH\s0.BCSconfig\s0\fP"  at 367, 131
+"\fH\s0shared.tmpl\s0\fP"  at 375, 163
+"\fH\s0shared\s0\fP"  at 359, 195
+"\fH\s0sets\s0\fP"  at 351, 227
+"\fH\s0local.tmpl\s0\fP"  at 367, 259
+"\fH\s0local\s0\fP"  at 351, 291
+.PE
+.ce
+Figure 1.
+.DE
+
+.H 2 "Operations Within Sandboxes"
+.P
+In order to perform any of the operations on sandboxes, or any other ODE
+commands, you need to have the ODE commands in your search path.
+The directory on the machine which contains the latest release of ODE must 
+first be mounted on your machine.
+To get access to the ODE tools in OSF you should mount ODE 
+under \fB/usr/ode\fP by using
+.SP
+.ti 6
+\fBosfmount ode2.1 \fImachine_os\fR
+.P
+where \fImachine_os\fP represents the hardware and operating system that you
+are running.
+These are the current platforms available for the ODE tools:
+.DS
+	pmax_osf1
+	pmax_ultrix
+	sparc_sunos
+	hp700_hpux
+	hp300_hpux
+	mmax_osf1
+	at386_osf1
+	rios_aix
+.DE
+.P
+After doing this you will need to modify your \fBPATH\fP environment variable
+to include the ODE tools.  
+The tools for the Motif group are found in the directory \fB/usr/ode/bin_sc\fP.
+This directory contains a subset of the ODE tools to be used for the source
+control functions and does not include the ODE \fBmake\fP and \fBbuild\fP 
+programs.
+For example, from the c-shell:
+.SP
+.ti 6
+\fBset path = (/usr/ode/bin_sc $path)\fP
+.SP
+Once you have your search path set up as described here you are ready to
+use the ODE tools.
+
+.H 3 "Creating sandboxes"
+.P
+Within OSF, the Motif project uses the following naming conventions for builds
+to back sandboxes.
+The default build is called \fBmotifR.R\fP, where R.R is the version number,
+1.1, 1.2, 1.2.1.  
+It is the latest version of the 
+Motif build where source changes are made visible through submissions (see
+chapter on "Submitting").
+Other static or baseline builds follow the same naming convention with
+the addition of the \fBbN\fP suffix, where N is the number of the build.
+.P
+Developers could expect to see builds with names like motif1.2b3 and 
+motif1.1.5b2 if there were two streams of Motif development, 1.2 and 1.1.5.
+The location of the builds is set in the rc_file variable \fBbuild_base\fP in 
+each build.  At OSF, all Motif builds need to be accessible under 
+\fB/project/motif/build\fP.
+.P
+The current version of the \fBmksb\fP command performs some actions
+that are specific to the ODE build environment when using the ODE \fBmake\fP.
+This will be fixed in a future ODE release.
+Since the Motif project does not use the ODE build environment, the user can 
+ignore the creation of the \fBobj\fP and \fBexport\fP directories, and the 
+prompt for the machine type.
+When prompted for the machine type, just hit \fI<return>\fP to choose the 
+default.
+All of the other information in the common DUG regarding creating sandboxes
+applies to the Motif project.
+
+.H 3 "Populating a Sandbox"
+.P
+Since the Motif project is not using the ODE \fBmake\fP, anytime the \fBmake\fP
+command is issued the files that it references must be present, if only via
+symbolic link, in the sandbox.
+The ODE source control tools do not require that the file is present
+in the sandbox; the tools will search the backing chain for the file.
+
+.H 3 "Accessing the Builds"
+.P
+The easiest way to access the Motif builds is to mount them using:
+.SP
+.ti 6
+\fBosfmount motif build\fP
+.P
+This command mounts the builds under \fB/project/motif/build\fP where they
+need to be located.
+.P
+It is not necessary for the developer to use \fBosfmount\fP, but it is 
+necessary for the builds to show up in \fB/project/motif/build\fP.  
+All Motif ODE tools will search for builds using this path.
+.P
+Another directory that should be mounted by Motif developers is 
+\fB/project/projects\fP.  This can be mounted using
+.SP
+.ti 6
+\fBosfmount ode projects\fP
+.P
+The file in this directory, \fBbuild_list\fP, contains the list
+of builds, configuration information and base directories for all builds.
+It allows users the shorthand of entering just \fIname\fP as an argument
+to the tools instead of having to give the entire build path.
+

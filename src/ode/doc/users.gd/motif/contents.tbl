@@ -1,0 +1,26 @@
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" (c) Copyright 1992, 1991, 1990 OPEN SOFTWARE FOUNDATION, INC. 
+.\" ALL RIGHTS RESERVED 
+.\" 
+.\" HISTORY
+.\" $Log: contents.tbl,v $
+.\" Revision 1.1.2.3  1992/12/03  19:12:37  damon
+.\" 	ODE 2.2 CR 346. Expanded copyright
+.\" 	[1992/12/03  18:42:25  damon]
+.\"
+.\" Revision 1.1.2.2  1992/03/10  23:17:30  hester
+.\" 	generate TOC
+.\" 	[1992/03/10  23:13:37  hester]
+.\" 
+.\" $EndLog$
+...\"*********************************************************************
+...\"          Set page information
+...\"*********************************************************************
+.SK
+.OH "'\fB\s10ODE User\'s Guide for Motif\fR''\\\\nP\s0'"	\"*** Set even page footers
+.EH "'\s10\\\\nP''\fBContents\s0\fR'"	\"*** Set odd page footers
+.nr P 1                         \"*** Becomes page two
+.af P i                         \"*** Use 'i' as format
+.SK
+.TC

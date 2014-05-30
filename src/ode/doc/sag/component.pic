@@ -1,0 +1,359 @@
+...\" 
+...\" @OSF_FREE_COPYRIGHT@
+...\" COPYRIGHT NOTICE
+...\" Copyright (c) 1992, 1991, 1990  
+...\" Open Software Foundation, Inc. 
+...\"  
+...\" Permission is hereby granted to use, copy, modify and freely distribute 
+...\" the software in this file and its documentation for any purpose without 
+...\" fee, provided that the above copyright notice appears in all copies and 
+...\" that both the copyright notice and this permission notice appear in 
+...\" supporting documentation.  Further, provided that the name of Open 
+...\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+...\" publicity pertaining to distribution of the software without prior 
+...\" written permission from OSF.  OSF makes no representations about the 
+...\" suitability of this software for any purpose.  It is provided "as is" 
+...\" without express or implied warranty. 
+...\" 
+...\" 
+...\" HISTORY
+...\" $Log: component.pic,v $
+...\" Revision 1.2.9.1  1995/05/23  19:25:11  ezf
+...\" 	uncommented the body of this chapter
+...\" 	[1995/05/23  19:22:43  ezf]
+...\"
+...\" 	uncommented the body of this chapter
+...\" 	[1995/05/23  18:42:05  ezf]
+...\"
+...\" Revision 1.2.6.1  1993/08/25  21:45:30  marty
+...\" 	CR # 628 - Update to ODE 2.3.
+...\" 	[1993/08/25  21:45:16  marty]
+...\" 
+...\" Revision 1.2.4.2  1993/04/22  15:28:04  damon
+...\" 	CR 458. Updated for 2.3
+...\" 	[1993/04/22  15:24:10  damon]
+...\" 
+...\" Revision 1.2.2.3  1992/12/03  19:09:17  damon
+...\" 	ODE 2.2 CR 346. Expanded copyright
+...\" 	[1992/12/03  18:40:49  damon]
+...\" 
+...\" Revision 1.2.2.2  1992/11/18  15:22:51  damon
+...\" 	CR 332. Changed DUG to User Guide
+...\" 	[1992/11/18  15:22:35  damon]
+...\" 
+...\" Revision 1.2  1991/12/05  20:59:57  devrcs
+...\" 	fixed references to DUG, updated dev model
+...\" 	[1991/11/06  18:25:17  hester]
+...\" 
+...\" 	added paragraph about static vs dynamic builds from ch 5
+...\" 	[91/07/31  13:47:13  hester]
+...\" 
+...\" 	version for updated sag
+...\" 	[91/07/26  13:59:09  hester]
+...\" 
+...\" 	changed from component.mm
+...\" 	[91/06/03  16:38:29  hester]
+...\" 
+...\" 	Was component.mm - added pic picture and renamed to component.pic
+...\" 
+...\" $EndLog$
+
+...\" 	*********************************************************************
+...\" 	          Set page information
+...\" 	*********************************************************************
+.EH "'\s10\\\\nP''\fBChapter 1: ODE Architecture and Development Model\s0\fR'"
+.OH "'\fB\s10Chapter 1: ODE Architecture and Development Model\fR''\\\\nP\s0'"
+.nr P 0                                 \"*** reset page number to page 1
+.af P 1                                 \"*** reset page number to Arabic
+.SK
+...\" *********************************************************************
+         Contents of ODE/SAG: Architecture and Dev Model
+...\" *********************************************************************
+.H 1 "ODE Architecture and Development Model"
+This chapter will give the administrator a high-level understanding of what 
+the OSF Development Environment (ODE) is in terms of its major functional 
+components and how it can be used to support the development and release 
+of software.
+You should already have a good understanding of UNIX
+as well as source control and compilation environments.
+
+.H 2 "High Level View of ODE Architecture"
+ODE is a network-based
+set of tools which support source control, individual and group work areas
+(builds and sandboxes),
+and compilation in a distributed environment.
+These three functions are modular to some extent, so individual projects
+can select which ODE components to use.
+When actually constructing a development environment, administrators
+can ignore components which do not apply to their projects.
+.P
+These three functional components map closely to specific machines
+that communicate over a network.
+This triangle of systems; the build servers, rcs servers, and systems
+with sandboxes; are the key pieces in a complete ODE environment.
+.DS
+.PS
+scale = 80
+"\fH\s0NFS/AFS Reads +\s0\fP"  at 80, 299
+"\fH\s0(rcs commands)\s0\fP"  at 392, 275
+"\fH\s0Remote Execution\s0\fP"  at 400, 299
+line <->  from 280, 219 \
+	to 360, 339 
+"\fH\s0(file copy and update)\s0\fP"  at 112, 251
+"\fH\s0Remote Execution\s0\fP"  at 88, 275
+line <->  from 120, 331 \
+	to 200, 219 
+box  wid 80 ht 48 at 224, 171
+line   from 264, 195 \
+	to 280, 211 
+line   from 184, 195 \
+	to 200, 211 
+line   from 264, 147 \
+	to 280, 163 
+line   from 200, 211 \
+	to 280, 211 \
+	to 280, 163 
+spline   from 272, 131 \
+	to 280, 131 \
+	to 288, 131 \
+	to 288, 139 \
+	to 280, 139 \
+	to 280, 131 \
+	to 296, 131 \
+	to 296, 139 \
+	to 304, 147 \
+	to 296, 155 \
+	to 296, 147 \
+	to 296, 147 \
+	to 304, 147 \
+	to 304, 155 \
+	to 304, 171 \
+	to 288, 171 \
+	to 288, 171 \
+	to 280, 171 
+line   from 184, 139 \
+	to 160, 115 \
+	to 256, 115 \
+	to 272, 139 \
+	to 184, 139 
+line   from 272, 139 \
+	to 272, 123 \
+	to 256, 115 
+line  dashed from 192, 131 \
+	to 200, 131 \
+	to 256, 131 
+line  dashed from 184, 123 \
+	to 248, 123 
+"\fH\s0Developer's\s0\fP"  at 224, 179
+"\fH\s0Sandbox\s0\fP"  at 216, 163
+box  wid 80 ht 48 at 408, 403
+line   from 448, 427 \
+	to 464, 443 
+line   from 368, 427 \
+	to 384, 443 
+line   from 448, 379 \
+	to 464, 395 
+line   from 384, 443 \
+	to 464, 443 \
+	to 464, 395 
+spline   from 456, 363 \
+	to 464, 363 \
+	to 472, 363 \
+	to 472, 371 \
+	to 464, 371 \
+	to 464, 363 \
+	to 480, 363 \
+	to 480, 371 \
+	to 488, 379 \
+	to 480, 387 \
+	to 480, 379 \
+	to 480, 379 \
+	to 488, 379 \
+	to 488, 387 \
+	to 488, 403 \
+	to 472, 403 \
+	to 472, 403 \
+	to 464, 403 
+"\fH\s0Project's\s0\fP"  at 400, 411
+"\fH\s0RCS Server\s0\fP"  at 408, 387
+line   from 368, 371 \
+	to 344, 347 \
+	to 440, 347 \
+	to 456, 371 \
+	to 368, 371 
+line   from 456, 371 \
+	to 456, 355 \
+	to 440, 347 
+line  dashed from 376, 363 \
+	to 384, 363 \
+	to 440, 363 
+line  dashed from 368, 355 \
+	to 432, 355 
+"\fH\s0ODE COMPONENTS\s0\fP"  at 240, 3
+"\fH\s0Build Server\s0\fP"  at 64, 395
+box  wid 80 ht 48 at 64, 403
+line   from 104, 427 \
+	to 120, 443 
+line   from 24, 427 \
+	to 40, 443 
+line   from 104, 379 \
+	to 120, 395 
+line   from 40, 443 \
+	to 120, 443 \
+	to 120, 395 
+spline   from 112, 363 \
+	to 120, 363 \
+	to 128, 363 \
+	to 128, 371 \
+	to 120, 371 \
+	to 120, 363 \
+	to 136, 363 \
+	to 136, 371 \
+	to 144, 379 \
+	to 136, 387 \
+	to 136, 379 \
+	to 136, 379 \
+	to 144, 379 \
+	to 144, 387 \
+	to 144, 403 \
+	to 128, 403 \
+	to 128, 403 \
+	to 120, 403 
+"\fH\s0Project's\s0\fP"  at 56, 411
+line   from 24, 371 \
+	to 0, 347 \
+	to 96, 347 \
+	to 112, 371 \
+	to 24, 371 
+line   from 112, 371 \
+	to 112, 355 \
+	to 96, 347 
+line  dashed from 32, 363 \
+	to 40, 363 \
+	to 96, 363 
+line  dashed from 24, 355 \
+	to 88, 355 
+.PE
+.DE
+.SP
+.P
+The first step you must take is to decide which ODE components
+are going to be used in your project.
+The choices are similar to those listed above: source control,
+and compilation.
+Components which must always be part of the development environment
+are the backing builds and sandboxes.
+Regardless of which features a project uses, you 
+need to install these components.
+
+.H 3 "Backing Builds"
+.P
+A backing build can be static or dynamic.  
+A static backing build can be thought of as frozen, and the sources
+do not change 
+after creation.  
+An example of a static build might be a baseline or a release.  
+Dynamic backing builds change to reflect ongoing development.  
+When using the source control component of ODE, 
+source changes are made
+by the process of submissions being made to the build.  
+These submissions (of changes to files under source control) appear in
+the build and are instantly available to all developers backed by that build.
+.P
+In its simplest form, a backing build is a directory containing a
+complete set of the project sources and ODE configuration files.
+In almost all cases, a backing build also contains an export area
+which has the project specific files needed to build the sources.
+For example, header files and libraries are found in the export area.
+Optional directories in the backing build include a place to hold
+the objects produced by compiling the sources, a tools directory to
+hold tools specific to a particular backing build, and a logs directory to
+track source control information.
+.P
+Within each build, the sub-directories and files vary according
+to the components being used, the machines-types being supported,
+and project specific needs.
+This document attempts to cover as broad an implementation of ODE as
+it reasonably can, however, you are encouraged to read
+at least the introductions to each chapter in the ODE User
+Guides as well as the ODE man pages to get more
+details on specific aspects of the environment.
+
+.H 3 "Sandboxes"
+.iX "sandbox"
+Sandboxes are individual work areas which mirror the structure of a
+backing build.
+Unlike backing builds, they normally do not contain all the source.
+Instead, sandboxes are \fBbacked by\fR backing builds, hence the name.
+Being backed by a build means that whenever something which is needed 
+to compile
+in the sandbox is not
+there, ODE tools look for it in the backing build.
+The other thing sandboxes inherit from their backing builds is the
+environment set by the configuration files (see chapter 6).  
+Sandboxes can be backed by builds or other sandboxes.
+.P
+In all cases, a sandbox can supersede a backing tree:
+with source, for example, a local copy of a file has preference over
+the backing tree's copy.
+The advantage of using sandboxes is that most developers will
+want to use the majority of the environment set up by the backing tree
+including the source files, Makefiles, headers, and libraries.
+Most sandboxes are sparsely filled, containing only the few source
+files the developer is actually editing and abbreviated versions of
+the configuration files.
+.P
+At OSF, the backing builds and sandboxes are not on the same systems.
+Most sandboxes are on the developers' systems while backing builds are
+kept on a server.
+Actually, the backing builds can themselves be spread out over the network.
+
+.H 3 "Source Control"
+.iX "source control"
+.iX "revision control"
+.iX "RCS"
+The source control tools are invoked from the developer's system and 
+start remote processes on the servers to manipulate the files under source
+control.
+.P
+The underlying source control tool ODE uses is \fBrcs\fR
+so each project must have its sources in an \fBrcs\fR tree.
+A part of the source control component is the server hosting the \fBrcs\fR tree.
+Like the builds, these trees can be kept on any system.
+
+.H 3 "Further Information"
+For details on sandboxes, see chapter one of the Users Guide.
+For information on ODE source management, refer to chapter two.
+To compile sources, read chapter three.
+
+.H 2 "High Level View of the ODE Development Model"
+.P
+At OSF, we use the source control component of ODE.  
+.P
+.iX "bsubmit"
+.iX "submitting"
+Developers do their work in sandboxes that are backed by builds
+or possibly other sandboxes.  
+As their work proceeds they check-in 
+and check-out (bci, bco) files in their sandbox.
+When the developer feels that a file or group of files is stable
+enough, the changes are submitted (bsubmit) to a public build.
+.P
+Depending on project needs, all submitted sources in this public
+build are compiled periodically.  At OSF, the sources are compiled
+nightly in order to provide the access to the latest development and
+check for any inconsistencies.
+As a result of the constant change, this build is relatively unstable.
+.P
+After a sufficient number of changes have been made to 
+this public submission build a new baseline build is made from it and a
+new submission build is started.
+.P
+The static, baseline builds are often installed internally for more complete
+testing on various users' systems.  Procedures are available in ODE
+which facilitate this process of collecting the binaries and making an
+image of the installed offering for distribution.
+.P
+Details on how to set up the source control and builds and the
+steps necessary for performing these procedures can be found 
+in Chapters 4 through 7 of this document.

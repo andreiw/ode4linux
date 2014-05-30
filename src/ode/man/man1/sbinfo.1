@@ -1,0 +1,116 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: sbinfo.1,v $
+.\" Revision 1.6.6.1  1993/09/14  00:41:41  marty
+.\" 	CR # 623
+.\" 	[1993/09/14  00:39:38  marty]
+.\"
+.\" Revision 1.6.4.2  1993/04/21  18:42:32  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/21  18:39:46  damon]
+.\" 
+.\" Revision 1.6.2.2  1992/12/03  17:24:43  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:25  damon]
+.\" 
+.\" Revision 1.6  1991/12/05  21:15:41  devrcs
+.\" 	Changes for ODE 2.1 reference page review.
+.\" 	[1991/11/03  18:39:15  damon]
+.\" 
+.\" 	Updated to Tools II specs
+.\" 	[90/12/31  12:03:05  randyb]
+.\" 
+.\" Revision 1.5  90/12/06  14:21:28  devrcs
+.\" 	Pre-OSF/1 changes
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH sbinfo 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+sbinfo \- show information derived from the local sandbox rc file.
+.SH SYNOPSIS
+.IP \fBsbinfo\fP 7
+[\fIdirective(s)\fR]
+.IP "\fIODE opts\fR:" 10
+[\fB-quiet -normal -verbose -debug -usage -version\fP]
+.br
+[\fB-sb \fIsandbox\fR] [\fB-rc \fIrcfile\fP] 
+.P
+.SH FLAGS
+.IP "\fIdirective(s)\fP"
+One or more sandbox variables.
+.P
+.ti 2
+\fIODE opts\fR:
+.IP "\fB\-quiet\fR"
+One of three levels of verbosity.
+\fB-quiet\fR prints only the information which the user must always
+receive including all fatal error messages.
+.IP "\fB\-normal\fR"
+One of three levels of verbosity.
+\fB-normal\fR is the default verbosity and prints out the significant
+steps the program is taking and warnings.
+It also prints out all information \fB-quiet\fR prints.
+.IP "\fB\-verbose\fR"
+One of three levels of verbosity.
+Not used for this command.
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-version\fR"
+Prints the revision information.
+.IP "\fB\-sb \fIsandbox\fR"
+By default, \fBsbinfo\fR uses the current sandbox as determined by the
+environment variable \fBSANDBOX\fR or, if that is not set, by
+the default sandbox in the user's rc file.
+If this option is given, the specified sandbox will be used.
+.IP "\fB-rc \fIrcfile\fR"
+By default, \fBsbinfo\fR uses \fB$HOME/.sandboxrc\fR to determine the
+current sandbox.
+If this option is given, the specified user's rc file will be used.
+.P
+.SH DESCRIPTION
+.P
+\fBsbinfo\fP reads the local rc file in the users sandbox rc_files directory
+and prints out the environment variables and directives that it has resolved.
+\fBsbinfo\fP is used to list the values of variables and
+directives that build and other sandbox based tools derive from rc files
+when they are used in that sandbox.
+All variables and directives are printed out in their expanded forms.
+When directives are specified on the command line, only the value of those
+directives are printed out, not the entire sandbox environment.
+If the local rc file includes any other rc files,
+such as the shared rc file and
+the rc files of backing trees,
+\fBsbinfo\fP will use all of the information from the other rc files to
+determine the values of all variables and directives.
+.P
+.SS FILES
+.P
+.IP \fB$HOME/.sandboxrc\fP 
+is used to obtain the path of the sandbox.
+.IP \fIsandbox\fP\fB/rc_files/projects\fP
+used to determine the appropriate sandbox rc file.
+.IP \fIsandbox\fP\fB/rc_files/*\fP
+are other rc files that the local rc file may reference.
+.P
+.SH RELATED INFORMATION
+.P
+sandboxrc(5)

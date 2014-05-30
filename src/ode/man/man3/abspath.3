@@ -1,0 +1,190 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"  
+.\" Copyright (c) 1992 Carnegie Mellon University 
+.\" All Rights Reserved. 
+.\"  
+.\" Permission to use, copy, modify and distribute this software and its 
+.\" documentation is hereby granted, provided that both the copyright 
+.\" notice and this permission notice appear in all copies of the 
+.\" software, derivative works or modified versions, and any portions 
+.\" thereof, and that both notices appear in supporting documentation. 
+.\"  
+.\" CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" 
+.\" CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR 
+.\" ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE. 
+.\"  
+.\" Carnegie Mellon requests users of this software to return to 
+.\"  
+.\" Software Distribution Coordinator  or  Software_Distribution@CS.CMU.EDU 
+.\" School of Computer Science 
+.\" Carnegie Mellon University 
+.\" Pittsburgh PA 15213-3890 
+.\"  
+.\" any improvements or extensions that they make and grant Carnegie Mellon 
+.\" the rights to redistribute these changes. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: abspath.3,v $
+.\" Revision 1.4.2.2  1992/12/02  20:50:15  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/02  20:47:11  damon]
+.\"
+.\" Revision 1.4  1991/12/05  21:15:58  devrcs
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:15:41  mckeen]
+.\" 
+.\" Revision 1.3  90/10/07  21:57:27  devrcs
+.\" 	Added EndLog Marker.
+.\" 	[90/09/29  14:14:10  gm]
+.\" 
+.\" Revision 1.2  90/08/25  12:22:24  devrcs
+.\" 	Taken from old libcs man pages
+.\" 	[90/08/14  11:20:26  randyb]
+.\" 
+.\" Revision 1.2  90/01/02  19:37:03  gm
+.\" 	Fixes for first snapshot.
+.\" 
+.\" Revision 1.1  89/12/26  10:49:22  gm
+.\" 	Current version from CMU.
+.\" 	[89/12/21            gm]
+.\" 
+.\" 	Revised for 4.3.
+.\" 	[86/11/13            andi]
+.\" 
+.\" 	Spruced-up revision of a routine of the same name written by
+.\" 	James Gosling sometime around 1980.  Added the ability to flush
+.\" 	the saved name of the current working directory.
+.\" 	[82/11/16            tlr]
+.\" 
+.\" $EndLog$
+.TH ABSPATH 3 11/16/82
+.CM 3
+.SH "NAME"
+abspath \- determine absolute pathname
+.SH "SYNOPSIS"
+.B
+abspath (name,result)
+.br
+.B
+char *name;
+.br
+.B
+char *result;
+.SH "DESCRIPTION"
+.I Abspath
+places the absolute pathname of the string
+.I name
+into the string
+.IR result .
+.sp
+.I Abspath
+converts the pathname in the string
+.I name
+to an absolute pathname by
+prepending the name of the current working directory if necessary.
+Then the absolute pathname is compacted by removing and resolving
+superfluous steps.
+.sp
+Null components, and components of "." are removed
+because they have no effect on the meaning of the pathname.
+.sp
+Components of ".." are resolved by removing them together with the
+preceeding step.  However, there are certain situations in which
+the preceeding step cannot be removed (for example, if there
+is no preceeding step) and in these cases the ".." will remain.
+.sp
+.I Abspath
+never returns an absolute pathname containing a trailing slash
+except for the case "/".
+.sp
+.I Abspath
+calls
+.I getwd
+to obtain the name of the current working directory when needed.
+To improve performance, the result from
+.I getwd
+is saved so that
+.I getwd
+need not be invoked again during subsequent calls on
+.IR abspath .
+.sp
+The special invocation
+.IR abspath (0,0)
+tells
+.I abspath
+to forget its saved name of the current working directory.
+.I Abspath
+has no way of knowing if the name of the current directory has changed,
+so if you care about these things you must tell it.
+Otherwise,
+.I abspath
+will continue to use its saved result from
+.I getwd
+and this will most likely cause it to produce erroneous results.
+.sp
+.SH "SEE ALSO"
+.IR pwd (1), 
+.IR chdir (2), 
+.IR getwd (3), 
+.IR path (3), 
+.IR expand (3)
+.SH "DIAGNOSTICS"
+Returns \-1 on error (failure in
+.IR getwd );
+0 otherwise.
+.SH "BUGS"
+The string
+.I result
+is assumed to be large enough.
+Intermediate calculations place a string in
+.I result
+that at most consists of
+the name of the current working directory
+concatenated with the string
+.I name
+plus two more characters.
+.sp
+If
+.I getwd
+fails,
+.I abspath
+gives up and returns \-1.
+Generally, failures in
+.I getwd
+are pretty catastrophic.
+.sp
+If you call
+.I chdir
+or if the name of the current directory changes for some other reason,
+.I abspath
+will most likely produce incorrect results for relative path names
+until you call 
+.IR abspath (0,0).
+.sp
+Should
+.I getwd
+return a name for the current working directory
+that does not begin with a slash,
+.I abspath
+will produce a result pathname string
+that it considers to be a reasonable interpretation
+of the situation.
+This is not expected to happen, but
+.I abspath
+is prepared.

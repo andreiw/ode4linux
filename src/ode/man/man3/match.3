@@ -1,0 +1,68 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: match.3,v $
+.\" Revision 1.2.2.2  1992/12/03  17:25:06  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:36  damon]
+.\"
+.\" Revision 1.2  1991/12/05  21:16:30  devrcs
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:16:31  mckeen]
+.\" 
+.\" 	Cleaned up syntax.
+.\" 	[91/03/07  16:55:37  damon]
+.\" 
+.\" 	First version.
+.\" 	[91/03/07  14:21:00  damon]
+.\" 
+.\" $EndLog$
+.TH MATCH 3 3/6/91
+.CM 4
+.SH "NAME"
+match \- string matching functions
+.SH "SYNOPSIS"
+.B
+gmatch (s, p)
+.br
+.B
+register char *s, *p;
+.br
+
+Returns true if string 's' is matched by pattern 'p' where 'p'
+is a string with wildcards in it.
+.SH "DESCRIPTION"
+.I Match
+determines if a string matches a pattern.  It supports the
+following wild cards:
+.nf
+.in 8
+* - match anything
+? - match one occurance of anything
+[] - match any character in brackets
+[N1-N2] - match any charcter from N1 to N2
+! - return the inverse results of the match
+\\ - take the next character literally
+{a,b,c,...} - match anything in the list a,b,c,...
+.in 4
+.fi
+.SH "SEE ALSO"
+libsb(3)
+.SH "BUGS"
+No known bugs

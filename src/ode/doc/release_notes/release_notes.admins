@@ -1,0 +1,102 @@
+# @OSF_FREE_COPYRIGHT@
+# 
+# HISTORY
+# $Log: release_notes.admins,v $
+# Revision 1.1.2.3  1993/06/04  15:40:49  damon
+# 	CR 568. Added reference to ASCII version of SAG chp 3
+# 	[1993/06/04  15:37:07  damon]
+#
+# Revision 1.1.2.2  1993/06/03  18:41:10  damon
+# 	CR 568. Split release notes into users and admins notes
+# 	[1993/06/03  18:40:50  damon]
+# 
+# $EndLog$
+
+How to build ODE 2.3:
+---------------------
+
+Refer to the ASCII version of the System Administrator's Guide (SAG), chapter
+3 in this directory.
+
+Known problems:
+------------------------------------------------
+If you are using the rcs server portion of ODE on an OSF/1 system, you will
+probably need to recompile inetd. By default, it will allow ~40 start-ups
+for the same daemon in 60 seconds before it decides that the daemon is
+looping. The need for this has been lessened now that odexm doesn't need to
+open as many connections as kxctd used to, but if many users are using ODE
+at the same time, this problem can still crop up.
+
+Change the #define of TOOMANY to something higher, like 1000.
+
+Converting older servers to ODE 2.3 servers:
+--------------------------------------------
+
+1) Note that ODE 2.3 builds are not backwards compatible with pre-ODE 2.3
+   tools. This is a one-way trip.
+
+2) If this is your first time setting up an ODE build, you do not need to
+   read the conversion sections. Before reading these sections, you should
+   read sections 4,5, and 6 of the new SAG thoroughly before proceeding. These
+   instructions assume that all of the servers that are going to be converted
+   are going to be converted at the same time and that no one will be using
+   the servers for ODE during this time. Alternatively, you can follow these
+   instructions for one build ( which may involve multiple servers ) at a time.
+
+Converting ODE 2.1.1 servers to ODE 2.3 servers:
+------------------------------------------------
+
+1) Follow the instructions in section 4.1 of the SAG to install odexm on all
+   machines that will be acting as ODE servers.
+
+2) Follow the instructions in section 5.3.1 and 6.3.2 of the SAG for each
+   rcs and build server respectively. This will create the appropriate
+   odexm.conf files.
+
+   The information for the odexm.conf file will come from the following files:
+
+   shared and local: *_owner, rcs_base, submit_base, source_testdir
+   kxct.conf: location of tools
+
+   Once you have an ODE 2.3 build you will no longer need the variables listed
+   above in the shared and local files. You can also delete the kxct.conf,
+   .temp_prefix, and .cmd_prefix files.
+
+4) Follow the instructions in section 4.2.2 of the SAG to install the
+   odexm.map file on all machines that will be acting as ODE servers.
+
+Converting older servers to ODE 2.3 servers (cont):
+---------------------------------------------------
+
+1) Make sure that you are using RCS 5.6!! Also, make sure that you are
+   using the rcsstat provided with our RCS 5.6 archive.
+
+2) In the rcs tree, run the following command:
+
+   find . -name "*,v" -print | xargs rcs -U
+
+   This will remove strict locking from all of the rcs files. ODE 2.3 does
+   not use strict locking. If strict locking is on, it will mess things up.
+
+3) Follow the directions in section 5.3.2 and section 5.4 of the SAG. Instead
+   of creating a bsubmit.hold file, create it by catting together all of the
+   bsubmit.hold files from all active builds using the rcs tree. Remove
+   bsubmit.hold from all active builds.
+
+4) Read section 6.2.2 of the SAG regarding Buildconf and Buildconf.exp. You
+   will need to convert shared and local into Buildconf and Buildconf.exp
+   files. Note that shared and local do not map directly to Buildconf and
+   Buildconf.exp files. You need to do this even if you are not using
+   the new ODE 2.3 make since these files are used by build and workon.
+
+   To start, use the shared file as the basis for your Buildconf file. Use
+   the Buildconf and Buildconf.exp files in ODE as examples.
+
+   You will no longer need the shared, local, shared.tmpl, or local.tmpl
+   files.
+
+5) Follow the instructions in section 6.3 of the SAG to create the sc.conf
+   files.
+
+6) Before making your new builds publicly available, make ABSOLUTELY SURE
+   that you can do a bsubmit of a test file!! This is very important.

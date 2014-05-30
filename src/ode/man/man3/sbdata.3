@@ -1,0 +1,149 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: sbdata.3,v $
+.\" Revision 1.2.2.2  1992/12/03  17:25:15  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:41  damon]
+.\"
+.\" Revision 1.2  1991/12/05  21:16:53  devrcs
+.\" 	Man page for current_sb, current_set, and get_default_usr_rcfile
+.\" 	routines
+.\" 	[91/01/30  16:49:41  randyb]
+.\" 
+.\" $EndLog$
+.\"
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH sbdata 3 1/27/91
+.SH NAME
+sbdata \- give data on current sandbox settings
+.SH SYNOPSIS
+.IP "\fBint current_sb ( sb, basedir, sb_rcfile, usr_rcfile )\fR"
+.sp 0
+.B "char ** sb;"
+.sp 0
+.B "char ** basedir;"
+.sp 0
+.B "char ** sb_rcfile;"
+.sp 0
+.B "char ** usr_rcfile;"
+.IP "\fBint current_set ( setname, setdir, sbname, rc_file )\fR"
+.sp 0
+.B "char ** setname;"
+.sp 0
+.B "char ** setdir;"
+.sp 0
+.B "char ** sbname;"
+.sp 0
+.B "char ** rc_file;"
+.IP "\fBBOOLEAN get_default_usr_rcfile ( rc_file )\fR"
+.sp 0
+.B "char ** rc_file;"
+.SH DESCRIPTION
+.SS \fBcurrent_sb\fR
+\fBcurrent_sb\fR fill in the empty arguments with information
+relating to the current sandbox.
+An arguments is empty if the char pointer is NULL, "\0".
+Since the arguments are pointers to pointers, this means \fBsb\fR
+would be empty if *sb == NULL;
+If an argument is not empty, it is left alone but will be checked for
+consistency with the other entries.
+.P
+The \fBsb\fR argument is filled in with the current sandbox,
+first from the value of the environment variable \fBSANDBOX\fR,
+or, if that is not set, from the default sandbox in the user's
+rc file taken from the argument \fBusr_rcfile\fR.
+.P
+The \fBbasedir\fR argument is filled in with the base directory
+to the sandbox in argument \fBsb\fR.
+This information is retrieved from the user's
+rc file taken from the argument \fBusr_rcfile\fR.
+If \fBbasedir\fR is not empty and the \fBsb\fR is,
+\fBcurrent_sb\fR returns -1.
+If the \fBsb\fR argument is not empty, \fBcurrent_sb\fR
+checks to see if the entered sandbox uses the entered base directory.
+It return -1 if the two do not match.
+.P
+The \fBsb_rcfile\fR argument is filled in with the path and name
+of the sandbox's rc file.
+The sandbox is taken from the argument \fBsb\fR and the path to
+the sandbox's rc file retrieved from the user's
+rc file taken from the argument \fBusr_rcfile\fR.
+This argument also checks the \fI/sandbox\fB/rc_files/projects\fR
+to see if there is a multi-project sandbox, and, if so, what the
+appropriate sandbox rc file would be.
+If this argument is not empty and contains a relative path,
+it is modified to contain the absolute path.
+.P
+The \fBusr_rcfile\fR argument is filled in with the path and name
+of the user's rc file.
+The default value of this entry is always \fI$HOME/\fB.sandboxrc.\fR.
+If this argument is not empty and contains a relative path,
+it is modified to contain the absolute path.
+
+.SS \fBcurrent_set\fR
+\fBcurrent_set\fR fills in the empty arguments with information
+relating to the current sandbox and current set.
+An arguments is empty if the char pointer is NULL, "\0".
+Since the arguments are pointers to pointers, this means \fBsetname\fR
+would be empty if *setname == NULL;
+If an argument is not empty, it is left alone but will be checked for
+consistency with the other entries.
+.P
+The \fBsetname\fR argument is filled in with the current set.
+The set is determined first from the environment variable \fBBCSSET\fR,
+then from the default set in the current sandbox.
+The current sandbox is taken from the \fBsb\fR argument.
+If \fBsetname\fR is not empty, \fBcurrent_set\fR checks to see
+if the name is one of the sets in the current sandbox.
+It returns -1 if it is not.
+.P
+The \fBsetdir\fR argument is filled in with the default set directory
+for the set listed in the argument \fBsetname\fR.
+If this argument is not empty, \fBcurrent_set\fR checks to see
+if the default set directory for the set matches the argument.
+If it does not, it returns -1.
+.P
+The \fBsb\fR argument is filled in with the current sandbox,
+first from the value of the environment variable \fBSANDBOX\fR,
+or, if that is not set, from the default sandbox in the user's
+rc file taken from the argument \fBusr_rcfile\fR.
+.P
+The \fBusr_rcfile\fR argument is filled in with the path and name
+of the user's rc file.
+The default value of this entry is always \fI$HOME/\fB.sandboxrc.\fR.
+If this argument is not empty and contains a relative path,
+it is modified to contain the absolute path.
+
+.SS \fBget_default_usr_rcfile\fR
+\fBget_default_usr_rcfile\fR returns the path and name of the 
+default sandbox.
+This is normally \fB$HOME/.sandboxrc\fR.
+If $HOME is not set or the file does not exist, this function
+returns FALSE.
+.SH FILES
+.IP libsb.a
+the library containing these functions
+.SH EXIT VALUES
+\fBcurrent_sb\fR returns '0' upon successful completion, '-1' otherwise.
+.br
+\fBcurrent_set\fR returns '0' upon successful completion, '-1' otherwise.
+.br
+\fBget_default_usr_rcfile\fR returns TRUE, 1, if it finds the user rc file;
+FALSE, 0, otherwise.

@@ -1,0 +1,107 @@
+...\" COPYRIGHT NOTICE
+...\" Copyright (c) 1993, 1992, 1991, 1990 Open Software Foundation, Inc.
+...\" 
+...\" Permission is hereby granted to use, copy, modify and freely distribute
+...\" the software in this file and its documentation for any purpose without
+...\" fee, provided that the above copyright notice appears in all copies and
+...\" that both the copyright notice and this permission notice appear in
+...\" supporting documentation.  Further, provided that the name of Open
+...\" Software Foundation, Inc. ("OSF") not be used in advertising or
+...\" publicity pertaining to distribution of the software without prior
+...\" written permission from OSF.  OSF makes no representations about the
+...\" suitability of this software for any purpose.  It is provided "as is"
+...\" without express or implied warranty.
+...\" 
+...\" 
+...\" HISTORY
+...\" $Log: odexm.5,v $
+...\" Revision 1.1.2.1  1993/12/16  00:04:35  marty
+...\" 	CR # 856 - New man page for odexm.
+...\" 	[1993/12/16  00:04:19  marty]
+...\"
+...\" $EndLog$
+.TH odexm 5 11/5/91
+.SH NAME
+odexm \- description of files associated with odexm.
+.SH SYNOPSIS
+.IP \fB/etc/odexm.conf\fR
+.IP \fB/etc/services\fR
+.IP \fB/etc/inetd.conf\fR
+.IP \fBodexm\fR
+.IP \fBoxm_relay_tcp\fR
+
+.SH DESCRIPTION
+\fBodexm\fR is the ODE execution monitor.  It is the communication
+link between ODE client machines (where users typically work) and
+ODE servers (where the backing tree and rcs tree reside).
+
+.SS "ODEXM File: \fB/etc/odexm.conf\fR "
+.P
+The file
+.B "\fB/etc/odexm.conf\fR"
+is used on ODE servers to direct incoming ODE requests to the proper
+backing builds and rcs trees.  There are three types of ODE
+requests that a server gets: operations on the \fBrcs\fR tree, 
+operations on the backing trees \fBsrc\fR directory, and 
+updating logs for a backing tree.
+.P
+For a given backing tree on the server; each of these operations contains
+an entry in the \fB/etc/odexm.conf\fR file.  For example, the project
+\fBode2.3.4\fR has the following three entries:
+.P
+.nf
+rcs/ode/ode2.3.4   /u1/rcs      /u1/servertools      devrcs /u1/servertools/odexm.map
+logs/ode/ode2.3.4  /u1/ode2.3.4/logs /u1/servertools devsrc /u1/servertools/odexm.map
+src/ode/ode2.3.4   /u1/ode2.3.4/src  /u1/servertools devsrc /u1/servertools/odexm.map
+.fi
+.P
+The fields in each entry are: the unique identifier for the entry,
+the location where the operation is to take place, the location of ODE server
+tools, the user-id that \fBodexm\fR should run as, and the location of 
+a standard \fBodexm.map\fR file.
+.P
+In the example above; 
+all \fBrcs\fR operations for the backing build \fBode2.3.4\fR 
+are directed through the entry \fIrcs/ode/ode2.3.4\fR.  The \fBrcs\fR tree resides in
+\fB/u1/rcs\fR.  The tools for check-in and check-out are in \fB/u1/servertools\fR.
+Operations should be run as user \fBdevrcs\fR and the \fBodexm.map\fR file is in
+\fB/u1/servertools/odexm.map\fR.
+
+
+.SS "ODEXM File: \fB/etc/services\fR "
+
+This file must have a telnet port assigned to \fBodexm\fR.
+The port that is typically used is \fB548\fR or \fB549\fR.  This port number
+should match \fBtcp_service_number\fR entry in  the file
+\fI/rcsbase/\fBode2.3_server_base/sets/\fIDEFAULT_SET\fR/sc.conf\fR
+
+For example the entry in \fB/etc/services\fR could be:
+.sp 1
+.ti 7
+odexm	548/tcp
+.sp 1
+
+.SS "ODEXM File: \fB/etc/inetd.conf\fR "
+
+This file must have an entry to start up \fBodexm\fR via \fBinetd\fR.  The entry
+is this file should be:
+.sp 1
+.nf
+.ti
+odexm  stream  tcp    nowait   /u1/servertools/odexm   odexm
+.fi
+.sp 1
+
+Each time this file is modified, \fBinetd\fR will need to be restarted.
+
+.SS "ODEXM File: \fBodexm\fR "
+.P
+\fBodexm\fR is typically places with the other ODE server tools.  In the example above
+the location would be \fB/u1/servertools/odexm\fR.
+
+
+.SS "ODEXM File: \fBoxm_relay_tcp\fR "
+.P
+\fBoxm_relay_tcp\fR is used by \fBodexm\fR during all operations.  \fBodexm\fR expects to 
+find this executable in the same directory as all other ODE server tools.
+

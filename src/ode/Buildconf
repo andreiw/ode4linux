@@ -1,0 +1,104 @@
+# COPYRIGHT NOTICE
+# Copyright (c) 1993, 1992, 1991, 1990  
+# Open Software Foundation, Inc. 
+#  
+# Permission is hereby granted to use, copy, modify and freely distribute 
+# the software in this file and its documentation for any purpose without 
+# fee, provided that the above copyright notice appears in all copies and 
+# that both the copyright notice and this permission notice appear in 
+# supporting documentation.  Further, provided that the name of Open 
+# Software Foundation, Inc. ("OSF") not be used in advertising or 
+# publicity pertaining to distribution of the software without prior 
+# written permission from OSF.  OSF makes no representations about the 
+# suitability of this software for any purpose.  It is provided "as is" 
+# without express or implied warranty. 
+#
+# HISTORY
+# $Log: Buildconf,v $
+# Revision 1.1.13.3  1995/05/08  18:17:02  ezf
+# 	added option for at386_linux context
+# 	[1995/05/08  17:53:15  ezf]
+#
+# Revision 1.1.8.1  1993/11/12  20:14:52  root
+# 	CR 803. Added alpha_osf1, removed references to host includes and libs
+# 	[1993/11/12  20:14:26  root]
+# 
+# Revision 1.1.6.1  1993/09/29  14:31:48  root
+# 	CR 706. Added default context of hp700_hpux for hp700
+# 	[1993/09/29  14:30:40  root]
+# 
+# Revision 1.1.4.1  1993/08/06  18:13:12  damon
+# 	CR 619. Added IDL_GEN_AUX_FILES for DCE odexm work
+# 	[1993/08/06  18:12:54  damon]
+# 
+# Revision 1.1.2.2  1993/05/27  14:50:37  damon
+# 	CR 541. Cleaned up Buildconf* files
+# 	[1993/05/27  14:50:05  damon]
+# 
+# Revision 1.1.2.5  1993/02/01  19:57:50  damon
+# 	CR 417. Moved object_base from Buildconf to Buildconf.exp
+# 	[1993/02/01  19:57:29  damon]
+# 
+# Revision 1.1.2.4  1993/02/01  19:36:05  damon
+# 	CR 417. Move build information into Buildconf*
+# 	[1993/02/01  19:34:08  damon]
+# 
+# Revision 1.1.2.3  1993/01/14  22:04:16  damon
+# 	CR 403. Removed /usr/include
+# 	[1993/01/14  22:03:03  damon]
+# 
+# Revision 1.1.2.2  1993/01/13  18:12:45  damon
+# 	CR 391. Moved from builds rc_files dir
+# 	[1993/01/13  18:12:16  damon]
+# 
+# $EndLog$
+setenv target_machine not_used_set_in_makeconf
+on alpha setenv context alpha_osf1
+on alpha setenv OS osf1
+on mips setenv context pmax_ultrix
+on mips setenv OS ultrix
+on mmax setenv context mmax_osf1
+on mmax setenv OS osf1
+# use one set of the following lines for either Linux or OSF/1:
+#on i386 setenv context at386_linux
+#on i386 setenv OS linux
+#on i386 setenv ARCHIVE_FORMAT LINUXARCH
+#on i386 setenv context at386_osf1
+#on i386 setenv OS osf1
+#on i386 setenv ARCHIVE_FORMAT OSFARCH
+on i386 on_os linux setenv context at386_linux
+on i386 on_os linux setenv OS linux
+on i386 on_os linux setenv ARCHIVE_FORMAT LINUXARCH
+on i386 on_os osf1 setenv context at386_osf1
+on i386 on_os osf1 setenv OS osf1
+on i386 on_os osf1 setenv ARCHIVE_FORMAT OSFARCH
+on RIOS setenv context rios_aix
+on RIOS setenv OS aix
+on sparc setenv context sparc_sunos
+on sparc setenv OS sunos
+on mac2 setenv context mac2_osf1
+on mac2 setenv OS osf1
+on hp700 setenv context hp700_hpux
+on hp700 setenv OS hpux
+on ppc on_os linux setenv context ppc_linux
+on ppc on_os linux setenv OS linux
+on ppc on_os linux setenv ARCHIVE_FORMAT LINUXARCH
+replace setenv OBJECTDIR ../obj/${context}
+build_list /project/projects/build_list
+build_makeflags -r
+setenv PROJECT_NAME ODE
+setenv project_name ode
+setenv RULES_MK osf.rules.mk
+replace tools_base ${sandbox_base}/tools/${context}
+replace object_base ${sandbox_base}/obj/${context}
+replace source_base ${sandbox_base}/src
+replace export_base ${sandbox_base}/export/${context}
+setenv SOURCEBASE ${source_base}
+setenv EXPORTBASE ${export_base}
+replace setenv MAKESYSPATH ${source_base}/ode/mk
+replace setenv BACKED_SOURCEDIR ${source_base}
+replace setenv SOURCEDIR ""
+replace setenv INCDIRS "-I${export_base}/usr/include"
+replace setenv LIBDIRS "-L${export_base}/usr/lib"
+setenv USE_DASH_I_DASH 1
+setenv IDL_GEN_AUX_FILES 1

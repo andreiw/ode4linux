@@ -1,0 +1,264 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: mklinks.1,v $
+.\" Revision 1.8.6.1  1993/09/14  00:41:29  marty
+.\" 	CR # 623
+.\" 	[1993/09/14  00:39:31  marty]
+.\"
+.\" Revision 1.8.4.4  1993/04/21  18:42:16  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/21  18:39:38  damon]
+.\" 
+.\" Revision 1.8.4.3  1993/03/31  16:47:25  marty
+.\" 	Minor edits
+.\" 	[1993/03/31  16:46:45  marty]
+.\" 
+.\" Revision 1.8.4.2  1993/03/31  16:45:34  marty
+.\" 	OT # 263 , updated man page
+.\" 	[1993/03/31  16:45:14  marty]
+.\" 
+.\" Revision 1.8.2.2  1992/12/03  17:24:17  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:16  damon]
+.\" 
+.\" Revision 1.8  1991/12/05  21:15:25  devrcs
+.\" 	Changes from ODE 2.1 Man page review.
+.\" 	[1991/11/03  18:39:12  damon]
+.\" 
+.\" 	Upgraded to Tools II interface
+.\" 	[91/01/07  09:35:36  randyb]
+.\" 
+.\" 	Documented the -over option for copy.
+.\" 	[90/11/07  13:57:20  randyb]
+.\" 
+.\" Revision 1.6  90/12/06  14:21:15  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:46:30  gm]
+.\" 
+.\" Revision 1.5  90/10/07  21:56:50  devrcs
+.\" 	Pre-OSF1 changes
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH mklinks 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+mklinks \- populate the sandbox with links to files in a backing tree.
+.SH SYNOPSIS
+.IP \fBmklinks\fP 9
+[\fB-copy\fP [\fB-over\fR]] [\fB-norecurse\fP] [\fB-refresh\fP]
+[\fIODE opts\fR] \fIdirectory\fR | [\fIabs opts\fR]
+.IP "\fIabs opts\fR:" 9
+\fB-link_from \fIsource-directory\fP \fB-link_to \fInew-directory\fP
+\fB-cmp\fR \fB-query\fR
+.IP "\fIODE opts\fR:" 10
+[\fB-info -auto -noauto -quiet -normal -verbose -usage -version\fP]
+.br
+[\fB-sb \fIsandbox\fR] [\fB-rc \fIrcfile\fP]
+.SH FLAGS
+.IP "\fB-copy\fP" 
+Make actual copies rather than links.
+The modification times of the files that are copied are preserved
+for the benefit of make.
+.IP "\fB-over\fP" 
+Force copy to overwrite files which already exists.
+WARNING: this option can overwrite files the user has checked-out.
+.IP "\fB-norecurse\fP" 
+Links files in the target directory only; does not recursively populate
+subdirectories.
+.IP "\fB-refresh\fP" 
+Existing links will be replaced with new links.
+.P
+.ti 2
+\fIabs opts\fR:
+.IP "\fB-link_from \fP\fIsource-directory\fP"
+Use \fIsource-directory\fP as the path of the directory
+to make links from.
+This is for general functionality of the tool and is not normally
+used in sandboxes.
+.IP "\fB-link_to \fP\fInew-directory\fP"
+Use \fInew-directory\fP as the path to the directory to contain the
+new links.
+This is for general functionality of the tool and is not normally
+used in sandboxes.
+.IP "\fB-cmp\fP"
+Compare existing files against the corresponding files in the backing tree and
+replace identical files with links.
+.IP "\fB-query\fP" 
+Used with the -cmp flag. Queries the user for each file before it is deleted
+and replaced with a link.
+.P
+.ti 2
+\fIODE opts\fR:
+.IP "\fB\-info\fR"
+\fB-info\fR gives the user information on what \fBmklinks\fR would do
+without actually doing anything.
+The \fB-info\fR option works in conjunction with the verbosity options.
+.IP "\fB\-auto -noauto\fR"
+\fB-auto\fR eliminates any prompting \fBmklinks\fR would do.
+If set, \fBmklinks\fR will take the default action without asking.
+\fB-noauto\fR toggles \fB-auto\fR off and is most often used to turn
+off \fB-auto\fR when it is set in the user's rc file.
+.IP "\fB\-quiet\fR"
+One of three levels of verbosity.
+\fB-quiet\fR prints only the information which the user must always
+receive including all fatal error messages.
+.IP "\fB\-normal\fR"
+One of three levels of verbosity.
+\fB-normal\fR is the default verbosity and prints out the significant
+steps the program is taking and warnings.
+It also prints out all information \fB-quiet\fR prints.
+.IP "\fB\-verbose\fR"
+One of three levels of verbosity.
+\fB-verbose\fR prints out detailed information on what steps the program
+is taking and all diagnostic errors.
+It also prints out all information \fB-quiet\fR and \fB-normal\fR prints.
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-version\fR"
+Prints the revision information.
+.IP "\fB\-sb \fIsandbox\fR"
+By default, \fBmklinks\fR uses the current sandbox as determined by the
+environment variable \fBSANDBOX\fR or, if that is not set, by
+the default sandbox in the user's rc file.
+If this option is given, the specified sandbox will be used.
+.IP "\fB-rc \fIrcfile\fR"
+By default, \fBmklinks\fR uses \fB$HOME/.sandboxrc\fR to determine the
+current sandbox.
+If this option is given, the specified user's rc file will be used.
+.P
+\fBmklinks\fR provides a quick and easy way to link or copy directories
+recursively.
+By default it knows about the sandbox structure and puts links in place
+using that knowledge.
+.SH DESCRIPTION
+.P
+The \fBmklinks\fP command creates symbolic
+links in the users sandbox to source files in the backing
+chain.
+.P
+\fBmklinks\fR identifies the files to link in one of two ways;
+files relative to the current working directory of a sandbox and
+files relative to the base source directory of a sandbox.
+If the file name given to \fBmklinks\fR starts with a slash, ("/"),
+the file to link to is assumed to be located relative to the 
+source base directory.
+If the file name does not begin with a slash,
+then the link is created relative to the current working directory.
+.P
+If the users specifies a directory, then \fBmklinks\fR will attempt
+to create links for all files in the directory as well as files in 
+subdirectories.
+.P
+The file to link to (in the backing tree) must already exist.
+If, however, the file does not exist in the sandbox,
+it will be created.
+.P
+Options which apply to creating links in a sandbox are:
+-copy, -over, and -norecurse.
+.P
+If, instead of automatically linking a sandbox with its backing tree,
+the user wishes to link two arbitrary directories, he can do so by using
+the \fB-link_from\fR and \fB-link_to\fR options together.
+These two options are used as a pair and the \fBfile\fR entry
+given with sandbox linking is omitted.
+\fBmklinks\fR will return an error if only one of these options is given.
+.P
+Each option is followed by the absolute or relative path to the
+appropriate directory.
+If the directory path is absolute (starts with a slash)
+it is taken from the root.
+If it does not start with a slash, it is assumed to begin at the current
+working directory.
+.P
+These two options can be used in conjunction with all the option
+previously mentioned plus -cmp and -query.
+.P
+In a sandbox that already contains some links, \fBmklinks\fP will add any
+new links required.
+With the -cmp and -query options, \fBmklinks\fP can check or update sandboxes
+that already contain some links.
+.P
+.SH EXAMPLES
+.P
+For purposes of these examples, the sandbox is assumed to be
+\fB/sandbox/suzieq/song\fR.
+.in +5
+.sp
+mklinks /src/usr/bin/yacc
+.P
+Links all files and directories, recursively, from
+/sandbox/suzieq/song/link/src/usr/bin/yacc to
+/sandbox/suzieq/song/src/usr/bin/yacc.
+It does not matter where the current working directory is when this
+command is called.
+.P
+The same result is achieved with these commands:
+.in +5
+.sp
+.nf
+cd /sandbox/suzieq/song/src/usr/bin/yacc
+mklinks .
+.fi
+.in
+.P
+When a relative path is given, \fBmklinks\fP expects the user to be in
+the sandbox.
+.P
+If the links are to be created in other than the current sandbox,
+use the \fI-sb\fP flag:
+.in +5
+.sp
+mklinks -sb /sandbox/suzieq/memories /src/usr/bin/yacc
+.in
+.PP
+The \fI-norecurse\fP option stops \fBmklinks\fP from linking sub-directories.
+To link the objects in kernel/bin without descending the sub-directories,
+the command would be:
+.in +5
+.sp
+mklinks -norecurse /obj/pmax/kernel/bin
+.in
+.P
+To make local copies of the tools, use:
+.in +5
+.sp
+mklinks -copy /tools
+.in
+.P
+To link two arbitrary directories, for example the src in someone's sandbox
+to the user's home directory, use the -link_ options.
+.in +5
+.sp
+mklinks -link_from /sandbox/suzieq/song/src -link_to ~/src
+.in
+.P
+These two options must always be used together.
+.SH FILES
+.PP
+.IP \fB$HOME/.sandboxrc\fP 
+is used to obtain the path to the sandbox.
+.PP
+.SH RELATED INFORMATION
+.PP
+sandboxrc(5),
+mksb(1),
+resb(1).
+

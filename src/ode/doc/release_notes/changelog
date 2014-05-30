@@ -1,0 +1,88 @@
+2/8/94 ODE 2.3.4
+----------------
+Closed lots of defects
+ODE now has a turn-key test suite which is available separately
+Fixed lots of nits thanks to new test suite
+Improved ancestry handling
+Added -a switch to bco to enable users to check out old versions of a file
+  and be able to bci and bsubmit it and preserve the fact that the file
+  will probably need merging
+Restored and improved bco -undo
+Restored bci -x (xlog) functionality
+Added bco -p to check out any version of a file to stdout
+'bdiff -r ODE_LABEL' now prints branch labels (if supplied) before doing diffs.
+Added a man page for odexm
+Added a Buildconf.local file which works like the old 'local' file
+Documented exclusive file locking, sb.conf, COPYRIGHT NOTICE handling,
+  and make's .tryinclude
+sadmin.1 and oderc reference pages were updated to conform with ODE 2.3 changes
+Added VERROR for ui_print() as a level between VWARNING and VFATAL
+
+6/11/93 ODE 2.3
+-------------------------------------------------
+Made source control and build parts separable
+Added ancestor tracking. This simplifies shared sandboxes & resbing
+Strict file locking (optional by directory)
+New client/server architecture. Very fast bsubmits!!
+Automatic history log merging
+Configurable comment leaders
+Uses RCS 56.
+Fixed bugs
+[See change_requests file for full list]
+
+1/4/92 - ODE 2.2
+-------------------------------------------------
+Changed kxctd to odexm
+Converted most tools to use the ODE parser
+Converted the b-tools to use the sci_rcs.c module
+Updated the test suite
+Fixed bugs
+
+===============================================================================
+ODE 2.1.1
+===============================================================================
+
+General:
+  Ported to hp700_hpux except for sup, build, diff
+  Ported to sparc_sunos
+  Fixed hanging authcovers in bci,bco,bmerge,bsubmit for > 8 files
+  Uses new porting mechanism, PORTING_OFILES in Makeconf
+  Now builds 'build' in setup.sh to support setup pass in OSF/1 1.1
+  Updated documentation to reflect setup changes
+  Added va_argv to libode/porting
+  Added -version for all commands except make (see next line)
+  Added -v for make to get version
+  Fixed rcs Makefile to be able to build rcsdiff3 independently of other
+    rcs programs
+  Now gives credit to CMU for the code that came from CMU
+
+authcover (rcsauth, srcauth, subauth)
+  Cleaned up one of the calls to select which was giving 'invalid argument.'
+
+bmerge
+  Cleaned up casts of va_list to (char *) by using va_argv
+ 
+bsubmit
+  Fixed problems with (null) for versions in logs.
+  Split backing builds now work.
+
+logsubmit
+  Fixed improper locking code which would sometimes prevent bsubmit.hold
+  cleanup at the end of a submission.
+
+make
+  Fixed archive format code. Now builds OSF/1 1.1 libc.a correctly.
+  Fixed problem which prevented leading whitespace from being stripped from
+    command line.
+  -k now really continues, even if no rules are defined for a target
+
+makepath
+  Now handles parallel building
+
+release
+  Fixed problem with dangling links and improper propagation of links to
+  release areas.
+
+sup
+  Now built static and calls /sbin/sh (which is static)
+  More portable (but still not perfect!)

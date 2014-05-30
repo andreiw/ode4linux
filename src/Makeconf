@@ -1,0 +1,513 @@
+#
+# COPYRIGHT NOTICE
+# Copyright (c) 1992, 1991, 1990  
+# Open Software Foundation, Inc. 
+#  
+# Permission is hereby granted to use, copy, modify and freely distribute 
+# the software in this file and its documentation for any purpose without 
+# fee, provided that the above copyright notice appears in all copies and 
+# that both the copyright notice and this permission notice appear in 
+# supporting documentation.  Further, provided that the name of Open 
+# Software Foundation, Inc. ("OSF") not be used in advertising or 
+# publicity pertaining to distribution of the software without prior 
+# written permission from OSF.  OSF makes no representations about the 
+# suitability of this software for any purpose.  It is provided "as is" 
+# without express or implied warranty.
+# 
+# HISTORY
+# $Log: Makeconf,v $
+# Revision 1.3.40.4  1995/05/12  18:52:35  robert
+# 	Change compiler from gcc -> c89 for alpha_osf1
+# 	and add NO_GLUE option.
+# 	[1995/05/12  18:45:14  robert]
+#
+# Revision 1.3.40.3  1995/05/08  18:16:59  ezf
+# 	added at386_linux context
+# 	[1995/05/08  17:55:05  ezf]
+# 
+# Revision 1.3.35.2  1994/02/14  15:51:14  root
+# 	CR # 1049  - Add -DNO_KILLPG for sinix.
+# 	[1994/02/14  15:50:53  root]
+# 
+# Revision 1.3.35.1  1994/02/11  17:38:00  root
+# 	CR # 1049 - Fix build errors for ALPHA.
+# 	[1994/02/11  17:37:44  root]
+# 
+# Revision 1.3.31.1  1993/11/03  15:52:48  damon
+# 	CR 774. Use pedantic flags on all of ODE
+# 	[1993/11/03  15:51:37  damon]
+# 
+# Revision 1.3.29.3  1993/09/29  13:55:15  damon
+# 	CR 705. ifdef for NO_POLL for platforms without poll()
+# 	[1993/09/29  13:54:47  damon]
+# 
+# Revision 1.3.29.2  1993/09/08  14:58:16  root
+# 	CR # 622 - Change context to at386_sinix, also add -DNO_STRINGS.
+# 	[1993/09/08  14:57:56  root]
+# 
+# Revision 1.3.29.1  1993/08/27  15:58:59  marty
+# 	CR # 627 - Remove -DBAD_STRDUP_DECL from rios_aix build.
+# 	[1993/08/27  15:58:45  marty]
+# 
+# Revision 1.3.26.3  1993/08/19  19:02:43  damon
+# 	CR 622. Added -DBSD_COMP to get bsd stuff from ioctl.h
+# 	[1993/08/19  19:02:18  damon]
+# 
+# Revision 1.3.26.2  1993/08/19  17:13:22  damon
+# 	CR 622. Added defs for at386_svr4
+# 	[1993/08/19  17:12:53  damon]
+# 
+# Revision 1.3.26.1  1993/08/10  19:58:23  damon
+# 	CR 608. Added alpha_osf1 support
+# 	[1993/08/10  19:58:14  damon]
+# 
+# Revision 1.3.16.8  1993/07/07  19:32:27  damon
+# 	CR 602. Add NO_SUP_LOCKS and NEED_LOCK_DEFS
+# 	[1993/07/07  19:31:57  damon]
+# 
+# Revision 1.3.16.7  1993/06/01  16:56:13  marty
+# 	CR # 562 - lstat not defined on sparc_sunos.
+# 	[1993/06/01  16:55:59  marty]
+# 
+# Revision 1.3.16.6  1993/05/28  20:14:44  marty
+# 	CR # 558 - Get ode building on sparc_sunos.
+# 	[1993/05/28  20:14:28  marty]
+# 
+# Revision 1.3.16.5  1993/05/05  15:18:22  marty
+# 	Added -D_INCLUDE_AES_SOURCE for hpux.
+# 	[1993/05/05  15:17:54  marty]
+# 
+# Revision 1.3.16.4  1993/04/06  21:35:14  robert
+# 	add context hp700_osf1
+# 	[1993/04/06  21:34:36  robert]
+# 
+# Revision 1.3.16.3  1993/01/25  18:58:01  damon
+# 	Merged with 2.2 change
+# 	[1993/01/25  18:57:01  damon]
+# 
+# Revision 1.3.16.2  1993/01/15  18:44:24  damon
+# 	CR 405. Changed cc to gcc for pmax_ultrix
+# 	[1993/01/15  18:44:04  damon]
+# 
+# Revision 1.3.17.2  1993/01/15  22:26:54  root
+# 	Removed -DBAD_STRDUP_DECL from rios builds.
+# 	[1993/01/15  22:25:18  root]
+# 
+# Revision 1.3.2.19  1992/12/09  21:03:26  damon
+# 	CR 329. For hp700_hpux:
+# 	Now using c89. Added _INCLUDE_POSIX_SOURCE _INCLUDE_HPUX_SOURCE
+# 	and _INCLUDE_XOPEN_SOURCE. Removed NO_DIRENT, added USE_BSIZE.
+# 	[1992/12/09  21:03:06  damon]
+# 
+# Revision 1.3.2.18  1992/11/13  20:21:39  damon
+# 	CR 329. Removed NO_LOCK_DEFS for sparc_sunos
+# 	[1992/11/13  20:20:54  damon]
+# 
+# Revision 1.3.2.17  1992/11/13  15:19:40  root
+# 	Changed NEED_LSTAT_DECL to NO_LSTAT_DECL
+# 	For rios_aix:
+# 	Now uses c89 for posix behaviour
+# 	NO_RELEASE_DATABASE is now set
+# 	Added NO_STATVFS INC_SELECT BAD_STRDUP_DECL
+# 	  ALL_SOURCE and NO_GETWD_DECL
+# 	[1992/11/13  14:52:52  root]
+# 
+# Revision 1.3.2.16  1992/11/12  18:53:42  damon
+# 	CR 329. Added NEED_LOCK_DEFS for sparc_sunos
+# 	[1992/11/12  18:53:33  damon]
+# 
+# Revision 1.3.2.15  1992/11/12  18:24:53  damon
+# 	For sparc_sunos:
+# 	Added NO_ANSI_CC to deal with the absence of an ANSI cc.
+# 	Removed NO_DIRENT.
+# 	Added NO_STATVFS
+# 	[1992/11/12  18:14:39  damon]
+# 
+# Revision 1.3.2.14  1992/11/11  21:18:48  damon
+# 	CR 329. Added -DNEED_LSTAT_DECL for pmax_ultrix
+# 	[1992/11/11  21:18:22  damon]
+# 
+# Revision 1.3.2.13  1992/11/11  15:53:04  damon
+# 	CR 329. Removed PROTO stuff
+# 	[1992/11/11  15:52:44  damon]
+# 
+# Revision 1.3.2.12  1992/11/09  20:32:52  damon
+# 	CR 329. Changed NO_TYPEDEF_PROTO_STRUCT to NO_TYPEDEF_IN_PROTO
+# 	[1992/11/09  20:01:39  damon]
+# 
+# Revision 1.3.2.11  1992/11/06  17:34:27  damon
+# 	CR 329. Added NO_TYPEDEF_PROTO_STRUCT
+# 	[1992/11/06  17:34:14  damon]
+# 
+# Revision 1.3.2.10  1992/11/06  16:43:01  damon
+# 	CR 329. Define const as nothing.
+# 	[1992/11/06  16:42:51  damon]
+# 
+# Revision 1.3.2.9  1992/11/06  16:18:03  damon
+# 	CR 329. Added NO_STATVFS NO_FSTATFS to CENV for pmax_ultrix
+# 	[1992/11/06  16:17:52  damon]
+# 
+# Revision 1.3.2.8  1992/11/05  19:41:42  damon
+# 	CR 329. Added NO_STATVFS for pmax_ultrix
+# 	[1992/11/05  19:39:45  damon]
+# 
+# Revision 1.3.2.7  1992/09/24  18:57:38  gm
+# 	CR282: Made more portable to non-BSD systems.
+# 	[1992/09/23  18:46:47  gm]
+# 
+# Revision 1.3.2.6  1992/07/26  17:53:13  gm
+# 	Change context checks to remove unnecessary use of pattern matching.
+# 	[1992/07/17  20:42:11  gm]
+# 
+# Revision 1.3.2.5  1992/06/04  23:28:07  damon
+# 	Synched with 2.1.1
+# 	[1992/06/04  23:27:22  damon]
+# 
+# Revision 1.3.5.18  1992/04/02  23:40:56  damon
+# 	Made NO_RELEASE_DATABASE an env and skip release_db.o build
+# 	[1992/04/02  23:40:13  damon]
+# 
+# Revision 1.3.5.17  1992/04/02  23:26:26  damon
+# 	Added NO_RELEASE_DATABASE for sparc_sunos
+# 	[1992/04/02  23:25:57  damon]
+# 
+# Revision 1.3.5.16  1992/04/02  23:16:11  damon
+# 	Added NO_RELEASE_DATABASE
+# 	[1992/04/02  23:15:42  damon]
+# 
+# Revision 1.3.5.15  1992/04/02  21:43:00  damon
+# 	Changed STATFS to VFS for hp700_hpux
+# 	[1992/04/02  21:42:10  damon]
+# 
+# Revision 1.3.5.14  1992/04/02  21:00:40  damon
+# 	Added INC_STATFS for hp700_hpux
+# 	[1992/04/02  21:00:01  damon]
+# 
+# 	Added NEED_LOCK_DEFS and NO_SYSLOG
+# 	[1992/04/02  20:42:10  damon]
+# 
+# Revision 1.3.5.13  1992/03/26  15:09:59  damon
+# 	Added EXPORT_USING_TAR for rios_aix
+# 	[1992/03/26  15:09:29  damon]
+# 
+# Revision 1.3.5.12  1992/03/26  04:54:28  damon
+# 	Added pmax_decosf1
+# 	[1992/03/26  04:53:02  damon]
+# 
+# Revision 1.3.5.11  1992/03/24  18:37:39  damon
+# 	Added EXPORT_USING_TAR for hp300_hpux
+# 	[1992/03/24  18:36:41  damon]
+# 
+# Revision 1.3.5.10  1992/03/24  00:35:35  damon
+# 	Added va_argv.o for hp700_hpux
+# 	[1992/03/23  23:20:34  damon]
+# 
+# Revision 1.3.5.9  1992/03/19  21:30:49  damon
+# 	Fixed some capitalization problems
+# 	[1992/03/19  21:30:26  damon]
+# 
+# Revision 1.3.5.8  1992/03/18  16:54:32  damon
+# 	Added NO_STRERROR=NO_STRERROR for sparc_sunos
+# 	[1992/03/18  16:54:00  damon]
+# 
+# Revision 1.3.5.7  1992/03/18  16:26:03  damon
+# 	Synched PORTING_OFILES with ODE latest
+# 	[1992/03/18  16:25:44  damon]
+# 
+# Revision 1.3.5.6  1992/03/17  18:49:23  damon
+# 	Added PORTING_OFILES=environment.o when NO_SETENV
+# 	[1992/03/17  18:48:50  damon]
+# 
+# Revision 1.3.5.5  1992/03/10  16:54:48  damon
+# 	Added NO_INC_SYSCALL and -DUSE_D_INO for rios_aix
+# 	[1992/03/10  16:50:16  damon]
+# 
+# Revision 1.3.5.4  1992/03/09  19:34:32  damon
+# 	Added USE_BSIZE for rios_aix
+# 	[1992/03/09  19:34:16  damon]
+# 
+# Revision 1.3.5.3  1992/03/09  19:00:10  damon
+# 	Added -DINC_STATFS for rios_aix
+# 	[1992/03/09  18:59:47  damon]
+# 
+# Revision 1.3.5.2  1992/02/19  20:44:19  damon
+# 	Retro-fitted hp700 and sparc ports
+# 	[1992/02/19  18:48:57  damon]
+# 
+# Revision 1.2.1.2  1991/12/17  15:24:25  damon
+# 	Ported to hp300_hpux
+# 	[1991/12/17  14:29:42  damon]
+# 
+# Revision 1.2  1991/12/05  20:38:51  devrcs
+# 	Changed OS_TYPE and CPU_TYPE to TARGET_os and TARGET_CPU
+# 	[91/10/15  10:31:18  mckeen]
+# 
+# 	Removed -D_NO_PROTO designation from OSF/1 platforms
+# 	[91/09/19  15:17:55  mckeen]
+# 
+# 	Added defines of NO_SYS_LIMITS and DONT_SO_LINGER for hp_300.
+# 	[91/09/04  13:59:32  damon]
+# 
+# 	Implement context naming
+# 	[91/08/28  20:43:24  mckeen]
+# 
+# 	Added _FREE_ to copyright marker
+# 	[91/08/01  08:03:23  mckeen]
+# 
+# 	Added .MAKEFLAGS variable.
+# 	[91/05/04  10:01:48  gm]
+# 
+# 	Changes for Reno make
+# 	[91/03/22  15:29:38  mckeen]
+# 
+# $EndLog$
+
+#
+#  This special makefile marks the top of the source tree.  Several
+#  builtin make variables are defined based upon the location of this
+#  file and the subdirectory within this tree where make was invoked.
+#
+
+.if defined(context)
+
+.if !empty(context:M*_osf1)
+TARGET_OS=OSF1
+target_os=osf1
+OBJECT_FORMAT=MACHO
+ARCHIVE_FORMAT=OSFARCH
+SHARED_LIBRARY_FORMAT=MACHO
+
+NO_STATVFS=NO_STATVFS
+DEPEND_CFLAGS=-MD
+.if (${context} != "alpha_osf1")
+CFLAGS+=  -pedantic\
+          -Dlint\
+          -Wall\
+          -Wshadow\
+          -Wwrite-strings\
+          -Wpointer-arith\
+          -Wstrict-prototypes
+.endif
+
+.if (${context} == "pmax_osf1")
+MACHINE=mips
+TARGET_MACHINE=PMAX
+target_machine=pmax
+TARGET_CPU=MIPS
+target_cpu=mips
+
+.elif (${context} == "mmax_osf1")
+MACHINE=mmax
+TARGET_MACHINE=MMAX
+target_machine=mmax
+TARGET_CPU=NS32032
+target_cpu=ns32032
+
+.elif (${context} == "at386_osf1")
+MACHINE=i386
+TARGET_MACHINE=AT386
+target_machine=at386
+TARGET_CPU=I386
+target_cpu=i386
+
+.elif (${context} == "mac2_osf1")
+MACHINE=mac2
+TARGET_MACHINE=MAC2
+target_machine=mac2
+TARGET_CPU=MC68030
+target_cpu=mc68030
+.elif (${context} == "alpha_osf1")
+MACHINE=alpha
+TARGET_MACHINE=ALPHA
+target_machine=alpha
+TARGET_CPU=ALPHA
+target_cpu=alpha
+OBJECT_FORMAT=COFF
+ARCHIVE_FORMAT=BSDARCH
+PORTING_OFILES=va_argv.o
+ANSI_CC=c89
+DEPEND_CFLAGS=
+EXTRA_WARNINGS_CFLAGS=
+CFLAGS+=-fno-builtin
+NO_GLUE=NO_GLUE
+
+.endif	# running osf1
+
+.elif (${context} == "at386_linux")
+MACHINE=i386
+TARGET_MACHINE=AT386
+target_machine=at386
+TARGET_CPU=I386
+target_cpu=i386
+CENV= -DNO_STATVFS -DINC_VFS -DUSE_BSIZE -DVA_ARGV_IS_RECAST -DNO_POLL
+
+.elif (${context} == "pmax_decosf1")
+MACHINE=mips
+TARGET_MACHINE=PMAX
+target_machine=pmax
+TARGET_CPU=MIPS
+target_cpu=mips
+TARGET_OS=OSF1
+target_os=osf1
+OBJECT_FORMAT=COFF
+ARCHIVE_FORMAT=BSDARCH
+
+.elif (${context} == "pmax_ultrix")
+MACHINE=mips
+TARGET_MACHINE=PMAX
+target_machine=pmax
+TARGET_CPU=MIPS
+target_cpu=mips
+TARGET_OS=ULTRIX
+target_os=ultrix
+OBJECT_FORMAT=COFF
+ARCHIVE_FORMAT=BSDARCH
+ANSI_CC=gcc
+
+NO_SHARED_LIBRARIES=NO_SHARED_LIBRARIES
+
+CENV= -DNO_VFPRINTF -DNO_PW_STAYOPEN -DNO_I18N -DINC_TYPES -DNO_STRDUP -DNO_STATVFS -DNO_FSTATFS -DNO_LSTAT_DECL -DNO_POLL
+NO_STRDUP=NO_STRDUP
+NO_SETENV=NO_SETENV
+PORTING_OFILES=environment.o strdup.o
+
+.elif (${context} == "rios_aix")
+
+MACHINE=RIOS
+TARGET_MACHINE=RIOS
+target_machine=rios
+TARGET_CPU=RIOS
+target_cpu=rios
+TARGET_OS=AIX
+target_os=aix
+OBJECT_FORMAT=COFF
+ARCHIVE_FORMAT=AIXARCH
+ANSI_CC=c89
+
+CENV= -DSTRRETINT -DINC_TIME -DINC_SELECT -DNO_FLOCK -DNO_PW_STAYOPEN -DINC_STATFS -DUSE_BSIZE -DNO_INC_SYSCALL -DUSE_D_INO -DNO_STATVFS -DINC_SELECT -D_ALL_SOURCE -DNO_GETWD_DECL
+NO_SHARED_LIBRARIES=NO_SHARED_LIBRARIES
+NO_SETENV=NO_SETENV
+PORTING_OFILES=environment.o
+EXPORT_USING_TAR=EXPORT_USING_TAR
+NO_RELEASE_DATABASE=NO_RELEASE_DATABASE
+TARGET_LIBS=-lbsd
+
+.elif (${context} == "hp700_hpux")
+
+MACHINE=hp700
+TARGET_MACHINE=HP700
+target_machine=hp700
+TARGET_CPU=HP700
+target_cpu=hp700
+TARGET_OS=HP_UX
+target_os=hp_ux
+
+OBJECT_FORMAT=A_OUT
+ARCHIVE_FORMAT=BSDARCH
+
+CENV= -DNO_UTIMES -DNO_FLOCK -DNO_LINE_BUF -DNO_SYS_LIMITS -DINC_SIGNAL -DNEED_LOCK_DEFS -DNO_SYSLOG -DINC_VFS -DNO_STATVFS -DUSE_BSIZE -D_INCLUDE_HPUX_SOURCE -D_INCLUDE_POSIX_SOURCE -D_INCLUDE_XOPEN_SOURCE -D_INCLUDE_AES_SOURCE -DNO_SUP_LOCKS
+NO_RELEASE_DATABASE=NO_RELEASE_DATABASE
+NOSHARED_LIBRARIES=NO_SHARED_LIBRARIES
+NO_SETENV=NO_SETENV
+PORTING_OFILES=environment.o va_argv.o
+TARGET_LIBS=-lBSD
+LIBDIRS:= ${LIBDIRS:S;-L;-L ;g}
+SHLIBDIRS:= ${SHLIBDIRS:S;-L;-L ;g}
+ANSI_CC=c89
+
+.elif (${context} == "hp700_osf1")
+
+MACHINE=hp_pa
+TARGET_MACHINE=HP700
+target_machine=hp700
+TARGET_CPU=HP_PA
+target_cpu=hp_pa
+TARGET_OS=OSF1
+target_os=osf1
+OBJECT_FORMAT=MACHO
+ARCHIVE_FORMAT=OSFARCH
+PORTING_OFILES=va_argv.o
+
+.elif (${context} == "hp300_hpux")
+
+MACHINE=hp300
+TARGET_MACHINE=HP300
+target_machine=hp300
+TARGET_CPU=HP300
+target_cpu=hp300
+TARGET_OS=HP_UX
+target_os=hp_ux
+
+OBJECT_FORMAT=A_OUT
+ARCHIVE_FORMAT=BSDARCH
+
+CENV= -DNO_UTIMES -DNO_FLOCK -DNO_GETDTABLESIZE -DNO_SYS_SIGLIST -DNO_FILE_BUFSIZ -DNO_DIRENT -DNO_LINE_BUF -DWAIT_IS_UNION -DNO_SYS_LIMITS -DDONT_SO_LINGER -DINC_SIGNAL -DUSE_LESYMS
+NOSHARED_LIBRARIES=NO_SHARED_LIBRARIES
+NO_SETENV=NO_SETENV
+PORTING_OFILES=environment.o ffs.o
+TARGET_LIBS=-lBSD
+NO_FFS=NO_FFS
+EXPORT_USING_TAR=EXPORT_USING_TAR
+
+LIBDIRS:= ${LIBDIRS:S;-L;-L ;g}
+SHLIBDIRS:= ${SHLIBDIRS:S;-L;-L ;g}
+
+.elif (${context} == "sparc_sunos")
+MACHINE=sparc
+TARGET_MACHINE=SPARC
+target_machine=sparc
+TARGET_CPU=SPARC
+target_cpu=sparc
+TARGET_OS=SUNOS
+target_os=sunos
+
+OBJECT_FORMAT=A_OUT
+ARCHIVE_FORMAT=BSDARCH
+
+CENV= -DINC_DIRENT -DINC_STDIO -DINC_VFS -DUSE_BSIZE -DNO_STRERROR -DNO_STATVFS -DINC_STRINGS -DNEED_LOCK_DEFS -DNO_LSTAT_DECL
+
+NO_RELEASE_DATABASE=NO_RELEASE_DATABASE
+NOSHARED_LIBRARIES=NO_SHARED_LIBRARIES
+NO_SETENV=NO_SETENV
+NO_STRERROR=NO_STRERROR
+NO_ANSI_CC=NO_ANSI_CC
+PORTING_OFILES=environment.o strerror.o
+ANSI_CC=gcc
+
+.elif (${context} == "at386_sinix")
+MACHINE=i386
+TARGET_MACHINE=AT386
+target_machine=at386
+TARGET_CPU=I386
+target_cpu=i386
+TARGET_OS=SVR4
+target_os=svr4
+
+OBJECT_FORMAT=ELF
+ARCHIVE_FORMAT=SVR4ARCH
+
+#CENV=-Xc
+CENV= -DNEED_LOCK_DEFS -DNO_FLOCK -DBSD_COMP -DNO_STRINGS -DNO_KILLPG
+NO_AR_L=
+NO_RANLIB=
+NO_SETENV=NO_SETENV
+PORTING_OFILES=environment.o strcasecmp.o va_argv.o
+EXPORT_USING_TAR=EXPORT_USING_TAR
+NO_RELEASE_DATABASE=NO_RELEASE_DATABASE
+NO_SUP_LOCKS=NO_SUP_LOCKS
+SUP_TARGET_LIBS=-lsocket -lnsl
+TARGET_LIBS=-lsocket -lnsl
+USE_FRSIZE=USE_FRSIZE
+
+.endif	# elif
+.endif	# context defined
+
+.MAKEFLAGS: -r
+
+.if defined(OBJECTDIR)
+MAKEOBJDIR=${OBJECTDIR}
+.endif
+
+.if defined(SOURCEDIR)
+MAKESRCDIRPATH=${SOURCEDIR}
+.endif

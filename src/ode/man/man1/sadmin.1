@@ -1,0 +1,188 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: sadmin.1,v $
+.\" Revision 1.7.8.1  1994/01/11  14:58:08  marty
+.\" 	CR 759 - Update man page for sadmin.
+.\" 	[1994/01/11  14:57:53  marty]
+.\"
+.\" Revision 1.7.6.1  1993/09/14  00:41:38  marty
+.\" 	CR # 623
+.\" 	[1993/09/14  00:39:36  marty]
+.\" 
+.\" Revision 1.7.4.2  1993/04/21  18:42:28  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/21  18:39:44  damon]
+.\" 
+.\" Revision 1.7.2.2  1992/12/03  17:24:38  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:23  damon]
+.\" 
+.\" Revision 1.7  1991/12/05  21:15:38  devrcs
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:15:24  mckeen]
+.\" 
+.\" 	Updated to match addition of tracking
+.\" 	[90/12/05  15:03:57  randyb]
+.\" 
+.\" 	Modified to agree with changes for network access to log files.
+.\" 	[90/11/30  11:39:22  randyb]
+.\" 
+.\" 	Changed -target to -b to match bsubmit.
+.\" 	[90/11/14  09:55:00  randyb]
+.\" 
+.\" Revision 1.5  90/12/06  14:21:25  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:46:57  gm]
+.\" 
+.\" Revision 1.4  90/10/07  21:57:04  devrcs
+.\" 	Added EndLog Marker.
+.\" 	[90/09/29  14:13:33  gm]
+.\" 
+.\" Revision 1.3  90/07/27  11:11:04  devrcs
+.\" 	Changes made for sadmin
+.\" 	[90/07/16  12:58:10  randyb]
+.\" 
+.\" Revision 1.2  90/07/17  12:37:27  devrcs
+.\" 	Initial revision
+.\" 	[90/07/09  09:41:13  randyb]
+.\" 
+.\" $EndLog$
+.\"
+.TH sadmin 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+sadmin \- do administrative work on the submission logs
+.SH SYNOPSIS
+.IP \fBsadmin\fR 8
+\fB-copy \ \ hold | log | snap | defunct\fR [\fIgen opts\fR] \fIdestination\fR
+.IP \fBsadmin\fR 8
+\fB-edit \ \ hold | log | snap | defunct\fR [\fIgen opts\fR]
+[\fIsandbox opts\fR]
+.IP \fBsadmin\fR 8
+\fB-usage \fR|\fB -version\fR
+.ti 6
+\fIgen opts\fR: [\fB-v -info -q -debug\fR] [\fB-back \fItarget\fR]
+.ti 6
+\fIsb opts\fR: [\fB-sb \fIsandbox\fR] [\fB-set \fIsetname\fR]
+[\fB-rc \fIrc-file\fR] 
+.SH FLAGS
+.IP "\fB-copy \ \ hold | log | snap | defunct\fR \fIdestination\fR"
+Copy one of the four \fBbsubmit\fR files; the \fBbsubmit.hold\fR file,
+the \fBbsubmit.log\fR file, the \fBSNAPSHOT\fR file, or the \fBDEFUNCT\fR file.
+The file is copied into the \fIdestination\fR given by the user.
+This can be an absolute or relative path and filename.
+.IP "\fB-edit \ \ hold | log | snap | defunct\fR"
+Edit one of the four \fBbsubmit\fR files; the \fBbsubmit.hold\fR file,
+the \fBbsubmit.log\fR file, the \fBSNAPSHOT\fR file, or the \fBDEFUNCT\fR file.
+The file is first copied into your sandbox \fBtmp\fR directory under its
+real name, i.e. \fBbsubmit.hold\fR, \fBbsubmit.log\fR, \fBSNAPSHOT\fR, or
+\fBDEFUNCT\fR.
+This is done because these files are not writable as mounted.
+The user edits the local copy of the file and, after exiting the editing
+session, the file is transferred over the network and the original file is
+overwritten.
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-version\fR"
+Prints the revision information.
+.P
+.ti 2
+\fIgen opts\fR:
+.IP "\fB-v\fR
+Verbose mode.
+.IP "\fB-info\fR
+Indicates what \fBsadmin\fR would do without actually doing it.
+.IP "\fB-q\fR
+Quiet mode.
+.IP "\fB-debug\fR
+Gives debugging information.
+.IP "\fB-back \fBtarget\fR
+Perform the operation on the build or shared sandbox specified by \fBtarget\fR
+instead of the default build.
+The form of the target must be the complete path starting with a "/".
+.P
+.ti 2
+\fIsb opts\fR:
+.IP "\fB-sb \fIsandbox\fR"
+Name of the sandbox to use if it is not the current sandbox.
+If this option is not used, the sandbox will be determined by the
+environment variable \fBSANDBOX\fR or, if that is not set, by
+the user's default sandbox.
+.IP "\fB-set \fIsetname\fR"
+Name of the set to use if it is not the current set.
+If this option is not used, the set will be determined by the
+environment variable \fBBCSSET\fR or, if that is not set, by
+the sandbox's default set.
+.IP "\fB\-rc \fIrc-file\fR"
+Provides the path and name of the user's rc file to use instead of
+the default file \fB${HOME}/.sandboxrc\fR.
+If this option is not used, the default rc file will be used.
+.P
+\fBsadmin\fR provides a safe way to update, correct, and copy the
+various files used in submitting.
+
+.SH DESCRIPTION
+.P
+\fBsadmin\fR is used to correct problems in the \fBbsubmit\fR logs.
+Because these logs are in constant use, they cannot simply be moved,
+copied, and edited without locking them,
+but, because \fBbsubmit\fR cannot always recover from a failed submission,
+these logs get corrupted and must be fixed.
+\fBsadmin\fR provides the network
+interface necessary to modify these files.
+.P
+\fBsadmin\fR is designed to work primarily with the default submission
+build.
+The default build is garnered from the sandbox's backing tree.
+The default can be overridden, however, with the \fB-back\fR option and the
+the name of the build the user want to work on, e.g.
+.P
+.ti 4
+.B "-back symphony"
+.P
+If \fBsadmin\fR cannot determine where the build is, it will print an
+error message, and the user must provide the full path to the build to
+work on, e.g.
+.P
+.ti 4
+.B "-back /sandboxes/suzieq/symphony"
+.P
+Any of the four files can be copied or edited by using the
+\fB-copy\fR or \fB-edit\fR options.
+The file is always copied into the destination the user provides.
+When editing, the user is editing a local copy of the file which is
+then transferred over the network to replace the actual file.
+.P
+.SH FILES
+.P
+.IP \fI<build>\fB/logs/SNAPSHOT\fR 
+file containing the current revision of each file for this build.
+.IP \fI<build>\fB/logs/DEFUNCT\fR 
+file containing the current list of each file which should be made defunct.
+.IP \fI<build>\fB/logs/bsubmit.log\fR 
+file containing the log entries for every submission.
+
+.SH EXIT VALUES
+.P
+\fBsadmin\fR returns '0' upon successful completion, '-1' otherwise.
+
+.SH RELATED INFORMATION
+.P
+bsubmit(1)

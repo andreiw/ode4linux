@@ -1,0 +1,145 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"  
+.\" Copyright (c) 1992 Carnegie Mellon University 
+.\" All Rights Reserved. 
+.\"  
+.\" Permission to use, copy, modify and distribute this software and its 
+.\" documentation is hereby granted, provided that both the copyright 
+.\" notice and this permission notice appear in all copies of the 
+.\" software, derivative works or modified versions, and any portions 
+.\" thereof, and that both notices appear in supporting documentation. 
+.\"  
+.\" CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" 
+.\" CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR 
+.\" ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE. 
+.\"  
+.\" Carnegie Mellon requests users of this software to return to 
+.\"  
+.\" Software Distribution Coordinator  or  Software_Distribution@CS.CMU.EDU 
+.\" School of Computer Science 
+.\" Carnegie Mellon University 
+.\" Pittsburgh PA 15213-3890 
+.\"  
+.\" any improvements or extensions that they make and grant Carnegie Mellon 
+.\" the rights to redistribute these changes. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: filecopy.3,v $
+.\" Revision 1.4.2.2  1992/12/02  20:50:30  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/02  20:47:17  damon]
+.\"
+.\" Revision 1.4  1991/12/05  21:16:12  devrcs
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:16:04  mckeen]
+.\" 
+.\" Revision 1.3  90/10/07  21:57:45  devrcs
+.\" 	Added EndLog Marker.
+.\" 	[90/09/29  14:14:37  gm]
+.\" 
+.\" Revision 1.2  90/08/25  12:22:37  devrcs
+.\" 	Taken from old libcs man pages
+.\" 	[90/08/14  11:20:46  randyb]
+.\" 
+.\" Revision 1.2  90/01/02  19:37:16  gm
+.\" 	Fixes for first snapshot.
+.\" 
+.\" Revision 1.1  89/12/26  10:50:09  gm
+.\" 	Current version from CMU.
+.\" 	[89/12/21            gm]
+.\" 
+.\" 	Revised for 4.3.
+.\" 	[86/11/13            andi]
+.\" 
+.\" 	Created.
+.\" 	[79/12/05            sas]
+.\" 
+.\" $EndLog$
+.TH FILECOPY 3 12/5/79
+.CM 1
+.SH "NAME"
+filecopy, ffilecopy \- copy an open file
+.SH "SYNOPSIS"
+.B
+int filecopy (here,there);
+.br
+.B
+int here,there;
+.sp
+.B
+#include <stdio.h>
+.br
+.B
+int ffilecopy (here,there);
+.br
+.B
+FILE *here,*there;
+.SH "DESCRIPTION"
+.I
+Filecopy
+copies the open input file
+.I
+here
+to the open output file
+.I
+there.
+The input data from the current file pointer of
+.I
+here
+until EOF are appended after the current file pointer of
+.I
+there.
+.sp
+.I
+Ffilecopy
+copies the open buffered input file
+.I
+here
+to the open buffered output file
+.I
+there.
+The input data from the current file pointer of
+.I
+here
+until EOF are appended after the current file pointer
+of
+.I
+there.
+The data currently in both buffers is correctly handled, and
+both buffers are left in an appropriate state.
+After
+.I
+ffilecopy,
+.I
+feof(here)
+will be true.
+.sp
+These routines are probably faster than you would care to code
+for yourself, although they are quite simple.
+.SH "DIAGNOSTICS"
+.I
+Filecopy
+and
+.I
+ffilecopy
+return 0 normally, \-1 on error.
+If an error occurs, the file
+copying operation may be incomplete.
+.SH "SEE ALSO"
+.IR rename (3)

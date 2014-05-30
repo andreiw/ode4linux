@@ -1,0 +1,79 @@
+
+README.bin						5/25/1995
+
+This README.bin describes the ODE 2.3.4 binary distributions that currently
+reside on the FTP server under riftp.osf.org:/pub/ode/bin.
+
+This subdirectory contains the partial result of the installation phase of
+the build process, as created by the install.sh script.  The install pass
+creates and populates the subdirectories ./bin ./doc ./man and ./server
+under the install path argument, TOSTAGE.  For further information,
+please refer to the ODE System Administrators Guide (SAG).
+
+The ./doc and ./man subdirectories (containing the ODE System Administration
+Guide, and User's Guide with manual pages) are not included here.  This
+documentation is located in the ../doc subdirectory (parallel to this
+./bin subdirectory).
+
+In addition, 2 extra subdirectories are included here that are NOT part of
+the install pass: sample build logs for reference (under ./logs), and RCS
+binaries for selected platforms, provided for convenience (under ./rcs).
+
+The executables are organized under subdirectories using the context name
+of each platform, in the form "<target_machine>_<o/s>".  For example,
+"hp700_hpux" is the context name for the Hewlett-Packard HP9000/7XX series
+workstations running HP-UX.  (Consult the top level README.top or the
+ODE System Administration Guide for the current list of supported
+hardware platforms and operating system versions).
+
+There are one or more subdirectories for each context name:
+
+./logs		log files from building all tools -- not part of 
+		the install pass, but included here for reference
+./bin:		client (or user) side tools
+./server	(RCS or source control server) side tools
+./rcs		RCS executables - provided here for completeness,
+		but not part of the install pass
+
+At OSF, the client side user commands (the branch cmds) are installed in a 
+common directory for all users to access via the PATH environment variable.
+Both the server side and RCS binaries are installed on one or more (RCS) 
+source control servers.
+
+For example, the client side tools (located in /usr/local/ode/bin at OSF)
+include the following:
+
+% ls /usr/local/ode/bin
+bci            bmerge         make           oxm_relay_tcp  sup
+bco            bstat          makepath       rcsdiff3       supscan
+bcreate        bsubmit        md             release        upgrade
+bcs            build          mklinks        resb           uptodate
+bdiff          currentsb      mksb           sadmin         workon
+blog           genpath        odexm_cli      sbinfo
+
+
+You can check the revision of b-tools using the "-version" switch:
+
+% /usr/local/ode/bin/bci -version
+program :  bci
+release :  ODE 2.3.4
+libode  :  Tue May 23 17:30:30 EDT 1995
+
+This client side path (e.g. /usr/local/ode/bin) should be located at the
+beginning of the PATH for each user.  The subdirectory must contain the
+correct tools for the appropriate context name (<target machine>_<o/s>).
+(Distributed file systems such as AFS/DFS automatically resolve pathnames
+like /usr/local/ode/bin using the correct context name).
+
+The ODE server side contains the following tools (e.g., on one RCS server
+at OSF):
+
+% ls /u1/ode2.3.4tools 
+bco_s          bstat_s        diff3          rcs            srcacl
+bcs_s          bsubmit_s      logsubmit      rcsacl         supfilesrv
+blog_s         ci             odexm          rcsdiff        supscan
+bmerge_s       co             odexm.map      rcsstat
+branch_ci      diff           oxm_relay_tcp  rlog
+
+The server side tools are referenced by the odexm.conf file that resides
+on the server, as described in the ODE System Administration Guide (SAG).

@@ -1,0 +1,129 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"  
+.\" Copyright (c) 1992 Carnegie Mellon University 
+.\" All Rights Reserved. 
+.\"  
+.\" Permission to use, copy, modify and distribute this software and its 
+.\" documentation is hereby granted, provided that both the copyright 
+.\" notice and this permission notice appear in all copies of the 
+.\" software, derivative works or modified versions, and any portions 
+.\" thereof, and that both notices appear in supporting documentation. 
+.\"  
+.\" CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" 
+.\" CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR 
+.\" ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE. 
+.\"  
+.\" Carnegie Mellon requests users of this software to return to 
+.\"  
+.\" Software Distribution Coordinator  or  Software_Distribution@CS.CMU.EDU 
+.\" School of Computer Science 
+.\" Carnegie Mellon University 
+.\" Pittsburgh PA 15213-3890 
+.\"  
+.\" any improvements or extensions that they make and grant Carnegie Mellon 
+.\" the rights to redistribute these changes. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: fold.3,v $
+.\" Revision 1.4.2.2  1992/12/02  20:50:34  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/02  20:47:18  damon]
+.\"
+.\" Revision 1.4  1991/12/05  21:16:16  devrcs
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:16:09  mckeen]
+.\" 
+.\" Revision 1.3  90/10/07  21:57:49  devrcs
+.\" 	Added EndLog Marker.
+.\" 	[90/09/29  14:14:44  gm]
+.\" 
+.\" Revision 1.2  90/08/25  12:22:41  devrcs
+.\" 	Taken from old libcs man pages
+.\" 	[90/08/14  11:20:56  randyb]
+.\" 
+.\" Revision 1.2  90/01/02  19:37:17  gm
+.\" 	Fixes for first snapshot.
+.\" 
+.\" Revision 1.1  89/12/26  10:50:13  gm
+.\" 	Current version from CMU.
+.\" 	[89/12/21            gm]
+.\" 
+.\" 	Revised for 4.3.
+.\" 	[86/11/13            andi]
+.\" 
+.\" 	Created.
+.\" 	[79/12/05            sas]
+.\" 
+.\" $EndLog$
+.TH FOLD 3 12/5/79
+.CM 1
+.SH "NAME"
+foldup, folddown \- perform case-folding on strings
+.SH "SYNOPSIS"
+.B
+char *foldup (out,in);
+.br
+.B
+char *folddown (out,in);
+.br
+.B
+char *out,*in;
+.SH "DESCRIPTION"
+.I
+Foldup
+and
+.I
+folddown
+perform case-folding (to upper or lower case, respectively)
+on strings.
+The string at
+.I
+in
+is copied to the buffer at
+.I
+out,
+changing letters as appropriate.
+Only letters are affected.
+.sp
+It is
+.I
+specifically allowed
+for
+.I
+out
+and
+.I
+in
+to specify the same string; in this manner, in-place case folding
+is possible.
+Both folding routines return
+.I
+out
+as their value, for convenience.
+.SH "BUGS"
+No "inversion" mode is provided.
+In-place case folding is accomplished
+by specifying
+.I
+out
+and
+.I
+in
+as the same string; this is a rather cumbersome way to specify the most
+common manner of case-folding.

@@ -1,0 +1,426 @@
+Added new API between Archive Format Dependent (AFD) and the Archive
+Format Independent (AFI) code in the archive module(s).  This consists of
+the following changes:
+
+    ArchFindMember and ArchStatMember are no longer static so that they
+    can be called by the AFD routines.  I did not change the names to
+    be Arch_* since these are still internal routines for the "archive"
+    module, it is just that now there are more files implementing the
+    module.
+
+    New ${ARCHIVE_FORMAT}/arch_fmtdep.c file(s) implement the AFI code.
+    These routines are called from the ArchStatMember, ArchFindMember,
+    Arch_TouchLib, and Arch_LibOODate routines in arch.c.  The code in
+    the original arch.c that implemented these AFD functions had been
+    moved to BSDARCH/arch_fmtdep.c and replaced with calls using the
+    new API.
+
+      - void ArchFixMembName(char **memberNamePtr)
+	will perform any necessary "shortening" of the member name that
+	you are searching for so that the subsequent lookup will match.
+
+      - int ArchReadHdr(FILE *arch, void **hdrInfo)
+	will verify that the archive contains a valid header and will
+	save any information from that header or perform initialization
+	for ArchReadMember.  Returns zero if file is not an archive,
+	non-zero is archive is ok.  The hdrInfo is used for storage of
+	AFD information or state.
+
+      - int ArchReadMember(FILE *arch, char **memNamePtr,
+			   struct ar_hdr *arh, void *hdrInfo)
+	will read the next member of the archive.  Returns zero at end
+	of archive, one on success and -1 on error.  The memNamePtr is
+	set to the name of the member read from the archive and the
+	fields of arh are filled in for the member.  The hdrInfo setup
+	by ArchReadHdr is used.
+
+      - void ArchToNextMember(FILE *arch, struct ar_hdr *arh, void *hdrInfo)
+	will advance to the next member in the archive.  The arh and
+	hdrInfo arguments are passed from the previous ArchReadMember.
+
+      - void ArchTouchTOC(GNode *gn)
+	will update the time of the TOC for the archive referred to by
+	gn to "now".
+
+      - void ArchTOCTime(GNode *gn, Boolean *oodatePtr)
+	will set oodatePtr to TRUE if the member referred to by gn is
+	out-of-date with respect to the TOC of the archive.
+--------------------
+
+Added code to support a more powerful mechanism to provide a directory
+tree for object files that we will chdir into before executing rules, and
+to also allow more that one "source tree" to be used when locating
+sources.  This is not the same as, but is similar to, VPATH since it did
+not seem prudent to overload VPATH any more than it already has been.
+
+The basic idea is that you start make initially somewhere within a source
+tree.  Let us call the path of the "top" of this tree "SOURCEDIR".  Now
+we may be in the "top-level" of this tree or we might be within a subdir
+of the tree.  Let us call the part of the path from the top of the tree
+to the current directory when we are in a subdir "MAKEDIR" so that the
+value of "${SOURCEDIR}${MAKEDIR}" (to use make variable terminology)
+would be the same at getwd() would return.
+
+Now let us say that in addition to our source tree we have a different
+tree that is similar to our source tree in which we would like our object
+files to be kept.  Let us call the top of this tree "OBJECTDIR".  This
+tree is similar in the sense that for every place in my source tree that
+I would have a makefile and expect to run make, "${SOURCEDIR}${MAKEDIR}",
+that there is a directory with the path "${OBJECTDIR}${MAKEDIR}" that I
+expect make to chdir to before processing my makefiles.
+
+Now let us also say that in addition to our source tree, that there may
+be other source trees that are "parents" of our source tree.  Let us call
+the path-list "SOURCEDIRPATH", a colon separated list of paths for each
+of our parent source trees.  There is a relationship to our parent that
+when make is searching for a file in our source tree and cannot find it,
+that make should look in the "same" directory of our parent for the file.
+In this case, "same" means if we are in "${SOURCEDIR}${MAKEDIR}" in our
+source tree then make should look next in each "${PARENTDIR}${MAKEDIR}"
+where the "PARENTDIR" is each element of the "SOURCEDIRPATH" path-list in
+turn.
+
+So, lets try an example to see if we have this all straight.  Let us say
+that I am in the directory "/usr/gm/bsd-work/src/usr.bin/make" and I run
+"make -r" (just to make the example simpler).  Now I have the following
+variables defined in my environment (or I give them as arguments to make):
+
+	SOURCEDIR=/usr/gm/bsd-work/src
+	OBJECTDIR=/usr/gm/bsd-work/obj
+	SOURCEDIRPATH=/usr/src
+	MAKEDIR=/usr.bin/make
+
+and let us say that I currently have no files in my current directory.
+First, make will chdir to "/usr/gm/bsd-work/obj/usr.bin/make".  It will
+then go looking for a "makefile" (then "Makefile"), searching the new
+current directory (object), my original directory (source) and the
+parent directory "/usr/src/usr.bin/make", eventually finding the parent
+"Makefile".  After reading the makefile, make will then look for the
+files needed to bring the targets up to date using the same kind of
+search.
+
+Since we did not use VPATH for this extra searching, we can apply the
+search to each member of VPATH in turn.  In this way, you always write
+your makefiles without referring to these additional locations, you talk
+about what is in your tree and make performs the operations in all the
+appropriate places.
+
+Now, for some more specifics.  Make will actually try to figure out what
+values should be used for these parameters automatically without you
+explicitly setting them.  It tries to accomplish this by searching for a
+make "configuration file" for the source tree that you are within when you
+invoke make.  It does this by starting at the current directory and
+looking for a file called "Makeconf", searching your parent and so on
+until it finds one or reaches the root.  If a "Makeconf" file is not
+found, then make will not use object trees or parent source trees.  If
+"Makeconf" is found, then its location marks the top of the source tree,
+"SOURCEDIR" will be set appropriately and make will read the
+"${SOURCEDIR}/Makeconf" file as a makefile, i.e. it uses ReadMakefile().
+
+After reading "Makeconf", make will check for the "SOURCEDIRPATH" and
+"OBJECTDIR" variables.  If "OBJECTDIR" is relative, make will consider it
+relative to "SOURCEDIR", i.e. "${SOURCEDIR}/${OBJECTDIR}" will be used as
+the base of the object directory tree.  In this case, make will also try
+to use relative paths to the source tree by calculating the inverse path
+using a simple algorithm that assumes no symlinks are involved.  If there
+are symlinks, then you can create a symlink back so that following the
+links works "both ways" and the algorithm succeeds, or "OBJECTDIR" needs
+to be absolute.
+
+In addition, the "OBJECTDIR" path must exist or make will consider the
+path invalid and complain.  However, the directories under the object tree
+do not need to exist and make will create the path to get to the correct
+directory for its chdir.  For example, if "OBJECTDIR" is "/usr/obj" and
+"MAKEDIR" is "/usr.bin/awk", then "/usr/obj" must exist, but make will
+mkdir "/usr/obj/usr.bin" or "/usr/obj/usr.bin/awk" if they do not exist.
+
+Since, from our example, we can see that the value of "MAKEDIR" can be
+derived from "SOURCEDIR" and our current directory, make actually
+calculates "MAKEDIR" for you.  When you are in the top of your source
+tree, "MAKEDIR" has a value of "/".  In addition to "MAKEDIR", make also
+defines the following make variables:
+
+	MAKETOP		this is basically the inverse of MAKEDIR.  When
+			you are at the top of your source tree, MAKETOP
+			is empty.  When you are in a subdir, MAKETOP is
+			the path from the subdir to the top.  For example,
+			if MAKEDIR is "/usr.bin/make" then MAKETOP is
+			"../../".  As another example, the top-level
+			Makefile in the source tree can always be referred
+			to by "${MAKETOP}Makefile" from any other Makefile
+			anywhere in the tree.
+
+	MAKESUB		this is a slightly modified version of MAKEDIR
+			that can be used to reference files in the starting
+			directory.  When you are at the top of your source
+			tree, MAKESUB is empty.  When you are in a subdir,
+			MAKESUB is the path from the top of the tree down
+			to the subdir.  For example, you can reference a
+			file in the starting directory as "${MAKESUB}file".
+
+The code to implement this functionality resides primarily in main.c, with
+some support code in dir.c to handle the chdir into the object directory
+and to implement the parent tree searching.
+
+Related changes...
+
+A new function:
+	void Dir_ReInit(Lst parentSourceTrees)
+	will correct any state saved by the dir module since the call to
+	Dir_Init() to reflect the use of parentSourceTrees to augment the
+	searching algorithm.  This is only called if you are using the
+	object tree or parent source tree functionality.
+
+The Dir_AddDir() function was renamed into a static DirAddDir() and a new
+Dir_AddDir() cover function that calls DirAddDir() was added to implement
+the object tree and parent source tree searching by calling DirAddDir()
+several times for each call to Dir_AddDir().  This was done to reduce the
+amount of code modified and saves the lower level routines from needing to
+concern themselves with this higher level concept.
+--------------------
+
+Added a new feature that I am actually not using, but it seemed so useful
+that I couldn't resist.  It is also very little code for a lot of new
+functionality.  The feature is basically adding arguments to .USE rules.
+This is explained best by the following example Makefile:
+
+greet_all: bob bill
+	@echo "good morning, everyone"
+
+bob: _greet hello
+
+bill: _greet hi
+
+_greet: .USE .greeting
+	@echo "${.greeting} ${.TARGET}"
+
+Now, running "make greet_all" would produce:
+
+hello bob
+hi bill
+good morning, everyone
+
+The implementation is basically that the dependents of the .USE rule
+that appear AFTER the ".USE" dependent are actually saved as variable
+names to be defined in the context of other targets that depend on the
+.USE macro.  The dependents of the "caller" that appear after the
+"macro" dependent are taken to be the "arguments" of the macro and are
+each assigned as the value of the corresponding argument name.  Proper
+accounting of these children is done so that wont try to build the
+arguments.  However, there is very little error checking that can be
+done and mismatched arguments are difficult to handle.  Sorry, no type
+checking in make :-) Caveat Emptor!
+--------------------
+
+Added the following variable modifiers:
+
+${...:!cmd!}		runs "cmd" through the shell (execvp ok if no-metas)
+			if the value when the modifier is encountered
+			is an empty string (white-space only).
+
+${...:@tmpvar@newval@}	assigns a temporary variable "tmpvar" to the value
+			of each word in the value when the modifier was
+			encountered and evaluates "newval" for each word.
+
+${var:P}		replaces any value (unlikely) with the path of
+			the node with the same name as var.
+
+${var:L}		replaces any value (unlikely) with the name of
+			variable itself (i.e. value is literal).
+
+${...:Dnewval}		If the variable we are modifying is defined, replace
+			the current value with "newval".
+
+${...:Unewval}		If the variable we are modifying is undefined, replace
+			the current value with "newval".
+
+I also have a few ramblings to get your reaction to...
+
+A modifier to check the status of the :!cmd! modifier ?
+
+I was wondering if there is any interest in changing the :S modifier to
+use full POSIX regular expressions instead of just a hard-wired ^ and $.
+Let me know what you think...
+
+It would be nice to have more of the cond module functions available to
+variables that contain dynamic variables, maybe something like:
+
+${...:Cexpr:?true::false}
+
+or:
+
+${...:C(expr){true}{false}}
+
+Other ideas welcome.
+--------------------
+
+I have changed the archive code to always defer the expansion of archive
+dependent variable substitutions.  It needlessly complicated the code as
+the Arch_ParseArchive routine always has to deal with the possibility of
+deferment when dynamic variables were used in the archive dependent.  It
+also caused dependents to be Var_Subst'd many times, making these rules
+difficult to use.  There were comments in the code anyway that indicated
+that the old approach was not very good.
+--------------------
+
+Removed BSIZE definition from make.h and replace calls of Buf_Init(BSIZE)
+with Buf_Init(0).  This should be good enough for all instances and will
+avoid the complication that on some systems BSIZE is already defined in
+system headers to mean something different.  If this is viewed as an
+issue then changing BSIZE to DEF_BSIZE would be fine.
+--------------------
+
+In a related change, there was a local "char nameBuf[BSIZE]" in arch.c
+that I changed to be emalloc'd instead.  The length of the data being
+placed into the buffer was known, but was not being checked for overflow.
+--------------------
+
+Global change... There are many callers of Var_Parse that aren't interested
+in the value, they just want to skip over the variable reference.  I have
+added a new routine:
+
+    char *Var_Skip(char *str, GNode *ctxt, Boolean undefIsError)
+    will return a pointer beyond the variable reference starting at str.
+
+This routine is used to replace Var_Parse in appropriate places.  It is
+implemented internally to the var module by renaming Var_Parse to VarParse,
+adding an extra argument to VarParse to indicate if the result data is
+wanted, and writing a new Var_Parse cover that calls VarParse to get the
+result and a Var_Skip cover that tells VarParse we don't want it.
+--------------------
+
+I have added two new special targets to complement the .BEGIN, .END, and
+the .INTERRUPT set.  The .ERROR target is executed if there was an error
+and the .EXIT target is always executed anytime that the .END, .ERROR or
+.INTERRUPT targets would have been executed, after any of them.  This
+offers complete coverage of major exit paths, except of course errors
+that are associated with makefile syntax errors, in which case you don't
+want to trust or execute any targets.  The changes were made to both the
+compat and job modules, but I have only tested the compat module case.
+--------------------
+
+Changed the value given to exit() by CompatInterrupt from zero to the
+signal number that caused make to exit.
+--------------------
+
+Added a new routine to compat.c for use by the var module:
+
+    int Compat_HasMeta(char *cmd)
+    will return 1 if cmd contains shell meta characters, 0 if not.
+--------------------
+
+Removed warning message when a command containing variables expands to
+an empty string.  This allows people to have commands that use dynamic
+variables that perform no action depending on the target.
+--------------------
+
+Removed POSIX conditional and comments from config.h.  We are now always
+willing to try to be POSIX compatable (as of draft 11) at compile time.
+There is still much work to complete this task, but there should be no
+more "conflicts" with POSIX behavior that need to be resolved at compile
+time.
+--------------------
+
+Changed stat() to lstat() in dir.c were appropriate so that symlinks can
+we targets of makefiles.
+--------------------
+
+Removed some dubious calls to Dir_AddDir() from Dir_FindFile() that were
+adding random directories to the search path based on stray references.
+If I want a path changed, I will do so explicitly and do not want things
+found where I do not expect make to look.
+--------------------
+
+Changed the readdir() loop in DirAddDir (formerly Dir_AddDir) to be more
+portable and make fewer assumptions about the details of the underlying
+readdir implementation.
+--------------------
+Mark Hickey 08/21-23/91
+dir.c
+
+Added code to allow non-existent paths on the search paths if the non-existent
+path is absolute, or is the path to the source directory.  This is necessary
+to allow relative pathing from directories that only exist in one source tree
+to directories that exist in some other source tree.  The lack of this feature
+breaks some ".includes".
+-------------------------------------------------------------------------------
+
+Changed all code that used "union wait" to use "int" and the macros
+defined in <sys/wait.h>.
+--------------------
+
+Removed the old MAKEOBJDIR and _PATH_OBJDIR ("obj") code from main.c, but
+I am willing to see about implementing backward compatability code if
+there is interest.  Keep in mind that the old code was severely limited
+and had many bugs.  For example, if MAKEOBJDIR was a directory instead of
+a symlink then a hard-wired ".." was ALWAYS!! used as the path to the
+original directory after the chdir.
+--------------------
+
+I am not sure what to do with .CURDIR since it is only usable in a
+limited way in specific circumstances.  I have not found a use for it
+that is correct or is not better dealt with another way.
+--------------------
+
+Changed to unconditionally use the "MAKEFLAGS" variable instead of "MAKE".
+--------------------
+
+Changed ReadMakefile to set "MAKEFILE" before reading a makefile from
+standard input instead of after.  Cleaned up code a little to remove
+goto's, etc.
+--------------------
+
+Added a Str_Flatten() routine:
+
+	void Str_Flatten(char *path)
+	this takes "crooked" paths like "foo/./bar/../baz" and uses a
+	simple algorith to flatten them out, i.e. "foo/baz", that does
+	not use stat() calls.  Flattens path in place, result is always
+	the same length or shorter.
+--------------------
+
+The old POSIX draft 10 and before code to use white-space instead of tab
+leading lines as rule commands has been removed ala draft 11.
+--------------------
+
+The static _PATH_DEFSYSPATH can now be overriden with a user-specified
+environment variable "MAKESYSPATH" at runtime.  In addition, I changed
+_PATH_DEFSYSMK (i.e. "/usr/share/mk/sys.mk") to be just "sys.mk" since
+it will be search for along the SYSPATH anyway and it lets the user
+specify an alternative with MAKESYSPATH.
+--------------------
+
+Added code to Suff_DoPath() to fix bug that the NULL suffix search path
+was not being fixed up with all the other suffixes.
+--------------------
+
+Fixed bug where the .TARGET node of "leaf-nodes", i.e. not really
+targets, was not being set to the path, but to the name, of the node.
+Since the parent .IMPSRC and .ALLSRC vars are set for the .TARGET vars
+of the children, it sometimes missed a path for a dependent.
+--------------------
+
+Fixed up a non-portable bitfield construct in the list library.
+--------------------
+
+The var module was calling setenv() with the wrong number of arguments.
+--------------------
+
+Fixed minor bug where rules of the form "targ: dep; cmd" caused the parse
+module to increment the line number of the makefile when the line number
+should not have changed.
+--------------------
+
+Minor cleanup:
+    Removed includes of unused header files:
+	arch.c: #include <sys/stat.h>
+	arch.c: #include <ranlib.h>
+    Changed '#include <buf.h>' to '#include "buf.h"' in cond.c
+    Changed '#include <sprite.h>' to '#include "sprite.h"' in lst.h
+    Removed checks in a few places for "impossible" expressions that
+	were probably leftovers of historical changes in the code paths.
+    Removed unused macros from make.h for FTARGET, et. al.
+    Changed '#ifdef __STDC__' to '#if __STDC__' which is found to be
+	more portable to compilers that define __STDC__ to zero to say
+	that they know about ANSI-C, but aren't comforming.  Sigh...
+    Changed CONCAT macro in non-ANSI case to more generic /**/ syntax.

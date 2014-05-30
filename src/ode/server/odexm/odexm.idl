@@ -1,0 +1,64 @@
+/*
+ * @OSF_COPYRIGHT@
+ * COPYRIGHT NOTICE
+ */
+/*
+ * The Example code is provided to you as "Pass-through Code".
+ * Pass-through Code and its related Documentation are not warrented,
+ * supported, or indemnified by OSF, and are provided "AS IS".
+ * You can use, sublicense, or disribute the same at your own risk.
+ */
+/*
+ * Copyright (c) 1990, 1991  
+ * Open Software Foundation, Inc. 
+ *  
+ * Permission is hereby granted to use, copy, modify and freely distribute 
+ * the software in this file and its documentation for any purpose without 
+ * fee, provided that the above copyright notice appears in all copies and 
+ * that both the copyright notice and this permission notice appear in 
+ * supporting documentation.  Further, provided that the name of Open 
+ * Software Foundation, Inc. ("OSF") not be used in advertising or 
+ * publicity pertaining to distribution of the software without prior 
+ * written permission from OSF.  OSF makes no representations about the 
+ * suitability of this software for any purpose.  It is provided "as is" 
+ * without express or implied warranty. 
+ */
+/*
+ * HISTORY
+ * $Log: odexm.idl,v $
+ * Revision 1.1.2.2  1993/08/06  18:45:52  damon
+ * 	CR 619. Fixed typo
+ * 	[1993/08/06  18:45:44  damon]
+ *
+ * Revision 1.1.2.1  1993/08/06  17:35:47  damon
+ * 	CR 619. DCE version of odexm
+ * 	[1993/08/06  17:34:42  damon]
+ * 
+ * $EndLog$
+ */
+
+[uuid(0cf616d8-b858-11c9-8078-02608c0a03a7),
+    version(1.0)]
+interface odexm
+{
+	typedef [context_handle] void *stream_handle;
+	typedef byte	buffer[];
+
+        void odexm_begin (
+                [in]    handle_t                handle,
+		[out]	stream_handle		*sh);
+
+        void odexm_read (
+                [in]    handle_t                handle,
+		[in,out]	stream_handle	*sh,
+		[in,out]			long	*len,
+		[out, max_is(*len)]		buffer	buf,
+		[out] error_status_t		*remote_status_p);
+
+        void odexm_write (
+                [in]    handle_t                handle,
+		[in,out]	stream_handle	*sh,
+		[in, max_is(max)]		buffer	buf,
+		[in]				long	max,
+		[out] error_status_t		*remote_status_p);
+}

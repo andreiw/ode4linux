@@ -1,0 +1,159 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: bsubmit.hdr,v $
+.\" Revision 1.1.4.1  1993/09/14  00:41:18  marty
+.\" 	CR # 623 - Remove -sb_rc
+.\" 	[1993/09/14  00:26:04  marty]
+.\"
+.\" Revision 1.1.2.3  1993/04/21  14:17:10  damon
+.\" 	CR 421. Fixed typos
+.\" 	[1993/04/21  14:15:28  damon]
+.\" 
+.\" Revision 1.1.2.2  1993/04/20  19:47:00  damon
+.\" 	CR 421. Split apart from bsubmit.1 for 2.3
+.\" 	[1993/04/20  19:46:44  damon]
+.\" 
+.\" Revision 1.10.2.3  1992/12/03  17:23:51  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:03  damon]
+.\" 
+.\" Revision 1.10.2.2  1992/10/19  20:45:05  damon
+.\" 	CR 272. Updated for 2.2
+.\" 	[1992/10/19  20:44:39  damon]
+.\" 
+.\" Revision 1.10  1991/12/05  21:15:06  devrcs
+.\" 	Made some changes for new bsubmit
+.\" 	[91/08/16  18:08:05  damon]
+.\" 
+.\" 	Changes to the manpage for Tools II.
+.\" 	[91/01/08  14:55:03  randyb]
+.\" 
+.\" 	Updated to match addition of tracking
+.\" 	[90/12/05  15:03:48  randyb]
+.\" 
+.\" Revision 1.8  90/12/06  14:21:04  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:46:01  gm]
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH bsubmit 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+bsubmit \- submit files to appropriate builds
+.SH SYNOPSIS
+.IP \fBbsubmit\fR 8
+[\fB-auto_out\fR]
+[\fIlog opts\fR]
+.br
+[\fIsandbox_options\fR] [\fIODE opts\fR]
+.br
+[ [\fIrecover opts\fR] | [\fIfile_options\fR] ]
+.IP \fBbsubmit\fP 8
+[\fB-version\fP | \fB-usage\fR]
+.IP "\fIlog opts\fR:" 8
+[\fB-fn \fI"full name"\fR] [\fB-defect \fInumber\fR] [\fB-log \fIlogfile\fR]
+.IP \fIsandbox_options\fR 8
+[\fB-rc -sb -set\fP]
+.IP \fIODE_options\fR 8
+[\fB -auto -quiet -normal -verbose -debug -info\fP]
+.IP "\fIrecover opts\fR:" 8
+\fB-resub | -rm  \fItime\fR [\fB-date \fIdate\fR]
+.br
+.SH FLAGS
+.IP "\fB-auto_out\fR" 8
+The default behavior of \fBbsubmit\fR is, after completing the submission,
+to prompt the user to outdate the file(s) from the local set.
+Outdating a file removes the local copy of the file from the set
+as well as removing any reference to the file from the local BCS logs.
+This option is used if the user does not want to get the prompt
+for outdating, in other words, the outdating occurs \fBautomatically\fR.
+To be sure that this option is really meant, it requires that both the
+\fB-auto\fR and the \fB-auto_out\fR options are set, otherwise \fBbsubmit\fR
+will still prompt the user.
+.P
+.ti 2
+\fIlog opts\fR:
+.IP "\fB-fn \fIfull name\fR" 8
+String holding the user's full name, for example, "Suzie Que".
+The name will have to be quoted to contain the space.
+If this option is not used, \fBbsubmit\fR will prompt the user for this
+information before creating the log message.
+.IP "\fB-defect \fInumber\fR"
+The number of the defect which this submission applies to.
+Not all projects require this field, although, if the user provides it,
+this information is always stored in the log.
+If the project requires this field and this option is not used,
+\fBbsubmit\fR will prompt the user for the information.
+This field can contain a single number, multiple numbers, or be left empty.
+.IP "\fB-log \fIlogfile\fR"
+Replaces the standard logfile with the one given and enters it without
+putting the user in an editor.
+Normally, \fBbsubmit\fR takes the \fBbci\fR
+log and has the submitter edit it to get the submission log.
+This option takes the path and name of a file to use instead of the
+\fBbci\fR log.
+For relative paths, \fBbsubmit\fR
+starts its search from the source directory of the sandbox.
+.P
+.IP "\fB\-info\fR"
+\fB-info\fR gives the user information on what \fBbsubmit\fR would do
+without actually doing anything.
+The \fB-info\fR option works in conjunction with the verbosity options.
+.P
+.ti 2
+\fIrecover opts\fR:
+.IP "\fB-resub \fItime\fR"
+This option is used to continue a \fBbsubmit\fR
+which has been interrupted or failed.
+To identify which submission to retry, \fBbsubmit\fR uses the environment
+variable \fBUSER\fR and the time the submission began.
+\fBbsubmit\fR lists the time information before it exits a failed submission.
+.P
+.IP "\fB-rm \fItime\fR"
+This is the alternative to resubmitting. The \fB-rm\fR option removes the
+work done so far and returns the source control system and backing build to
+the state they were in prior to submission. This option does not work after
+a submission has completed successfully since there is no guarantee that
+other submissions have not occurred between the time that the submission
+succeeded and \fBbsubmit -rm\fR was run. This functionality will be implemented
+in a future release as \fBbsubmit -undo\fR.
+.P
+When doing a resubmission or a removal,
+the list of files to process is NOT given as part of the \fB-resub\fR or
+\fB-rm\fR options.
+The files are retrieved from the hold file.
+Other options, such as \fB-auto\fR work with \fB-resub\fR and \fB-rm\fR
+including the \fB-info\fR option to preview the operation.
+.IP "\fB-date \fIdate\fR"
+Like the time and USER,
+the date is used to identify the submission to be resubmitted or removed.
+Since submissions and resubmissions or removals are normally made on the same
+day,
+today's date is used by default.
+This option is used to override this default.
+The form of the date is:
+.B M/D/YY
+where M is the number of the month, D is the number of the day of the
+month, and YY is the two digit representation of the year.
+.P
+\fBbsubmit\fR submits files to the appropriate build for the project as
+given in the sandbox's backing tree.
+.PP

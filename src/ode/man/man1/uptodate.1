@@ -1,0 +1,202 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: uptodate.1,v $
+.\" Revision 1.7.4.2  1993/09/14  19:49:25  marty
+.\" 	CR # 623 - Remove sb_rc.
+.\" 	[1993/09/14  19:48:30  marty]
+.\"
+.\" Revision 1.7.4.1  1993/09/14  18:17:23  marty
+.\" 	CR # 623
+.\" 	[1993/09/14  18:17:09  marty]
+.\" 
+.\" Revision 1.7.2.2  1992/12/03  17:24:48  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:27  damon]
+.\" 
+.\" Revision 1.7  1991/12/05  21:15:48  devrcs
+.\" 	Changes for ODE 2.1 reference pages.
+.\" 	[1991/11/03  18:39:17  damon]
+.\" 
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:15:30  mckeen]
+.\" 
+.\" 	Updated man page to agree with Tools II changes
+.\" 	[91/01/11  17:05:34  randyb]
+.\" 
+.\" Revision 1.6  90/12/06  14:21:30  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:47:10  gm]
+.\" 
+.\" Revision 1.5  90/10/07  21:57:13  devrcs
+.\" 	Pre OSF/1 changes
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH uptodate 1 1/11/91
+.SH NAME
+uptodate \- populate a sandbox with the most recent copies of files.
+.SH SYNOPSIS
+.IP \fBuptodate\fR 10
+[\fB-query -norecurse -overwrite\fR]
+[\fIgen opts\fR] [\fIODE opts\fR] \fIdirectory(ies)\fR
+.IP "\fIgen opts\fR:" 10
+[\fB-copy_from  \fIsource\fR] [\fB-cmp_to  \fIbase\fR]
+.IP "\fIODE opts\fR:" 10
+[\fB-info -quiet -normal -verbose -usage -rev\fP]
+.br
+[\fB-sb \fIsandbox\fR] [\fB-rc \fIrcfile\fP]
+.SH FLAGS
+.IP "\fB-query\fR"
+Queries the user for each file to be copied before copying it.
+.IP "\fB-norecurse\fR"
+Does not recurse down through the directory(ies) given as arguments,
+only copies the files under each directory.
+.IP "\fB-overwrite\fR"
+Copies any file which is newer in the default build even if it already
+exists in the user's sandbox.
+The normal condition is not to overwrite these files.
+Files which the user has checked-out and are therefore listed in
+the \fB.BCSconfig\fR file are never overwritten.
+.P
+.ti 2
+.IP "\fIgen opts\fR"
+.IP "\fB-copy_from \fIsource-directory\fR"
+Uses \fIsource-directory\fR as the full path of the directory to make
+copies from.
+The default source_directory is the default build.
+The \fIsource-directory\fR must have the file \fBlogs/SNAPSHOT\fR
+under it which lists the files and revisions in the build.
+It also must have the sources under the directory \fBsrc\fR.
+.IP "\fB-cmp_to \fIbase-directory\fR"
+Uses \fIbase-directory\fR as the full path of the backing tree
+to compare against.
+The default base_directory is the backing tree as determined by
+the sandbox's rc file.
+Like the source-directory, the base-directory must have the file
+\fBlogs/SNAPSHOT\fR.
+.P
+.ti 2
+\fIODE opts\fR:
+.IP "\fB\-info\fR"
+\fB-info\fR gives the user information on what \fBuptodate\fR would do
+without actually doing anything.
+The \fB-info\fR option works in conjunction with the verbosity options.
+.IP "\fB\-quiet\fR"
+One of three levels of verbosity.
+\fB-quiet\fR prints only the information which the user must always
+receive including all fatal error messages.
+.IP "\fB\-normal\fR"
+One of three levels of verbosity.
+\fB-normal\fR is the default verbosity and prints out the significant
+steps the program is taking and warnings.
+It also prints out all information \fB-quiet\fR prints.
+.IP "\fB\-verbose\fR"
+One of three levels of verbosity.
+\fB-verbose\fR prints out detailed information on what steps the program
+is taking and all diagnostic errors.
+It also prints out all information \fB-quiet\fR and \fB-normal\fR prints.
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-rev\fR"
+Prints the revision information.
+.IP "\fB\-sb \fIsandbox\fR"
+By default, \fBuptodate\fR uses the current sandbox as determined by the
+environment variable \fBSANDBOX\fR or, if that is not set, by
+the default sandbox in the user's rc file.
+If this option is given, the specified sandbox will be used.
+.IP "\fB-rc \fIrcfile\fR"
+By default, \fBuptodate\fR uses \fB$HOME/.sandboxrc\fR to determine the
+current sandbox.
+If this option is given, the specified user's rc file will be used.
+.SH DESCRIPTION
+.P
+\fBuptodate\fR is designed to allow a user to do her work backed by
+a build other than the default while keeping current with changes in the
+default backing build.
+.P
+To do this,
+\fBuptodate\fR does a three-way comparison between the SNAPSHOT file
+in the default build, the SNAPSHOT file in the build the sandbox is backed
+by, and a file in the user's sandbox which keeps track of these updates.
+The local file is called \fBuptodate\fR and is found 
+under \fI/sandbox/\fBlogs\fR.
+This file does not exist until \fBuptodate\fR has been run at least once.
+.P
+The files which are different and not protected and which are under the
+directory(ies) given as arguments will be copied into the user's sandbox. 
+.P
+\fBuptodate\fR then modifies the \fBuptodate\fR log file to reflect all
+the changes it has made to the sandbox.
+This is a cumulative log, so if the user has called \fBuptodate\fR five
+times, the results of all five calls will be merged into this log.
+Another set of logs, also under \fI/sandbox/\fBlogs\fR, have the names
+\fBuptodate.\fIN\fR, where the suffix "\fIN\fR" is incremented each time
+\fBuptodate\fR is run.
+These logs provide a record of the files updated by individual calls to
+\fBuptodate\fR.
+.P
+If the user does not want to compare the current backing tree to
+the default build, either or both can be changed using the
+\fB-cmp_to\fR option to alter the backing tree and the \fB-copy_from\fR
+option to change the default build.
+\fBuptodate\fR expects these options to give absolute paths to new
+locations, i.e. the arguments must start with a slash '/',
+and it expects the new location to contain the appropriate
+files such as SNAPSHOT.
+.P
+Like other ODE sandbox commands, \fBuptodate\fR supports the \fB-sb\fR
+flag to indicate the the name of the sandbox to use.
+The \fB-rc\fR option can be used to changed the name
+of the default rc file.
+.P
+If the user retargets the sandbox to another build, it may no longer be
+necessary to have local copies of all the sources.
+At this point, it may be desirable to manually clean out the source
+directory and to remove the \fBlogs/uptodate\fR file and rerun \fBuptodate\fR.
+.P
+In some cases, the user may wish to see the list of the files \fBuptodate\fR
+found during each part of its search.
+The \fB-debug\fR option provides this information.
+.SH FILES
+.P
+.IP \fI/sandbox\fB/logs/uptodate\fR
+holds the list of files and revision numbers which have been copied
+from the default build into the user's sandbox using \fBuptodate\fR.
+It merges the results of multiple calls to \fBuptodate\fR.
+.IP \fIsandbox\fB/logs/update.\fIN\fR
+holds the list of files and revision numbers which have been copied
+from the default build into the user's sandbox in any single call
+to \fBuptodate\fR.
+The suffix "N" is incremented with each invocation so previous lists
+are not overwritten.
+.IP \fI/sandbox\fB/link\fR
+provides the default path to the default backing tree to use to compare again
+the default build.
+The sandbox's rc file determines which backing tree is used.
+.IP \fI/default-build\fB/logs/SNAPSHOT\fR
+.IP \fI/backing-build\fB/logs/SNAPSHOT\fR
+hold the lists of files and their revision numbers which will be compared.
+.IP \fB${HOME}/.sandboxrc\fR
+the default user's sandbox rc file;
+it is used to obtain the path of the sandbox.
+.SH "RELATED INFORMATION"
+.P
+sandboxrc(5), mklinks(1), resb(1).
+

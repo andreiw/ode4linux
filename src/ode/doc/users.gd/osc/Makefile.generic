@@ -1,0 +1,184 @@
+#
+# @OSF_FREE_COPYRIGHT@
+# COPYRIGHT NOTICE
+# Copyright (c) 1992, 1991, 1990  
+# Open Software Foundation, Inc. 
+#  
+# Permission is hereby granted to use, copy, modify and freely distribute 
+# the software in this file and its documentation for any purpose without 
+# fee, provided that the above copyright notice appears in all copies and 
+# that both the copyright notice and this permission notice appear in 
+# supporting documentation.  Further, provided that the name of Open 
+# Software Foundation, Inc. ("OSF") not be used in advertising or 
+# publicity pertaining to distribution of the software without prior 
+# written permission from OSF.  OSF makes no representations about the 
+# suitability of this software for any purpose.  It is provided "as is" 
+# without express or implied warranty. 
+#
+#
+# HISTORY
+# $Log: Makefile.generic,v $
+# Revision 1.2.2.2  1992/12/03  19:12:59  damon
+# 	ODE 2.2 CR 346. Expanded copyright
+# 	[1992/12/03  18:42:41  damon]
+#
+# Revision 1.2  1991/12/05  20:57:44  devrcs
+# 	Added _FREE_ to copyright marker
+# 	[91/08/01  08:09:47  mckeen]
+# 
+# 	Changes for Reno make
+# 	[91/03/22  16:18:21  mckeen]
+# 
+# 	merged from dce/devkit version
+# 	[91/02/21  15:00:40  ezf]
+# 
+# $EndLog$
+#
+# Site Specific Variables
+# -----------------------
+# Two typical methods for obtaining PostScript output from troff files are
+#   1) <troff-prog> <flags-for-ps-output> file
+# and
+#   2) <troff-prog> <flags-for-ps-output> file | <troff-to-ps-prog>
+#
+# The variables TROFF, TROFF_FLAGS, and POSTP are used in the makefiles in
+# this directory to make porting this makefile to different environments 
+# easier.
+#
+# Site specific variable values
+# -----------------------------
+# TROFF is set to whatever is used for <troff-prog> in your environment.
+# TROFF_FLAGS is set to whatever <flags-for-ps-output> are used in your
+#             environment.
+# POSTP is set to the program that converts troff output to PostScript format
+#       in your environment, if applicable.
+#
+# Examples
+# --------
+# If you use something like method 2) to get PostScript output from troff files
+# in your environment, you can use this Makefile (which is set up for the IBM
+# environment) as an example. In the IBM environment, <troff-prog> is "troff",
+# <flags-for-ps-output> is "-Tpsc" and <troff-to-ps-prog> is "psdit".  This 
+# means that the values for the site specific variables are:
+
+TROFF=troff
+TROFF_FLAGS=-Tpsc
+POSTP=| psdit
+
+# If you use something like method 1) to get PostScript output from troff
+# files in your environment, you can use the file "Makefile.osf" in this 
+# directory (which is set up for the OSF environment) as an example.
+#
+
+
+INFORMATION	= title contents preface 
+# index
+
+CHAPTERS	= sandbox source.control compilation submit installation
+
+#
+#	rules for turning table files and pic files into mm files
+#
+
+.tbl.mm:
+		tbl $< > $@
+
+.pic.mm:
+		pic $< > $@
+
+.SUFFIXES:	.mm .tbl .pic
+
+
+#
+#	rules for creating all of DUG as a post script file
+#	or giving it to the printer
+#
+#
+#  OSF make hook
+# ------------------
+# This target is just a hook to get the OSF make to run this
+# regular makefile when make is run from build.
+dopass_all: dug.ps
+
+
+dug.ps: dug.mm ${INFORMATION} ${CHAPTERS}
+		${TROFF} ${TROFF_FLAGS} -mm dug.mm ${POSTP} > dug.ps
+
+dug: dug.mm ${INFORMATION} ${CHAPTERS}
+		${TROFF} -mm dug.mm
+
+#
+#	rules for creating post script files for each portion of DUG
+#
+
+title.ps: title
+		cat title.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > title.ps
+		rm preview.mm
+
+contents.ps: title contents
+		cat title.mm contents.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > contents.ps
+		rm preview.mm
+
+preface.ps: title preface
+		cat title.mm preface.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > preface.ps
+		rm preview.mm
+
+sandbox.ps: title sandbox
+		cat title.mm sandbox.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > sandbox.ps
+		rm preview.mm
+
+source.control.ps: title source.control
+		cat title.mm source.control.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > source.control.ps
+		rm preview.mm
+
+compilation.ps: title compilation
+		cat title.mm compilation.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > compilation.ps
+		rm preview.mm
+
+submit.ps: title submit
+		cat title.mm submit.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > submit.ps
+		rm preview.mm
+
+installation.ps: title installation
+		cat title.mm installation.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > installation.ps
+		rm preview.mm
+
+index.ps: title index
+		cat title.mm index.mm > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > index.ps
+		rm preview.mm
+
+#
+#	dependency rules for each information and chapter file
+#	also tbl and pic file conversions
+#
+
+title: title.mm
+
+contents: contents.mm
+
+preface: preface.mm
+
+sandbox: sandbox.mm
+
+source.control: source.control.mm
+
+compilation: compilation.mm
+
+submit: submit.mm
+
+installation: installation.mm
+
+installation.mm: installation.tbl
+
+index: index.mm
+
+index.mm: index.tbl

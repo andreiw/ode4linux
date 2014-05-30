@@ -1,0 +1,123 @@
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"  
+.\" Copyright (c) 1992 Carnegie Mellon University 
+.\" All Rights Reserved. 
+.\"  
+.\" Permission to use, copy, modify and distribute this software and its 
+.\" documentation is hereby granted, provided that both the copyright 
+.\" notice and this permission notice appear in all copies of the 
+.\" software, derivative works or modified versions, and any portions 
+.\" thereof, and that both notices appear in supporting documentation. 
+.\"  
+.\" CARNEGIE MELLON ALLOWS FREE USE OF THIS SOFTWARE IN ITS "AS IS" 
+.\" CONDITION.  CARNEGIE MELLON DISCLAIMS ANY LIABILITY OF ANY KIND FOR 
+.\" ANY DAMAGES WHATSOEVER RESULTING FROM THE USE OF THIS SOFTWARE. 
+.\"  
+.\" Carnegie Mellon requests users of this software to return to 
+.\"  
+.\" Software Distribution Coordinator  or  Software_Distribution@CS.CMU.EDU 
+.\" School of Computer Science 
+.\" Carnegie Mellon University 
+.\" Pittsburgh PA 15213-3890 
+.\"  
+.\" any improvements or extensions that they make and grant Carnegie Mellon 
+.\" the rights to redistribute these changes. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: blog.hdr,v $
+.\" Revision 1.2.6.2  1993/09/14  00:12:06  marty
+.\" 	CR # 623 - Remove -sb_rc.
+.\" 	[1993/09/14  00:11:50  marty]
+.\"
+.\" Revision 1.2.6.1  1993/09/01  14:10:04  marty
+.\" 	CR # 644 - Remove -L and -R options.  Add -A option
+.\" 	[1993/09/01  14:09:40  marty]
+.\" 
+.\" Revision 1.2.4.3  1993/04/21  14:17:03  damon
+.\" 	CR 421. Fixed typos
+.\" 	[1993/04/21  14:15:23  damon]
+.\" 
+.\" Revision 1.2.4.2  1993/04/20  18:18:55  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/20  18:17:59  damon]
+.\" 
+.\" Revision 1.2.2.3  1992/12/02  20:50:01  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/02  20:47:00  damon]
+.\" 
+.\" Revision 1.2.2.2  1992/10/19  20:15:12  damon
+.\" 	CR 272. Updated to 2.2
+.\" 	[1992/10/19  20:12:13  damon]
+.\" 
+.\" Revision 1.2  1991/12/05  21:14:49  devrcs
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:15:03  mckeen]
+.\" 
+.\" 	Changes for Reno make
+.\" 	[91/03/22  16:34:19  mckeen]
+.\" 
+.\" Revision 1.4  90/12/06  14:20:55  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:45:39  gm]
+.\" 
+.\" Revision 1.3  90/10/07  21:56:18  devrcs
+.\" 	Added EndLog Marker.
+.\" 	[90/09/29  14:12:18  gm]
+.\" 
+.\" Revision 1.2  90/05/24  23:13:22  devrcs
+.\" 	final draft before release
+.\" 	[90/05/15  08:47:53  mckeen]
+.\" 
+.\" 	Second draft, split out options into include files
+.\" 	[90/05/04  13:34:54  mckeen]
+.\" 
+.\" 	First revision on man page.  Broken up from old combined
+.\" 	bcs.1
+.\" 	[90/05/03  17:10:28  mckeen]
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH blog 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+blog \- displays log information about the current branch
+.SH SYNOPSIS
+.IP \fBblog\fP 8
+[\fB-r rev\fP | \fB-b\fP | \fB-A\fP | \fB-h\fP]
+.br
+[\fIsandbox_options\fP] [\fIODE_options\fP] [\fIfile_options\fP]
+.IP \fBblog\fP 8
+[\fB-version\fP | \fB-usage\fR]
+.IP \fIsandbox_options\fR 8
+[\fB-rc -sb -set\fP]
+.IP \fIODE_options\fR 8
+[\fB -auto -quiet -normal -verbose -debug\fP]
+.IP \fIfile_options\fR 8
+[ [\fB -changed \fR|\fB -saved\fR ] \fB-all\fR | \fBfile ... \fR\fP]
+.SH FLAGS
+.IP "\fB-r \fIrev\fR" 8
+Displays information for \fIrev\fR instead of the default.
+.IP "\fB-b\fR"
+Displays information for the revision in the backing build instead of the default.
+.IP \fB-A\fR
+Displays all information in long format.
+.IP \fB-h\fR
+Displays only the header information for this file.
+.PP

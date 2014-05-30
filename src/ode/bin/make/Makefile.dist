@@ -1,0 +1,23 @@
+#
+# @OSF_FREE_COPYRIGHT@
+#
+# HISTORY
+# $Log: Makefile.dist,v $
+# Revision 1.2.2.1  1995/05/18  02:12:18  robert
+# 	add to tree for free  unencumbered distrib
+# 	[1995/05/18  02:06:35  robert]
+#
+# Revision 1.2  1991/12/05  20:41:49  devrcs
+# 	Changes for Reno make
+# 	[91/03/22  15:34:53  mckeen]
+# 
+# $EndLog$
+
+# a very simple makefile...
+pmake:
+	@echo 'make of make and make.0 started.'
+	cc -I. -c *.c
+	cd lst.lib; cc -I.. -c *.c
+	cc *.o lst.lib/*.o -o pmake
+	nroff -h -man make.1 > make.0
+	@echo 'make of make and make.0 completed.'

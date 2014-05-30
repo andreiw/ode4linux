@@ -1,0 +1,124 @@
+# @OSF_FREE_COPYRIGHT@
+# COPYRIGHT NOTICE
+# HISTORY
+# $Log: README,v $
+# Revision 1.1.2.2  1993/02/23  16:22:44  damon
+# 	Adding instructions for copyscan
+# 	[1993/02/23  16:22:26  damon]
+#
+# 	Adding instructions for copyscan
+# 	[1993/02/23  16:19:51  damon]
+#
+# $EndLog$
+
+The copyscan program is useful for finding new copyright strings in source
+files. To use the copyscan program, you need three things: a seed list, a
+candidate list, and a file list.
+
+The 'seed' list is the list of all known copyright strings. If you are using
+this program for the first time, the seed list will be empty. If the copyscan
+program has already been used for a project, the seed list will probably be
+quite large.
+
+The candidate list is a list of strings which make a string a copyright string
+candidate. That is, if a string contains any of the strings in the candidate
+list, then it is a copyright string candidate. For instance, if the candidate
+list is:
+
+copyright
+(c)
+
+Then the string 'copyright 1993, xyz company' is a candidate and so is
+'(c) 1994, chime labs'. The string 'Copyright 1993, Barkley University' is
+not a candidate because it does not contain either of the candidate strings.
+To recognize this string you would need to add 'Copyright' to the list of
+candidate strings.
+
+The third thing that you need is a file list. This is a list of files that
+you wish to process along with their comment leader. If you have the files
+foo.c and bar.sh with comment leaders ' * ' and '# ' respectively, you would
+have a file list like this:
+
+foo.c	* 
+bar.sh	# 
+
+Substituting <tab> for tabs, and _ for spaces, this looks like:
+
+foo.c<tab>_*_
+bar.sh<tab>#_
+
+The spaces are definately important.
+
+The copyscan program works by putting all of the text inside comments into
+a single line and then removing all comment characters. Contiguous comments
+are treated as a single comment. Thus the following text:
+
+/* Copyright 1993 */
+/* Digits Incorporated */
+/*
+ * Copyright 1994 Open Software Foundation
+ */
+
+becomes:
+
+Copyright 1993 Digits Incorporated Copyright 1994 Open Software Foundation
+
+While a string is a candidate, copyscan will remove all known copyright
+strings. If the string is still a candidate, it will print the remainder.
+
+Let's say that 'Copyright' is in our candidates.basic file, and
+'Copyright 1994 Open Software Foundation' is in our copy.seed file. Copyscan
+will recognize the original string above as a candidate. It will then strip
+out the OSF copyright leaving:
+
+'Copyright 1993 Digits Incorporated'
+
+Since this string contains the string 'Copyright', it is a candidate. But
+there are no more known copyright strings to pull out, so this string is
+a remainder.
+
+When copyscan is run, it produces output in the following format:
+
+<filename> <label> <string>
+
+The label will be one of:
+
+NOTHING
+FOUND
+ORIGINAL
+REMAINDER
+
+'NOTHING' means that no candidates were found.
+
+'FOUND' means that a known copyright string was found. The string that was
+found is output in the <string> field.
+
+'ORIGINAL' and 'REMAINDER' go together. These are output when a string
+is a candidate but no known copyright strings can be removed from it. This
+indicates that a knew copyright string is present in the REMAINDER.
+'ORIGINAL' indicates the original string that copyscan looked at, and
+'REMAINDER' is the string that was left after all known copyright strings were
+removed.
+
+Using copyscan is an iterative process. Run copyscan once over your list of
+files. Look for REMAINDER strings to generate new strings for your
+copy.seed file. Run copyscan again to see if any REMAINDERs still exist. If
+so, add them to your copy.seed file. Keep doing this until you have no more
+REMAINDERs.
+
+*IMPORTANT*: make sure that similar strings are in the correct order. A string
+and a substring should always be in order of longest to shortest. For instance,
+if you have the string: '(c) MBI 1983' and 'Copyright (c) MBI 1983', they
+should be in the copy.seed file in this order:
+
+Copyright (c) MBI 1983
+(c) MBI 1983
+
+If they were in reverse order, the string 'Copyright (c) MBI 1983' would have
+'(c) MBI 1983' taken out of it leaving the generic 'Copyright'. This would
+always leave a remainder since you don't want just 'Copyright' in your
+copy.seed program.
+
+To help you generate the list of files and comment leaders, you can use the
+gcl.csh program. Run this program in the rcs tree. MAKE SURE YOU ARE RUNNING
+THE RCS PROVIDED WITH ODE. Otherwise, gcl.csh will not operate properly.

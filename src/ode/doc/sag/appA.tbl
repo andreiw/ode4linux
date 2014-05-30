@@ -1,0 +1,231 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\" HISTORY
+.\" $Log: appA.tbl,v $
+.\" Revision 1.2.2.3  1992/12/03  19:09:10  damon
+.\" 	ODE 2.2 CR 346. Expanded copyright
+.\" 	[1992/12/03  18:40:42  damon]
+.\"
+.\" Revision 1.2.2.2  1992/03/18  17:52:30  damon
+.\" 	Updated to reflect new build procedure re: SETUP_ALL
+.\" 	[1992/03/18  17:47:16  damon]
+.\" 
+.\" Revision 1.2  1991/12/05  20:59:02  devrcs
+.\" 	added Andy's change for Makeconf vs scripts; and
+.\" 	removed Mark's porting make part 'til we can fix
+.\" 	it up for 2.1
+.\" 	[1991/11/12  19:56:40  hester]
+.\" 
+.\" 	added back ANSI stuff and a couple of ademola's changes -
+.\" 	still needs to be updated by Mark
+.\" 	[91/08/05  12:29:25  hester]
+.\" 
+.\" 	added new environment variable definitions for use with porting
+.\" 	[91/07/31  16:12:02  hester]
+.\" 
+.\" 	moved porting sequence to be part of strategy
+.\" 	[91/05/09  09:54:36  hester]
+.\" 
+.\" 	first take at revisions for SAG update
+.\" 	This used to be a list of header files and has
+.\" 	changed to be the porting guide.
+.\" 	[91/05/03  16:58:48  hester]
+.\" 
+.\" 	initial revision of appendix b in table form of SAG
+.\" 	[91/01/25  18:39:20  hester]
+.\" 
+.\" $EndLog$
+...\"*********************************************************************
+...\"          Set page information
+...\"*********************************************************************
+.EH "'\s10\\\\nP''\fBAppendix A\s0\fR'"
+.OH "'\fB\s10Appendix A\fR''\\\\nP\s0'"
+.SK
+...\"*********************************************************************
+...\"          Contents of ODE/SAG: Appendix A - Porting ODE
+...\"*********************************************************************
+.HU  "Appendix A"
+.S 16
+.SP
+.ce
+Porting ODE
+.S P
+.SP
+.P
+This appendix contains information about porting ODE to different platforms.
+It is not an attempt to provide all the answers to porting issues,
+rather it proposes a strategy for porting and then provides some hints
+for fixing common problems.
+.P
+This appendix is broken into three parts, a recommended, general strategy
+for porting, hints on setting values in the setup scripts to help overcome
+porting problems, and specific details on porting the OSF \fBmake\fR, 
+.HU  "ANSI environment"
+.P
+ANSI standard library functions have been used in ODE wherever possible
+to make the porting effort easier for most sites.
+Unfortunately, this means porting to non-ANSI systems may include
+replacing these ANSI function with equivalent functions from the local
+environment
+.P
+Porting ODE will be much easier if it is ported to an ANSI environment.
+Without this environment, there will be additional porting steps.
+For example, in an ANSI environment the file string.h contains a
+declaration for the strcat() routine.
+In a non-ANSI environment, strcat() will probably not be declared
+so the administrator will have to do this.
+.HU  "Porting Strategy"
+.P
+The \fBMakeconf\fR file sets all of the porting variables for the
+various platforms.
+If your machine type is not included in the platforms in the \fBMakeconf\fR
+file, you will need to add it.  
+Do this by copying the context that is closest to the platform you are
+porting to and do appropriate editing.
+.P
+Your porting effort should follow the sequence of steps taken by
+the provided scripts.
+The build scripts do the following steps in the order listed:
+.AL
+.LI
+build \fBmake\fR
+.LI
+build \fBgenpath\fR
+.LI
+build \fBmakepath\fR
+.LI
+build \fBbuild\fR
+.LI
+build \fBrelease\fR
+.LI
+build \fBmd\fR
+.LI
+export ODE headers
+.LI
+build and export library \fBlibode.a\fR
+.LI
+build the remainder of the ODE tools
+.LE
+.P
+The \fBsetup.sh\fR script builds the first six utilities, creating
+temporary versions of each which will be replaced by full versions
+when the full ODE build is run in the next step.
+After these utilities are built and put in place for the other steps
+to use, a full ODE build should be run.
+.P
+When \fBbuild\fR is run, it first exports the header files.
+It then builds and exports \fBlibode.a\fR.
+Once these are in place, the remainder of the tools can be built.
+Regardless of how the port is being done, these steps should be taken
+in this order.
+.P
+.HU  "Porting Hints"
+The following information is meant to provide hints on how to set
+definitions and compile flags for porting to different platforms.
+These are based on previous porting experiences within OSF.
+Definitions set by the \fBMakeconf\fR file are:
+.VL 12
+.LI "\fBNO_VFPRINTF\fR"
+By setting this variable, when \fBlibode.a\fR is created, the \fBvfprintf\fR
+module will be included.
+(The form of the name means the target operating system has "no vfprintf".
+This convention is followed throughout these variables.)
+If the local version of \fBlibc.a\fR already includes vfprintf, this variable
+should not be set.
+.LI "\fBNO_SETENV\fR"
+By setting this variable, when \fBlibode.a\fR is created, the \fBsetenv\fR
+and \fBunsetenv\fR routines will be included.
+If the local version of \fBlibc.a\fR already includes these routines,
+this variable should not be set.
+.LI "\fBNO_PW_STAYOPEN\fR"
+Normally, when \fBfind\fR is compiled it tries to keep open the
+password file.
+On some systems, a call to keep a file open is not permitted.
+This variable should be set on those systems which do not support that call.
+.LI "\fBNO_DIRENT\fR"
+Many newer UNIX systems have the struct type \fBdirent\fR instead of the
+older struct type \fBdirect\fR.
+This variable should be set if the system uses \fBdirect\fR.
+.LI "\fBNO_UUDECODE\fR"
+If the system does not have an \fBuudecode\fR command, this
+variable should be set.
+.LI "\fBSTRRETINT\fR"
+This variable specifies that string routines such as strcmp () return
+integer values instead of *char's.
+.LI "\fBINC_TIME\fR"
+If this variable is set, the header file <\fBtime.h\fR> is included by the
+programs which need it.
+.LI "\fBINC_SELECT\fR"
+If this variable is set, the header file <\fBselect.h\fR> is included by the
+programs which need it.
+.LI "\fBNO_FLOCK\fR"
+When this variable is set it indicates the target system does not support
+the flock routine.
+The ODE commands will be compiled to not use flock.
+.LI "\fBNO_I18N\fR"
+This variable, when set, specifies that internationalization code should
+not be compiled into the routines.
+.LI "\fBWAIT_IS_UNION\fR"
+In the system header file which defines the typedef \fBwait\fR,
+most systems define it as type \fBint\fR.
+If the system being used defines it as type \fBunion\fR, this variable
+should be set.
+.LI "\fBNO_UTIMES\fR"
+Newer UNIX systems define a function \fButimes ()\fR while older
+systems define \fButime ()\fR without the 's'.
+On systems using the older name, define this variable.
+.LI "\fBNO_FIL_BUFSIZ\fR"
+Older UNIX systems did not assign a buffer size for some calls such
+as \fBsprintf\fR.
+On these systems, this variable should be set.
+.LI "\fBINC_AOUTHDR\fR"
+When set release includes header files that define a.out object format
+Set this variable when the target machine's object format is a.out
+.LI "\fBINC_FILEHDR\fR"
+When set release includes filehdr.h.  
+This variable should be set when compiling on AT386 platforms running OSF/1.
+.LI "\fBNO_RCS\fR"
+When set this variable prevents the rcs sources from being built.  This is set
+on platforms that the rcs code has not been ported to.
+.LI "\fBNO_SHARED_LIBRARIES\fR"
+When set, shared libraries are not built.
+.LI "\fBNO_STRDUP\fR"
+This is set on platforms that do not support the strdup routine.
+.LI "\fBNO_GETDTABLESIZE\fR"
+This is set on platforms that do not support the getdtablesize routine.
+.LI "\fBNO_LINE_BUF\fR"
+This is set on platforms that do not support the setlinebuf routine.
+.LI "\fBNO_SYS_SIGLIST\fR"
+This is set on platforms that do not define the sys_siglist array.
+.LE
+.P
+.SP
+The following variables can be set with appropriate values to modify the
+result of the compilation:
+.VL 12
+.LI "\fBTARGET_LIBS\fR"
+This variable should be set to a list of libraries which the programs
+should be linked with.
+If this variable is not set, the libraries to link with will be: \fBlibode.a\fR
+and \fBlibc.a\fR.
+The most common value for this variable is \fBlibbsd.a\fR when porting
+commands to non-BSD based systems.
+.LI "\fBTARGET_FLAGS\fR"
+This variable specifies additional flags which should be added to
+\fBCFLAGS\fR for compilation on the target machine.
+.LE

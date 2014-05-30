@@ -1,0 +1,65 @@
+# COPYRIGHT NOTICE
+# Copyright (c) 1994-1990 Open Software Foundation, Inc.
+# 
+# Permission is hereby granted to use, copy, modify and freely distribute
+# the software in this file and its documentation for any purpose without
+# fee, provided that the above copyright notice appears in all copies and
+# that both the copyright notice and this permission notice appear in
+# supporting documentation.  Further, provided that the name of Open
+# Software Foundation, Inc. ("OSF") not be used in advertising or
+# publicity pertaining to distribution of the software without prior
+# written permission from OSF.  OSF makes no representations about the
+# suitability of this software for any purpose.  It is provided "as is"
+# without express or implied warranty.
+#
+# HISTORY
+# $Log: README,v $
+# Revision 1.3.6.1  1994/02/08  17:19:22  damon
+# 	CR 1029. Updated for 2.3.4
+# 	[1994/02/08  17:19:12  damon]
+#
+# Revision 1.3.4.2  1993/06/04  18:33:39  damon
+# 	CR 568. Updated for ODE 2.3
+# 	[1993/06/04  18:33:12  damon]
+# 
+# Revision 1.3.2.2  1993/01/04  19:20:39  damon
+# 	CR 374
+# 	Added history section and updated for 2.2
+# 	Moved this file from ./src/ode to ./src
+# 	[1993/01/04  19:19:37  damon]
+# 
+# $EndLog$
+
+OSF Development Environment (ODE) Version 2.3.4
+
+Supported platforms
+
+  pmax_ultrix	DECstation 3100 running Ultrix
+  pmax_osf1	DECstation 3100 running OSF/1
+  at386_osf1	Intel 386/486 running OSF/1
+  rios_aix	IBM RS/6000 running AIX
+  sparc_sunos	Sparcstation running SunOS
+  hp700_hpux	HP 9000/700 running HP-UX
+  alpha_osf1	DECstation 3400 running OSF/1
+  at386_sinix	Intel 386/486 running SINIX
+
+This tree contains the source and documentation for the OSF Development
+Environment (ODE) tools.  RCS version 5.6 is included in a separate archive.
+
+We have not ported the RCS 5.6 sources to all of the machines listed above.
+Our rcs servers in-house at OSF are currently running OSF/1, Ultrix,
+and HP-UX.
+
+Documentation on ODE can be found under:
+
+ ode/doc/release_notes	: release notes for ODE 2.3.4, read first (ASCII)
+ ode/doc/sag		: System Administration Guide 
+ ode/doc/users.gd/common	: common portion of Development User's Guide
+ ode/doc/users.gd/<prj>	: project specific portions Development User's Guide
+ ode/man/man1		: man pages for the ODE tools
+ ode/man/man3		: man pages for the ODE library, libsb.a
+ ode/man/man5		: man pages for ODE concepts - makefiles and
+			  sandbox rc files
+
+The ODE System Administration Guide describes in detail the procedures
+for building and installing ODE.

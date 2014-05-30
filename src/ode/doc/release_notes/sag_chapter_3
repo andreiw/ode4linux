@@ -1,0 +1,163 @@
+# @OSF_FREE_COPYRIGHT@
+#
+# HISTORY
+# $Log: sag_chapter_3,v $
+# Revision 1.1.2.2  1993/06/04  15:40:47  damon
+# 	CR 568. Added ASCII version of SAG chapter 3
+# 	[1993/06/04  15:40:11  damon]
+#
+# Revision 1.1.2.1  1993/06/04  15:40:46  damon
+# *** Initial Branch Revision ***
+#
+# $EndLog$
+#
+
+This chapter describes how to unload the OSF Development Environ-
+ment  (ODE)  from  the distribution tape and how to build and in-
+stall it on the reference platforms.  Each  task  (unloading  the
+tape,  building, and installing) is documented in a separate sec-
+tion.  Each section describes the requirements and then the  com-
+mands  that  are  used  to  perform that task.  The command lines
+given in this chapter are based on using the Bourne shell; howev-
+er  they  could easily be modified to be run under any shell.  To
+understand the instructions in Section 3 you should have a  user-
+level  understanding  of  some  UNIX-based  system, including the
+ability to interact with a shell and to perform basic system  ad-
+ministration commands.
+
+This section first describes the requirements  for  building  ODE
+and then provides the specific commands to perform the build. The
+build process starts by using a script called setup.sh to build a
+few of the commands that are needed to bootstrap the remainder of
+the tools.  This is followed by building the remaining tools.
+
+This version of ODE has been ported to  the  following  platforms
+and  takes  up  approximately the amount of disk space shown when
+built:
+____________________________________________________________________
+ Intel 386 system running OSF/1 1.1                15          at386_osf1
+____________________________________________________________________________
+ DECstation 3100 system running OSF/1 1.1          20          pmax_osf1
+____________________________________________________________________________
+ DECstation 3100 system running ULTRIX 4.1         19          pmax_ultrix
+____________________________________________________________________________
+ IBM RISC System/6000 running AIX 3.2              17          rios_aix
+____________________________________________________________________________
+ Sparc system running SunOS                        ??          sparc_sunos
+____________________________________________________________________________
+ HP 700 running HP-UX                              ??          hp700_hpux
+____________________________________________________________________________
+
+It is possible to build this  release  on  other  platforms  with
+modifications.  Refer to Appendix A for more information on port-
+ing ODE.
+
+The first step in building ODE is to  run  the  setup.sh  script.
+This   script   will  build  the  few  pieces  that  need  to  be
+bootstrapped to build the remainder of the ODE tools. The specif-
+ic programs that are built are make, build, genpath, release, md,
+and makepath. A temporary and partial libode.a is also built dur-
+ing  this  step. It is removed at the end of the setup.sh script.
+When built using the setup.sh script these programs are  compiled
+with the -D_BLD switch.  Using this switch builds versions of the
+programs that do not depend as heavily on libode.a (the  ODE  li-
+brary).  These are temporary copies until full versions are built
+in a later step.
+
+The setup.sh script takes the configuration name as an argument.
+Refer to the previous table for supported configuration names.
+
+The setup.sh script is located  in  /ode-path/ode/src/ode/setup.
+The  following table shows the hardware/operating system combina-
+tions that are supported by this release.  Use the following com-
+mands to run setup.sh, taking values from the above table to fill
+in the configuration name.  First make a directory  to  save  the
+logs in (this only has to be done once per machine):
+
+  mkdir /ode-path/ode/logs
+  mkdir /ode-path/ode/logs/<context-name> Now to run setup.sh:
+  cd /ode-path/ode/src
+  sh -x  ode/setup/setup.sh  <context-name>  >
+    ../logs/<context-name>/setup.log  2>&1
+
+When  this setup.sh finishes the setup.log
+file should be checked for error messages.  If any  errors  occur
+they must be fixed and the setup.sh script should be rerun before
+proceeding to the next step. The setup.log may be monitored while
+setup.sh  is  running  by placing the above command in background
+and using tail -f to display the log  as  it  is  being  created.
+After  running  setup.sh  verify  that the make, build, genpath,
+release, md, and makepath programs built.  Once setup.sh has fin-
+ished successfully continue on to the next section.
+
+Doing a full build of ODE relies on the results of  the  setup.sh
+script.  If you do not plan on using the source code control com-
+ponent of ODE you may want to set the environment variable NO_RCS
+before  building  ODE.  This will prevent the building of the rcs
+code.  Before building  ODE,  the  file  /ode/lib/oxm_relay_tcp.c
+should be edited.  In oxm_relay_tcp.c, the define SERV_NUM should
+be edited to have the same service number odexm will have in  the
+file  /etc/services.   If  you are unsure what number this should
+be, check with the system administrator who handles  sockets  for
+your  network.   Create a /ode-path/.sandboxrc file with the fol-
+lowing contents:
+
+  default ode
+  base * /ode-path
+  sb ode
+
+Set  up  the        the  rc  files in  the  directory  /ode-path/rc_files.        A description of the rc files can be found in the
+chapter Backing Build Configuration under the section  titled  rc
+File Setup.  Follow these steps build ODE:
+
+  cd /ode-path/ode/src
+  PATH="/ode-path/ode/tools/<context-name>>/bin:PATH"
+  build   -rc ode-path/ode/.sandboxrc    >
+    ../logs/<context-name>/cmds.log  2>&1
+
+Once again, review the resulting log for er-
+rors.  If there are any errors, fix them (you might want to  con-
+sult  the  Porting  Hints  in  Appendix A) and run build again to
+build those parts that failed  the  first  time.   After  running
+build  all libraries, programs and documentation should have been
+successfully built.
+
+Once ODE has been successfully built, proceed to the next section
+which details how to install ODE.
+
+This section describes how to start installing ODE on your system
+by  using  a  script called install.sh.  There are other parts to
+installing the ODE rcs  servers  and  creating  builds  that  are
+covered in chapters 4 and 5.
+
+To install ODE you must have successfully completed building  the
+ODE  project  by  running  setup.sh  and cmds.sh scripts over the
+source tree.  To install ODE you must be logged in as root.
+
+The installed ODE tools take approximately 5 to 10  megabytes  of
+disk space.
+
+The install.sh script is located in the  same  directory  as  the
+setup.sh and cmds.sh scripts.  install.sh takes two arguments, of
+which the first one is the same as the argument given to setup.sh
+and  cmds.sh.  The second argument is optional and represents the
+absolute path to the location where  the  tools  are  to  be  in-
+stalled.   If the second argument is omitted the install location
+will default to /usr/ode.
+
+The  following  commands  will  install  ODE   in   /ode-install-
+path/ode/release
+
+  su root
+  mkdir /ode-install-path
+  cd /ode-install-path/ode/src
+  sh -x ode/setup/install.sh <context-name>   /ode-install-path
+    > ../logs/<context-name>/install.log 2>&1
+
+  Any  commands  that
+failed to build will show up in the install.log as er-
+rors.
+
+Once you have built and installed the ODE tools  proceed  to  the
+next  chapters  of  this guide which will detail how to set up an
+ODE rcs server and backing builds.

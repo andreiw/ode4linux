@@ -1,0 +1,161 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\" HISTORY
+.\" $Log: release.1,v $
+.\" Revision 1.2.2.2  1992/12/03  17:24:28  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:20  damon]
+.\"
+.\" Revision 1.2  1991/12/05  21:15:32  devrcs
+.\" 	updated to reflect actual command line options (removed the
+.\" 	disabled switches)
+.\" 	[1991/11/08  21:56:51  ezf]
+.\" 
+.\" 	Added to ODE tree
+.\" 	[91/07/30  13:06:59  mckeen]
+.\" 
+.\" $EndLog$
+.\" 
+.TH RELEASE 1 11/08/91
+.SH NAME
+release \- move software through release stages
+.SH SYNOPSIS
+.B release
+[ options ] file ...
+.SH DESCRIPTION
+.I Release
+is a program to help move programs, data files, etc.
+from
+build areas to release areas.
+Build areas are typically directories where programs are compiled for
+various architectures.
+Release areas are set up for the distribution of software to various
+sets of machines depending upon some criteria (e.g. software that is in
+various stages of testing).
+In general,
+.I release
+assumes nothing about the organization of the software release area
+and must be told what actions to perform and where files are located.
+
+.I Release
+requires at least one
+.I file
+argument, known as the
+.I target.
+The
+.I target
+is the name the file currently has as it resides in the build area
+(which may differ from the name it will have after installation in the
+release area).  For example,
+.I /build/bin/cp
+might be the
+.I file
+argument to
+.I release
+even if it will be installed into the directory as
+.I /release/bin/mv.
+After all the options
+have been processed, any additional parameters are
+taken to be one or more
+.I targets.
+The first
+.I target
+name is taken to be the `canonical' name of the
+.I target
+and any additional
+.I targets
+are made as hard links to this name in the release area.
+
+There are several required switches to
+.I release.
+The
+.B \-tostage
+.I tostage
+option specifies the path name of the base directory where all the
+.I targets
+are to be created.  The
+.B \-fromfile
+.I fromfile
+switch specifies the location of the file to be installed in
+.I tostage.
+.I Fromfile
+is not altered in any way, and typically is a file in a system build
+area.  In addition the
+.B -o
+and
+.B -g
+switches (described below) are also required.
+
+The following additional switches are understood by
+.I release:
+.br
+.TP 
+\fB\-g\fP \fIgroup\fP
+Set the group owner of the file to be
+.I group.
+See
+.I chgrp(1).
+.TP 
+\fB\-m\fP \fImode\fP
+Set the protection of the
+.I target
+according to the specified
+.I mode.
+See
+.I chmod(1).
+.TP 
+\fB\-o\fP \fIowner\fP
+Set the owner of the target to be
+.I owner.
+See
+.I chown(1).
+.TP
+\fB\-idfile\fP \fIfilename\fP
+The file containing user IDs and group IDs used during installation.
+.TP 
+.BR \-q
+This is for quick mode.  If a non-fatal consistency check fails, then
+normally
+.I release
+will prompt to continue.  In quick mode, a warning message is printed
+and the program continues.
+.i0
+.DT
+.PP
+.I Release
+checks to make sure that the number of links to
+.I target
+is consistent with the number of file names given on the command line.
+The number of links are checked if the
+.I target
+already exists in
+.I tobase.
+The checks are intended to ensure that a link to a program that
+should be in the release area is not accidently removed, or
+that an extra link is not added.  Neither of these problems may be
+particularly fatal, so if in quick mode only the warning message is
+printed and
+.I release
+continues to install the
+.I target
+and any links as specified on the command line.
+.br
+.SH DIAGNOSTICS
+The error messages and diagnostics should be self explanatory.
+The program exits with status 0 on success and
+status 1 if any problems occurred.

@@ -1,0 +1,464 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: mksb.1,v $
+.\" Revision 1.6.6.2  1993/09/14  15:05:47  marty
+.\" 	CR # 623 - removed -sb_rc
+.\" 	[1993/09/14  15:05:01  marty]
+.\"
+.\" Revision 1.6.6.1  1993/09/14  00:41:32  marty
+.\" 	CR # 623
+.\" 	[1993/09/14  00:39:33  marty]
+.\" 
+.\" Revision 1.6.4.2  1993/04/21  18:42:21  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/21  18:39:40  damon]
+.\" 
+.\" Revision 1.6.2.2  1992/12/03  17:24:24  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:18  damon]
+.\" 
+.\" Revision 1.6  1991/12/05  21:15:28  devrcs
+.\" 	Added more info, headers, and generally reorganized
+.\" 	information under DESCRIPTION. Added more detailed example
+.\" 	with table listing defaults for switches
+.\" 	[1991/11/06  19:43:30  robert]
+.\" 
+.\" 	Rewrote to account for Tools II.
+.\" 	[91/01/08  15:07:59  randyb]
+.\" 
+.\" Revision 1.5  90/12/06  14:21:19  devrcs
+.\" 	Cleanup copyright and history log comments.
+.\" 	[90/11/15  11:46:44  gm]
+.\" 
+.\" Revision 1.4  90/10/07  21:56:54  devrcs
+.\" 	Pre OSF/1 changes.
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH mksb 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+mksb \- make new sandbox
+.SH SYNOPSIS
+.IP \fBmksb\fR 6
+[\fB-def\fR] [\fB-back \fIbacking-tree\fR] [\fB-dir \fIsandbox-dir\fR] 
+[\fB-m \fImachine\fR[\fI:machine\fR]*]
+.br
+[\fIPopulation opts\fR] [\fIODE opts\fR] \fIsandbox\fR
+.IP \fBmksb\fR 6
+\fB-list\fR
+.IP \fBmksb\fR 6
+\fB-undo\fR \fIsandbox\fR
+.IP "\fIPopulation opts\fR:" 16
+[\fB-tools \fImode\fR] [\fB-obj \fImode\fR \fIdir\fR]
+[\fB-src \fImode\fR \fIdir\fR]
+.IP "\fIODE opts\fR:" 10
+[\fB-info -auto -noauto -quiet -normal -verbose -usage -version\fR]
+.br
+[\fB-set \fIsetname\fR] [\fB-rc \fIrcfile\fR]
+.SH FLAGS
+.IP "\fB\-def\fR"
+Establishes the sandbox which is about to be created as the default sandbox.
+The default sandbox is listed in the specified rc file
+or \fB${HOME}/.sandboxrc\fR if no rc file is specified.
+The default sandbox is used when the environment variable
+\fBSANDBOX\fR is not set.
+If there is no rc file at the specified location,
+a new one will be created and the new sandbox will
+automatically be set as the default.
+.IP "\fB\-back \fIbacking-tree\fR"
+Use the argument as the name of the backing tree.
+The backing tree can be one of the builds in the form \fIosc.#\fR
+where "#" is the build number,
+or it can be the full path to another sandbox starting with "/".
+The backing tree can also be specified as \fIlatest\fR.
+If this option is not specified, the program will list the builds
+available and prompt the user for his/her choice.
+The user can enter a build or a path to another sandbox.
+.IP "\fB\-dir \fIsandbox-dir\fR"
+Creates the new sandbox under the directory specified.
+The directory needs to already exist.
+If this option is not used, the directory given after the
+\fBdefault_sandbox_base\fR target in the \fI.sandboxrc\fR
+file will be used.
+If the file or target is not found, \fBmksb\fR will prompt the
+user for the directory.
+.IP "\fB\-m \fImachine\fR[\fI:machine\fR]*"
+Makes a list of the names of the machines to build machine
+dependent directories for in the new sandbox.
+If there is more than one machine, the names should be separated by
+a colon, \fB':'\fR, without spaces.
+If this option is not used, the machines listed after
+the \fBdefault_machines\fR target in the \fI.sandboxrc\fR file will be used.
+If the file or target is not found, \fBmksb\fR will prompt for
+the information.
+.IP "\fB\-list\fR"
+Lists the sandboxes, the default sandbox, and any sandbox bases
+in the user's rc file.
+This option works with the \fI-rc\fR
+option so rc files other than the default can be examined.
+\fBNote:\fR this option does not accept a name of the sandbox.
+.IP "\fB\-undo\fR"
+Removes a sandbox.
+This option requires the name of the sandbox and the ODE options.
+It also accepts the \fB-auto\fR option if the user does not
+wish to be prompted for confirmation.
+The \fB-undo\fR option will not function if the user has
+added anything to the sandbox.
+.P
+.ti 2
+\fIPopulation opts\fR:
+.IP "\fB-tools \fImode\fR"
+The \fImode\fR indicates how to populate the tools area;
+by linking the backing tree's tools
+in the local area, \fB'l'\fR, by copying the tools into the local
+area, \fB'c'\fR, or by leaving them backed, \fB'b'\fR.
+The tools will be copied or linked \fIfor each\fR of the
+machines specified in the machine target.
+.IP "\fB-obj \fImode dir\fR"
+The \fImode\fR indicates how to populate the obj area;
+by linking the backing tree's objects
+in the local area, \fB'l'\fR, by copying the objects into the local
+area, \fB'c'\fR, or by leaving them backed, \fB'b'\fR.
+Since it is usually not desirable to have all the objects copied or linked,
+this target has a final field, \fIdir\fR,
+a colon separated list of the directories
+to copy or link, for example /bin:/usr/bin.
+To get all the objects use \fB'/'\fR.
+These directories will be copied or linked \fIfor each\fR of the
+machines specified in the machine target.
+.IP "\fB-src \fImode dir\fR"
+The \fImode\fR indicates how to populate the source area; by linking the backing tree's
+sources in the local area, \fB'l'\fR, by copying the sources into the
+local area, \fB'c'\fR, or by leaving them backed, \fB'b'\fR.
+Since it is usually not desirable to have all the sources copied or linked,
+this target has a final field, \fIdir\fR,
+a colon separated list of the directories
+to copy or link, for example /bin:/usr/bin.
+To get all the sources use \fB'/'\fR.
+.P
+.ti 2
+\fIODE opts\fR:
+.IP "\fB\-info\fR"
+\fB-info\fR gives the user information on what \fBmksb\fR would do
+without actually doing anything.
+The \fB-info\fR option works in conjunction with the verbosity options.
+.IP "\fB\-auto -noauto\fR"
+\fB-auto\fR eliminates any prompting \fBmksb\fR would do.
+If set, \fBmksb\fR will take the default action without asking.
+\fB-noauto\fR toggles \fB-auto\fR off and is most often used to turn
+off \fB-auto\fR when it is set in the user's rc file.
+When used in conjunction with the \fB-undo\fR option,
+this option will allow a sandbox to be removed without user confirmation.
+.IP "\fB\-quiet\fR"
+One of three levels of verbosity.
+\fB-quiet\fR prints only the information which the user must always
+receive including all fatal error messages.
+.IP "\fB\-normal\fR"
+One of three levels of verbosity.
+\fB-normal\fR is the default verbosity and prints out the significant
+steps the program is taking and warnings.
+It also prints out all information \fB-quiet\fR prints.
+.IP "\fB\-verbose\fR"
+One of three levels of verbosity.
+\fB-verbose\fR prints out detailed information on what steps the program
+is taking and all diagnostic errors.
+It also prints out all information \fB-quiet\fR and \fB-normal\fR prints.
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-version\fR"
+Prints the revision information.
+.IP "\fB\-set \fIsetname\fR"
+Gives the name of the default set to create in the sandbox.
+If this option is not used, the name of the sandbox will be used
+as the name of the default set.
+Due to bcs restrictions, set names cannot include the
+characters \fB'.'\fR or \fB'-'\fR.
+.IP "\fB-rc \fIrcfile\fR"
+By default, \fBmksb\fR uses \fB$HOME/.sandboxrc\fR to determine the
+current sandbox.
+If this option is given, the specified user's rc file will be used.
+.P
+\fBmksb\fR is used to create a new sandbox.
+It builds the directory structure, creates a default set, populates
+the new sandbox according to the directories in the rc file,
+and will create the rc file if it doesn't already exist,
+otherwise it updates the information in it.
+.bp
+.SH DESCRIPTION
+.P
+A developer creates a sandbox with the make sandbox
+command, \fBmksb\fR, as the first step in using 
+the OSF/1 Development Environment (ODE).
+The sandbox is a private working area for 
+check-in's, check-out's, submissions, and other file operations 
+available with the bcs commands.
+\fBmksb\fR creates both a sandbox and a default set name
+for the source control tools to work with.
+This command also sets up how a sandbox references source files through 
+arguments that specify population options. 
+.P
+\fBmksb\fR stores much of the information to describe
+any sandbox in a configuration file, the sandbox
+rc file, or \fB.sandboxrc\fR.  The developer
+may employ one or more sandbox rc files so new
+information need not be entered each
+time he/she creates a sandbox with the \fBmksb\fR command.
+\fBmksb\fR creates an initial sandbox rc file and then maintains
+and updates this file as sandboxes change and evolve. 
+.P
+In general, \fBmksb\fR will prompt the user for any information 
+not provided after reading the the command line and reading an
+existing sandbox rc file.
+The target directory for the sandbox, list of machines, 
+backing information, set name, sandbox rc file, rc files for the
+backing tree, and other arguments
+are all evaluated in this fashion. 
+.P
+Unless otherwise specified
+by the \fB-set\fR switch, the default set name will be the
+same as the sandbox name.  
+Unless otherwise specified by the \fB
+-back\fR switch, the default population method will be "b" or
+transparently backed by the argument backing tree. Unless otherwise specified
+by the \fB-rc\fR switch, the default for the sandbox rc file
+will be \fB${HOME}/.sandboxrc\fR.  
+.SSSandbox Names
+.P
+\fBmksb\fR only accepts the name of a sandbox to
+create from the command line. The name of the target
+sandbox is the only command line argument that is not 
+denoted by a preceding "-".  Neither can the sandbox
+name contain a '/' character. 
+There is no default for a sandbox name.
+.P
+There can only be one target sandbox per invocation of \fBmksb\fR.
+Because sandboxes may be reconfigured to "float" among backing trees,
+it is good practice to choose sandbox names as non-specific to
+the name of the current backing tree. For example, while there may always 
+be a backing tree associated with the name \fBlatest\fR,
+it could be problematical to name a sandbox as "build19" just
+because the sandbox is currently backed 
+by the source code from "build.19". Reconfiguring
+a sandbox named "build19" to a new backing tree named "build.20" could
+be confusing (see the \fBresb\fR command). 
+.P
+A user is not allowed to have two sandboxes with the same name
+even if they have different base directories.
+.SS Set Names
+.P
+\fBmksb\fR creates a default set 
+for each sandbox, unless the user chooses otherwise 
+with the \fB-set\fR switch.
+When the sandbox name is used as
+the default, this name cannot contain "." or  "-" characters.
+The list of sets and the default set name are found in each sandbox's
+\fIsandbox/\fBrc_files/sets\fR file. You can display this information with the
+\fBworkon -list\fR command (refer to the \fBworkon\fR command).
+.SS Populating a Sandbox
+.P
+A sandbox may
+present the developer access to source files by:
+(1) transparent backing through multiple levels of sandboxes and/or 
+backing trees, (2) population with actual copies of files from a backing tree,
+(3) population with links to files from a backing tree. Furthermore, 
+combinations of all of these population methods may be combined within
+a sandbox. 
+.P
+If a user does not specify how to populate the
+sandbox on the command line, and there is no default entry in
+in the sandbox rc file, \fBmksb\fR
+will prompt for this information.
+If the user wishes to change this information later, he can edit
+the rc file (there is no override switch equivalent to \fB-def\fR
+for population options). 
+.bp
+.SSBacking Trees 
+.P
+Each sandbox must be backed by at least one backing tree or another sandbox.
+The OSF/1 Development Environment (ODE) allows for complex chains
+of backing trees and sandboxes to back one-another. (Refer to the System
+Administrator's Guide (SAG) for information about configuring backing trees).
+The name of a backing tree or sandbox can be provided as a pathname 
+starting with a "/", or the build tools can read the pathname
+if it is recorded in a special file used to maintain a list
+of backing trees. 
+.P
+All the sandbox tools try and resolve backing tree names by reading
+a build list file in the path designated by the ODE variable \fBbuild_base\fR. 
+The build list file maps a convenient, short-hand 
+name for a backing tree e.g., "osc.11", to information the build tools
+need such as the build's pathname and RCS configuration timestamp.
+This file is usually named \fB/project/projects/build_list\fR.
+Only names such as "osc.11" or "latest" need be provided as the argument to the
+\fB-back\fR switch or \fBmksb\fR prompt for backing trees
+listed in the build list file. The build list file should only
+list collections of sources that actually exist and are valid to build against.
+It does not matter if the source collections listed in the build list file
+are configured on your system as symbolic links, mounts, etc. 
+(Refer to the System Administrator's Guide (SAG) for information about
+creating a build list file).
+.SS rc Files
+.P
+While \fBmksb\fR does not require a sandbox rc file to function,
+it will always try to create one at the default location
+\fB$HOME/.\fR unless \fB$HOME/.sandboxrc\fR exists, or a different pathname
+to a sandbox rc file is provided with the \fB-rc\fR switch. Without a sandbox rc
+file, the user must provide \fB mksb\fR with all the information on
+the command line and through prompting (see examples in this man page).
+.P 
+As previously mentioned, 
+the sandbox rc file maintains configuration information for sandboxes
+such as the list of which
+sandboxes have been created, where the base directory for each
+sandboxes is, and the name of the default sandbox.
+The sandbox rc file records the values entered at sandbox
+creation as the default values. 
+These default values can be overridden
+by switches in subsequent invocations of \fBmksb\fR. For example,
+the \fB-def\fR switch allows a different sandbox name to be saved as the
+default when a new sandbox is created.
+.P
+The format for specifying alternate sandbox rc file options on 
+the command line is: 
+.ti 8
+\fIcmdname -option [arg] [-option [arg]]\fR
+.P
+where in this example \fIcmdname\fR is \fBmksb\fR; \fIoptions\fR
+are values like \fB-dir\fR, \fB-m\fR, and \fB-obj\fR; and \fIarg\fR
+are the arguments to these options.
+Those initially set by \fBmksb\fR include:
+.IP "\fB-dir\fR"
+The default directory to build sandboxes in.
+.IP "\fB-m\fR"
+A colon separated list of the machine dependent directories
+to create by default.
+.IP "\fB-tools\fR"
+Indicates how to populate the tools area.
+.IP "\fB-obj\fR"
+Indicates how to populate the obj area.
+.IP "\fB-src\fR"
+Indicates how to populate the source area.
+.P
+The sandbox rc files are covered in more detail in \fBsandboxrc(5)\fR.
+.bp
+.SS Undoing a Sandbox
+.P
+The \fB-undo\fR option can be used to remove a sandbox,
+and its entry in the sandbox rc file. The -undo option will
+not work if the sandbox contains working or checked out source  files.
+If either the sandbox or sandbox rc file has been removed, this option will 
+not work. The \fB-undo\fR option does not actually remove the sandbox rc file,
+only entries in it and their associated sandboxes.
+.SS Additional Data on Switches and Defaults 
+.P
+\fBmksb\fR needs the following information to create a sandbox:
+the name of the sandbox, the directory to create it in, 
+the build or sandbox to back the new sandbox with, the name of
+the rc file to read and update, the machines to create machine
+dependent directories for, and the name of the default set to
+create.
+.P
+\fBmksb\fR tries to get this information from: (1) the command
+line, (2) from an existing sandbox rc file, and finally
+(3) by prompting the user for any defaults or values not found in
+(1) or (2). The default path and file name for the sandbox rc file 
+is \fB${HOME}/.sandboxrc\fR.
+.P
+When creating a sandbox without an existing sandbox rc
+file, mksb requires information from all 3 switch groups: FLAGS, population
+options, and ODE options. The following table shows how mksb gets information
+to create a sandbox based upon the hierarchy described above: 
+.DS
+			DEFAULT ACTION AND	SOURCE OF DATA
+			VALUE IF NO EXISTING	WITH EXISTING
+SWITCH		.SANDBOXRC & SANDBOX	.SANDBOXRC & SANDBOX
+
+\fB-dir\fR \fIsandbox dir\fR		prompt				.sandboxrc
+\fB-back\fR \fIbacking tree\fR	prompt				-> sandbox link
+\fB-m\fR \fImachine list\fR		prompt, [pmax]			.sandboxrc
+\fB-tools\fR \fImode\fR		prompt, [b=backed]		.sandboxrc
+\fB-obj\fR \fImode dir\fR		prompt, [b=backed]		.sandboxrc
+\fB-src \fImode dir\fR		prompt, [b=backed]		.sandboxrc
+\fB-set \fIsetname\fR		[sandbox name]			-> sandbox ./rc_files/sets
+\fIsandbox name\fR		none				.sandboxrc
+
+.DE
+
+.SH EXAMPLES
+.IP "\fBmksb -verbose -back osc.12 -dir /project/osc/sandboxes/suzieq symphony\fR"
+Give verbose information on creating the new sandbox
+.B symphony
+in the directory
+.B /project/osc/sandboxes/suzieq.
+The sandbox will be backed by build
+.B osc.12.,
+as described in the build list file.
+The set name will be the same as the sandbox's.  Machine
+dependent directories will be taken from 
+the defaults listed in \fB$HOME/.sandboxrc\fR or else prompted
+for.
+.IP "\fBmksb -back /project/osc/sandboxes/libc -m pmax -set strings my-libc\fR"
+Create a sandbox named \fBmy-libc\fR backed by (the sandbox) \fBlibc\fR
+as given by the absolute path \fB/project/osc/sandboxes/libc\fR.
+Note that the new sandbox name can contain a "-" character because the default set
+is being specified by the name \fBstrings\fR. 
+The location for the new sandbox is taken from the 
+default sandbox rc file or else prompted
+for.
+Machine dependent directories will be created for the 
+machine \fBpmax\fR.
+.ti -.5i
+\fBmksb -verbose -back osc1.0.4 -dir /project/osc/test -rc /tmp/.sandboxrc\fR
+.ti -.5i
+\fB -def test_sandbox test_sandbox\fR
+.br
+Give verbose information on creating the new sandbox. The backing tree identified by the
+symbol \fBosc1.0.4\fR will be looked up in the build list file
+to determine its pathname, etc. The target directory to create
+the new sandbox, \fBtest_sandbox\fR, will be \fB/project/osc/test\fR.
+A sandbox rc file will be read as \fB/tmp/.sandboxrc\fR,
+using its default population options. Any sandbox rc file in the default location
+\fB$HOME/.\fR will be ignored.
+The sandbox rc file \fB/tmp/.sandboxrc\fR 
+will be updated
+to list \fBtest_sandbox\fR as the default sandbox name to work in. The initial working set for
+the RCS tools will be \fBtest_sandbox\fR since the \fB-set\fR switch was not used on the command
+line. Note that it is acceptable for the sandbox name
+to be used as a set name containing an underscore character, "_".
+
+.SH FILES
+.P
+.IP \fB${HOME}/.sandboxrc\fR 
+rc file that specifies existing sandboxes and \fBmksb\fR defaults.
+.IP \fIsandbox/\fBrc_files/sets\fR 
+list of valid sets in each sandbox
+
+.SH EXIT VALUES
+.P
+\fBmksb\fR returns '0' upon successful completion, '-1' otherwise.
+
+.SH RELATED INFORMATION
+.P
+bcs(1),
+mklinks(1),
+resb(1),
+sandboxrc(5),
+workon(1).

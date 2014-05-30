@@ -1,0 +1,608 @@
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 4/18/95; Time: 13:07
+  Number of files: 1; Defect number: n/a.
+  Set name: robert_ode_pub_sand; Sandbox: ode_pub_sand
+  List of files and revisions:
+./rat_test/hello.c	1.1.2.1	1.1
+
+  Detailed description:
+
+[ ./rat_test/hello.c ]
+test
+[1995/04/18  17:00:59  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 4/18/95; Time: 13:52
+  Number of files: 6; Defect number: n/a.
+  Set name: robert_ode_public; Sandbox: ode_public
+  List of files and revisions:
+./ode/bin/make/OSFARCH/arch_fmtdep.c	1.2.7.1	1.2.4.4
+./ode/bin/make/bootstrap.sh	1.3.12.1	1.3.10.2
+./ode/bin/release/release.c	1.12.14.1	1.12.10.1
+./ode/lib/libcom/no_crypt.c	1.1.4.1	1.1
+./ode/lib/libode/cond.c	1.1.14.1	1.1.12.1
+./ode/server/odexm/odexm.c	1.11.26.1	1.11.19.3
+
+  Detailed description:
+
+[ ./ode/bin/make/OSFARCH/arch_fmtdep.c ]
+include limits.h and ifndef NAME_MAX use POSIX_NAME_MAX
+[1995/04/05  17:12:36  robert]
+[ ./ode/bin/make/bootstrap.sh ]
+add -DNO_LSTAT_DECL for sparc_sunos and pmax_ultrix
+[1995/04/18  17:23:31  robert]
+
+Fix typo after pmax_ultrix definitoins.
+Add ANSI C definitions for hp700_hpux,
+or use c89 and "-Ae" for extended ANSI.
+[1995/04/05  21:26:39  robert]
+
+update for ultrix ULTRIX V4.4 (Rev. 69) with cc3.0
+[1995/04/05  17:19:19  robert]
+[ ./ode/bin/release/release.c ]
+include limits.h and ifndef NAME_MAX use POSIX_NAME_MAX
+[1995/04/05  17:11:11  robert]
+[ ./ode/lib/libcom/no_crypt.c ]
+Add changes from Mary Thompson (1/31/95)
+Moved decode before encode so that decode would
+be defined before it is used.
+[1995/04/05  21:38:49  robert]
+
+initial check in
+[1995/04/05  17:24:31  robert]
+[ ./ode/lib/libode/cond.c ]
+add ifdef NO_STRDUP for ultrix
+[1995/04/05  17:22:06  robert]
+[ ./ode/server/odexm/odexm.c ]
+print out pathname for efatal opentemp failure
+[1995/04/04  21:43:43  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 4/27/95; Time: 13:25
+  Number of files: 1; Defect number: n/a.
+  Set name: robert_ode_pub_sand; Sandbox: ode_pub_sand
+  List of files and revisions:
+./ode/bin/make/cond.c	1.2.5.1	1.2.2.3
+
+  Detailed description:
+
+[ ./ode/bin/make/cond.c ]
+Add debug function CondDoMake to show results of evaluating
+.if make() conditionals. With the below fix, make conditionals are
+now evaluated properly (per randys).
+
+Change prototypes from char * to string_t to match structure so that:
+return(!Str_Match((char *)string,(char *)pattern))
+is now:
+return(!Str_Match(((string_t)string)->data,((string_t)pattern)->data))
+and:
+if (Lst_Find (create, (ClientData)arg, CondStrMatch) == NILLNODE)
+is now:
+if (Lst_Find (create, (ClientData)arg_string, CondStrMatch) == NILLNODE)
+[1995/04/27  17:13:47  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/05/95; Time: 15:52
+  Number of files: 1; Defect number: n/a.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./rat_test/tsub.c	1.1.2.1	1.1
+
+  Detailed description:
+
+[ ./rat_test/tsub.c ]
+test
+[1995/05/05  19:43:33  robert]
+
+test
+[1995/05/05  19:36:58  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Ed Frankenberry; User name: ezf
+  Date: 5/08/95; Time: 14:16
+  Number of files: 7; Defect number: Linux port.
+  Set name: ezf_ode_ss; Sandbox: ode_ss
+  List of files and revisions:
+./Makeconf	1.3.40.3	1.3.40.2
+./ode/Buildconf	1.1.13.3	1.1.13.2
+./ode/bin/make/BSDARCH/arch_fmtdep.c	1.2.5.3	1.2.5.2
+./ode/bin/make/bootstrap.sh	1.3.12.4	1.3.12.3
+./ode/lib/libode/Makefile	1.11.15.3	1.11.15.2
+./ode/lib/libode/lock_sb.c	1.1.10.3	1.1.10.2
+./ode/setup/setup.sh	1.3.10.2	1.3.10.1
+
+  Detailed description:
+
+[ ./Makeconf ]
+added at386_linux context
+[1995/05/08  17:55:05  ezf]
+[ ./ode/Buildconf ]
+added option for at386_linux context
+[1995/05/08  17:53:15  ezf]
+[ ./ode/bin/make/BSDARCH/arch_fmtdep.c ]
+now conditional on NO_RANLIB
+[1995/05/08  17:47:23  ezf]
+[ ./ode/bin/make/bootstrap.sh ]
+added at386_linux context
+[1995/05/08  17:51:12  ezf]
+[ ./ode/lib/libode/Makefile ]
+define porting flags if env. variables are set
+[1995/05/08  17:42:28  ezf]
+[ ./ode/lib/libode/lock_sb.c ]
+added explicit #include of <sys/file.h> for linux
+[1995/05/08  17:39:54  ezf]
+[ ./ode/setup/setup.sh ]
+test for system header files and set porting variables accordingly
+[1995/05/08  17:45:29  ezf]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/12/95; Time: 14:52
+  Number of files: 5; Defect number: alpha_port_update.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./ode/bin/make/bootstrap.sh	1.3.12.5	1.3.12.4
+./ode/lib/libode/run.c	1.8.15.3	1.8.15.2
+./ode/lib/libode/runcmd.c	1.7.14.1	1.7.12.2
+./ode/mk/osf.ode.mk	1.2.5.1	1.2.2.6
+./Makeconf	1.3.40.4	1.3.40.3
+
+  Detailed description:
+
+[ ./ode/bin/make/bootstrap.sh ]
+change compiler to c89 for alpha_osf1
+[1995/05/12  18:15:50  robert]
+[ ./ode/lib/libode/run.c ]
+prototype va_argv for case where VA_ARGV_IS_ROUTINE
+[1995/05/12  18:26:15  robert]
+[ ./ode/lib/libode/runcmd.c ]
+prototype va_argv for case where VA_ARGV_IS_ROUTINE
+[1995/05/12  18:26:16  robert]
+[ ./ode/mk/osf.ode.mk ]
+allow for/add NO_GLUE option
+[1995/05/12  18:42:19  robert]
+[ ./Makeconf ]
+Change compiler from gcc -> c89 for alpha_osf1
+and add NO_GLUE option.
+[1995/05/12  18:45:14  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/12/95; Time: 18:31
+  Number of files: 1; Defect number: rios_aix_port.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./ode/setup/setup.sh	1.3.10.3	1.3.10.2
+
+  Detailed description:
+
+[ ./ode/setup/setup.sh ]
+change site definition tests for /usr/include
+files to use "-f" instead of "-e" for rios_aix port
+(these tests previously added for at386_linux port).
+[1995/05/12  22:30:29  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/17/95; Time: 15:42
+  Number of files: 3; Defect number: doc_update.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./ode/doc/sag/build.instl.tbl	1.2.12.1	1.2.10.1
+./ode/doc/sag/title.mm	1.3.10.1	1.3.8.1
+./ode/doc/users.gd/common/title.mm	1.3.10.1	1.3.8.1
+
+  Detailed description:
+
+[ ./ode/doc/sag/build.instl.tbl ]
+check in for free & unenc. release
+[1995/05/17  19:33:25  robert]
+
+check in for free & unenc release
+[1995/05/17  19:32:16  robert]
+[ ./ode/doc/sag/title.mm ]
+check-in for free & unenc. release
+[1995/05/17  19:37:46  robert]
+[ ./ode/doc/users.gd/common/title.mm ]
+check-in for free & unenc. release
+[1995/05/17  19:40:03  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/17/95; Time: 22:12
+  Number of files: 9; Defect number: free_release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./ode/bin/make/CHANGES	1.2.2.1	1.2
+./ode/bin/make/Makefile.dist	1.2.2.1	1.2
+./ode/bin/make/doc/tmac.ansp	1.2.2.1	1.2
+./ode/bin/make/doc/tutorial.ms	1.2.2.1	1.2
+./ode/custom_tools/add_header.sh	1.2.2.1	1.2
+./ode/doc/users.gd/common/buildstruct.xpic	1.2.2.1	1.2
+./ode/doc/users.gd/common/sbchains.xpic	1.2.2.1	1.2
+./ode/mk/osf.rcs.mk	1.1.2.1	1.1
+./ode/mk/osf.rcs.passes.mk	1.1.2.1	1.1
+
+  Detailed description:
+
+[ ./ode/bin/make/CHANGES ]
+	add to tree for free  unencumbered distrib
+[ ./ode/bin/make/Makefile.dist ]
+add to tree for free  unencumbered distrib
+[1995/05/18  02:06:35  robert]
+[ ./ode/bin/make/doc/tmac.ansp ]
+add to tree for free  unencumbered distrib
+[1995/05/18  02:06:38  robert]
+[ ./ode/bin/make/doc/tutorial.ms ]
+add to tree for free  unencumbered distrib
+[1995/05/18  02:06:42  robert]
+[ ./ode/custom_tools/add_header.sh ]
+add to tree for free  unencumbered distrib
+[1995/05/18  02:06:46  robert]
+[ ./ode/doc/users.gd/common/buildstruct.xpic ]
+add to tree for free  unencumbered distrib
+[1995/05/18  02:06:49  robert]
+[ ./ode/doc/users.gd/common/sbchains.xpic ]
+add to tree for free  unencumbered distrib
+[1995/05/18  02:06:52  robert]
+[ ./ode/mk/osf.rcs.mk ]
+return to tree for free & unencumbered distribution
+[1995/05/18  02:07:39  robert]
+[ ./ode/mk/osf.rcs.passes.mk ]
+return to tree for free and unencumbered distribution
+[1995/05/18  02:07:41  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/17/95; Time: 22:42
+  Number of files: 3; Defect number: n/a.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./ode/add_to_rcs/README	1.1.2.1	1.1
+./ode/add_to_rcs/rcsdiff3.c	1.1.2.1	1.1
+./ode/add_to_rcs/rcsstat.c	1.1.2.1	1.1
+
+  Detailed description:
+
+[ ./ode/add_to_rcs/README ]
+	add to tree for free & unencumbered distribution
+[ ./ode/add_to_rcs/rcsdiff3.c ]
+add to tree for free & unencumbered distribution
+[1995/05/18  02:41:45  robert]
+[ ./ode/add_to_rcs/rcsstat.c ]
+add to tree for free & unencumbered distribution
+[1995/05/18  02:41:48  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/18/95; Time: 15:33
+  Number of files: 2; Defect number: n/a.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./ode/bin/rcs/Makefile	1.3.6.1	1.3.4.5
+./ode/bin/rcs/add_to_rcs/README	1.1.2.2	1.1.2.1
+
+  Detailed description:
+
+[ ./ode/bin/rcs/Makefile ]
+Change rcs_5.5/src ro rcs_5.6/src.
+Change rcs_5.5_patches to (generic) rcs_patches
+[1995/05/18  19:17:41  robert]
+[ ./ode/bin/rcs/add_to_rcs/README ]
+	update for subdir add_to_rcs now under ./ode/bin/rcs/add_to_rcs
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Ed Frankenberry; User name: ezf
+  Date: 5/18/95; Time: 17:43
+  Number of files: 3; Defect number: 2.3.4a.
+  Set name: ezf_ode_ss; Sandbox: ode_ss
+  List of files and revisions:
+./ode/doc/sag/build.instl.tbl	1.2.12.2	1.2.12.1
+./ode/doc/sag/preface.mm	1.3.6.1	1.3.4.1
+./ode/doc/sag/title.mm	1.3.10.2	1.3.10.1
+
+  Detailed description:
+
+[ ./ode/doc/sag/build.instl.tbl ]
+updated for at386_linux platform
+[1995/05/18  21:43:06  ezf]
+[ ./ode/doc/sag/preface.mm ]
+revised copyright notice
+[1995/05/18  21:35:29  ezf]
+[ ./ode/doc/sag/title.mm ]
+revised copyright notice
+[1995/05/18  21:36:08  ezf]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/19/95; Time: 20:29
+  Number of files: 2; Defect number: bco -a option.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./ode/man/man1/bco.bdy	1.2.10.1	1.2.8.1
+./ode/man/man1/bco.hdr	1.2.8.1	1.2.6.1
+
+  Detailed description:
+
+[ ./ode/man/man1/bco.bdy ]
+add support for -a option
+[1995/05/20  00:28:53  robert]
+[ ./ode/man/man1/bco.hdr ]
+add support for -a option
+[1995/05/20  00:28:55  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/19/95; Time: 21:44
+  Number of files: 2; Defect number: release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./ode/doc/sag/build.instl.tbl	1.2.12.3	1.2.12.2
+./ode/doc/sag/distribution.mm	1.2.8.1	1.2.6.1
+
+  Detailed description:
+
+[ ./ode/doc/sag/build.instl.tbl ]
+Change order of listed minimal tools.
+
+Clarify what config files are needed under rc_files, and
+when/how it is necessary to edit them.
+
+Mention option of editting OWNER and GROUP during install.
+[1995/05/20  01:43:49  robert]
+[ ./ode/doc/sag/distribution.mm ]
+Update to reflect distribution by (anonymous) ftp.
+[1995/05/20  01:41:12  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/22/95; Time: 15:44
+  Number of files: 6; Defect number: release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./README	1.3.8.1	1.3.6.1
+./ode/doc/sag/back.tree.mm	1.3.12.1	1.3.8.4
+./ode/doc/sag/distribution.mm	1.2.8.2	1.2.8.1
+./ode/doc/sag/preface.mm	1.3.6.2	1.3.6.1
+./ode/doc/sag/build.instl.tbl	1.2.12.4	1.2.12.3
+./ode/doc/sag/odexm.tbl	1.1.8.1	1.1.6.1
+
+  Detailed description:
+
+[ ./README ]
+Major re-write/re-org by robert and ezf for
+ODE 2.3.4A Spring 1995 release.
+[1995/05/22  19:42:27  robert]
+[ ./ode/doc/sag/back.tree.mm ]
+Change/permute ode 2.3 -> ode2.3.4
+[1995/05/22  17:09:02  robert]
+[ ./ode/doc/sag/distribution.mm ]
+Update directory structure to show oodexm client, sadmin,
+where to plug in source control (if used), sup commands
+and libraries (now that sup upses no_crypt.c), and libcom.
+[1995/05/22  17:11:48  robert]
+[ ./ode/doc/sag/preface.mm ]
+Change/permute instances of Ode 2.3 -> Ode 2.3.4.
+[1995/05/22  17:13:49  robert]
+[ ./ode/doc/sag/build.instl.tbl ]
+Add number for diskspace rquired to build upon sparc_sunos.
+[1995/05/22  17:19:28  robert]
+[ ./ode/doc/sag/odexm.tbl ]
+Change/permute instances of Ode 2.2 -> Ode 2.3.4.
+[1995/05/22  17:12:47  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/22/95; Time: 16:26
+  Number of files: 1; Defect number: release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./README	1.3.8.2	1.3.8.1
+
+  Detailed description:
+
+[ ./README ]
+Update unload instructions.
+[1995/05/22  20:25:51  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/22/95; Time: 16:45
+  Number of files: 1; Defect number: release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./README	1.3.8.3	1.3.8.2
+
+  Detailed description:
+
+[ ./README ]
+minor fixes
+[1995/05/22  20:44:49  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/22/95; Time: 18:08
+  Number of files: 2; Defect number: release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./README	1.3.8.4	1.3.8.3
+./ode/doc/sag/distribution.mm	1.2.8.3	1.2.8.2
+
+  Detailed description:
+
+[ ./README ]
+last fix up for release
+[1995/05/22  22:06:51  robert]
+[ ./ode/doc/sag/distribution.mm ]
+last fix up for release
+[1995/05/22  22:06:56  robert]
+
+Fix up directory structure after proofread.
+[1995/05/22  21:48:24  robert]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Ed Frankenberry; User name: ezf
+  Date: 5/23/95; Time: 15:25
+  Number of files: 1; Defect number: sag.
+  Set name: ezf_ode_ss; Sandbox: ode_ss
+  List of files and revisions:
+./ode/doc/sag/component.pic	1.2.9.1	1.2.6.1
+
+  Detailed description:
+
+[ ./ode/doc/sag/component.pic ]
+uncommented the body of this chapter
+[1995/05/23  19:22:43  ezf]
+
+uncommented the body of this chapter
+[1995/05/23  18:42:05  ezf]
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/24/95; Time: 17:10
+  Number of files: 1; Defect number: release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of defunct files:
+./README	defunct
+
+  Detailed description:
+
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/24/95; Time: 17:10
+  Number of files: 3; Defect number: release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./README.bin	1.1.2.1	1.1
+./README.doc	1.1.2.1	1.1
+./README.top	1.1.2.1	1.1
+
+  Detailed description:
+
+[ ./README.bin ]
+	update
+	initial revision
+[ ./README.doc ]
+	update
+	initial revision
+[ ./README.top ]
+	update
+	update
+	initial revision
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Ed Frankenberry; User name: ezf
+  Date: 5/25/95; Time: 15:54
+  Number of files: 3; Defect number: updated README files.
+  Set name: ezf_ode_ss; Sandbox: ode_ss
+  List of files and revisions:
+./README.bin	1.1.2.2	1.1.2.1
+./README.doc	1.1.2.2	1.1.2.1
+./README.top	1.1.2.2	1.1.2.1
+
+  Detailed description:
+
+[ ./README.bin ]
+	revised (misc. notes under 'cut here' belong elsewhere)
+[ ./README.doc ]
+	updated description of doc files
+[ ./README.top ]
+	minor spelling corrections
+
+End Log *****
+
+Submission Log *****
+
+  Submitted by Rob DiCamillo; User name: robert
+  Date: 5/25/95; Time: 16:59
+  Number of files: 4; Defect number: release.
+  Set name: robert_ode234_sand; Sandbox: ode234_sand
+  List of files and revisions:
+./README.bin	1.1.2.3	1.1.2.2
+./README.doc	1.1.2.3	1.1.2.2
+./README.src	1.1.2.1	1.1
+./README.top	1.1.2.3	1.1.2.2
+
+  Detailed description:
+
+[ ./README.bin ]
+	README cleanup now split into 4 README files
+	For now, remove notes about NFS/AFS admin.
+[ ./README.doc ]
+	README cleanup now split into 4 README files
+[ ./README.src ]
+	README cleanup now split into 4 README files
+[ ./README.top ]
+	README cleanup now split into 4 README files
+
+End Log *****
+

@@ -1,0 +1,715 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: sandbox.pic,v $
+.\" Revision 1.3.9.1  1993/11/18  21:23:24  marty
+.\" 	CR # 629 - Updates
+.\" 	[1993/11/18  21:22:19  marty]
+.\"
+.\" Revision 1.3.7.1  1993/08/26  16:05:45  marty
+.\" 	CR # 628 - Update to ODE 2.3
+.\" 	[1993/08/26  16:05:33  marty]
+.\" 
+.\" Revision 1.3.5.6  1993/05/17  19:44:26  damon
+.\" 	CR 519. Added split sandbox documentation
+.\" 	[1993/05/17  19:44:14  damon]
+.\" 
+.\" Revision 1.3.5.5  1993/05/14  21:38:57  damon
+.\" 	CR 459. Updated sandbox figure
+.\" 	[1993/05/14  21:38:48  damon]
+.\" 
+.\" Revision 1.3.5.4  1993/05/14  20:15:35  damon
+.\" 	CR 459. Removed old local & shared info
+.\" 	[1993/05/14  20:15:22  damon]
+.\" 
+.\" Revision 1.3.5.3  1993/05/14  20:03:59  damon
+.\" 	CR 459. fixed sandbox index entry
+.\" 	[1993/05/14  20:03:53  damon]
+.\" 
+.\" Revision 1.3.5.2  1993/05/14  19:49:54  damon
+.\" 	CR 459. Removed tutorial section
+.\" 	[1993/05/14  19:48:25  damon]
+.\" 
+.\" Revision 1.3.3.3  1992/12/03  19:11:16  damon
+.\" 	ODE 2.2 CR 346. Expanded copyright
+.\" 	[1992/12/03  18:41:47  damon]
+.\" 
+.\" Revision 1.3.3.2  1992/11/18  00:54:42  damon
+.\" 	CR 12. Removed shared sandbox setup material
+.\" 	[1992/11/18  00:53:55  damon]
+.\" 
+.\" Revision 1.3  1991/12/17  21:00:18  devrcs
+.\" 	Fixed up page numbering
+.\" 	[1991/12/11  21:33:31  mckeen]
+.\" 
+.\" 	Final 2.1 review changes
+.\" 	[1991/12/05  20:59:44  mckeen]
+.\" 
+.\" Revision 1.2  1991/12/05  20:56:38  devrcs
+.\" 	Added advanced topic on rc_files
+.\" 	[1991/11/12  14:49:59  marty]
+.\" 
+.\" 	Final edits
+.\" 	[1991/11/08  20:57:08  marty]
+.\" 
+.\" 	Touch-up workon on previous changes
+.\" 	[1991/11/08  19:32:04  damon]
+.\" 
+.\" 	Removed redundant wording; tightened and rearranged
+.\" 	[1991/11/08  14:32:02  damon]
+.\" 
+.\" 	Changed programmers to developers.
+.\" 	[1991/11/08  14:05:34  marty]
+.\" 
+.\" 	 	More ode2.1 changes
+.\" 
+.\" 	 	More edits for ode2.1
+.\" 	[1991/11/05  22:49:06  marty]
+.\" 
+.\" 	 	Null delta
+.\" 	 	[91/08/07  15:33:57  marty]
+.\" 
+.\" 	 	Ready for review
+.\" 	 	[91/08/07  12:51:45  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/08/06  17:06:10  marty]
+.\" 
+.\" 	 	re changes
+.\" 	 	[91/08/05  17:00:44  marty]
+.\" 	[91/08/07  15:50:05  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/30  16:01:49  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/26  15:41:30  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/25  18:04:18  marty]
+.\" 
+.\" 	 	Changes for DUG rewrite.
+.\" 	 	[91/07/23  16:14:12  marty]
+.\" 	[91/08/02  11:43:37  marty]
+.\" 
+.\" 	 	preliminary edit/rewrite
+.\" 	 	[91/06/18  13:28:15  casey]
+.\" 	[91/06/18  13:46:29  casey]
+.\" 
+.\" 	 	Separating DUG into common and OSC versions
+.\" 	 	[91/01/16  17:02:52  randyb]
+.\" 	[91/01/25  10:47:53  randyb]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/30  16:01:49  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/26  15:41:30  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/25  18:04:18  marty]
+.\" 
+.\" 	 	Changes for DUG rewrite.
+.\" 	 	[91/07/23  16:14:12  marty]
+.\" 	[91/08/02  11:43:37  marty]
+.\" 
+.\" 	 	preliminary edit/rewrite
+.\" 	 	[91/06/18  13:28:15  casey]
+.\" 	[91/06/18  13:46:29  casey]
+.\" 
+.\" 	 	Separating DUG into common and OSC versions
+.\" 	 	[91/01/16  17:02:52  randyb]
+.\" 	[91/01/25  10:47:53  randyb]
+.\" 
+.\" Revision 1.5  90/11/03  10:27:56  devrcs
+.\" 	 	Pre Tools II release
+.\" 
+.\" $EndLog$
+...\"*********************************************************************
+...\"          Reset page information for chapters in DUG
+...\"*********************************************************************
+.OH "'\fB\s10ODE User\'s Guide\fR''\\\\nP\s0'"	\"*** Set even page footers
+.EH "'\s10\\\\nP''\fBSandboxes\s0\fR'"	\"*** Set odd page footers
+.SK
+...\"*********************************************************************
+...\"          Contents of common DUG: Sandboxes
+...\"*********************************************************************
+.iX "sandboxes"
+.H 1 "Sandboxes"
+This chapter describes how to begin working with ODE.
+It describes the basic development environment supported by ODE,
+known as a sandbox.  After reading this chapter,
+you should  understand what a sandbox is, its relationship
+to backing builds and other sandboxes, how to retarget a sandbox to 
+different backing builds, and 
+operations  typically performed within a sandbox.
+
+.H 2 "What is a sandbox?"
+.P
+Sandboxes provide developers with an isolated source development environment.
+Changes made in one developer's sandbox are not visible to other developers
+working in their own sandboxes. This makes it possible for many developers to
+simultaneously develop and test code
+using the same files without interfering with
+one another.
+Once a developer is satisfied with their changes he can integrate them into
+a backing build. When the changes are integrated, they are then publicly
+available and other developers can develop software based on these changes.
+.P
+A sandbox initially contains no source files. Typically, a user only populates
+his sandbox with files they want to change. These files are taken from the
+backing builds. During building, the sources from the backing build are used
+except for the files that exist in the user's sandbox. This allows a developer
+to make changes to a source tree without having to have the entire tree in
+his sandbox.
+.P
+A complete development environment requires a backing build. All sandboxes
+are backed by backing builds. Each backing build provides a full source tree
+and the tools, libraries, and header files required to
+build those sources. Together, these comprise a specific instance of the
+product built from the sources.
+.P
+There are two general categories of builds: "static" builds and "dynamic"
+builds. "Dynamic" builds have changeable source trees and usually contain the
+most recent sources. When changes are made to this kind of build, they will be
+immediately visible in all sandboxes backed by it.
+Builds with source trees that do not change are known as "static" builds.
+Static builds usually represent "known to be stable" reference points in
+the development of a product.
+.P
+The combination of a sandbox and a backing build enable a developer to develop
+and test a small set of sources against a variety of complete development
+environments. Although a sandbox is originally backed by a particular build,
+it can freely float from one backing build to another.  The user can change
+which instance of the software product they would like to develop and
+test against as often as they need to.
+.P
+When the changes in a developer's sandbox become stable they can be
+made available to a wider audience to be used as a basis for further
+development by others. The integration of a developer's changes into a
+default build is called "submission."
+.P
+Submitting to a backing build involves merging your changes with the
+changes other developers may have submitted and resolving conflicts.
+If there were only one sandbox that submitted changes to a backing
+chain then there would never be any conflicts in submissions.
+.P
+If two developers (each in their own sandbox) are working on the same
+file, a conflict will arise.  This conflict is resolved when each user
+submits source changes to the default build.  All submissions are to a
+public branch in the default build and submissions are done one at a
+time. Therefore, each user will integrate their changes with the
+public branch.
+.P
+Although you can only submit changes to a dynamic build, most static builds
+have a default build associated with them. Default builds are always dynamic.
+When submitting to a static build which has a default build, the changes will
+actually be submitted to the default build.
+
+.H 2 "Components of a sandbox"
+There are three basic components of an ODE sandbox:
+a source tree for sources being edited, 
+an area for building object modules, and an area to hold header files and
+libraries for commands.  
+Sources are placed in the \fBsrc\fR directory and
+objects are placed in the \fBobj\fR directory.  
+It is not necessary
+for the user to specify different directories,  they are separated 
+automatically by the tools.  
+All operations
+on the \fBobj\fR tree by the tools
+are done from the source tree.
+.P
+For most projects, before any libraries can be built, the header files
+must be collected into an area where the compiler will find them.
+Likewise, before the commands can be built, the libraries must be
+built and copied into an area known to the linker.  It is not always
+convenient to refer to these in the \fBsrc\fR or \fBobj\fR directory,
+so these headers and libraries are copied into an \fBexport\fR
+directory.  The backing build will have a fully populated export area
+containing all headers and libraries necessary to build the product
+and, in most cases, it is not necessary to populate a sandbox
+\fBexport\fR directory.  Any headers or libraries being developed in a
+sandbox, however, must be in the \fBexport\fR directory if you are
+building other commands with them.  The procedure for moving header
+files and libraries into the \fBexport\fR directory is covered in the
+chapter on the build environment.
+.P
+The layout of a sandbox is shown in Figure 1. The elements within solid
+boxes are related to source control, and the elements within dashed boxes
+are related to the ODE build environment.
+
+.rs
+.sp 8i
+.DS
+.PS
+scale = 80
+.ps 40
+box dashed 0.1 * scale wid 264 ht 128 at 362, 501
+line   from 294, 469 \
+	to 382, 453 
+line   from 294, 469 \
+	to 382, 485 
+line   from 326, 533 \
+	to 382, 517 
+line   from 326, 533 \
+	to 382, 549 
+.ps 10
+"\fI\s22Sandbox Directory Structure\s0\fP"  at 302, 661
+"\fR\s16src\s0\fP"  at 278, 69
+.ps 40
+line   from 222, 325 \
+	to 262, 69 
+.ps 10
+"\fR\s16link -> backing_tree\s0\fP"  at 350, 589
+.ps 40
+line   from 222, 325 \
+	to 262, 589 
+line   from 118, 325 \
+	to 174, 261 
+line   from 118, 325 \
+	to 174, 293 
+line   from 118, 325 \
+	to 174, 357 
+line   from 118, 325 \
+	to 174, 325 
+line   from 118, 325 \
+	to 174, 389 
+.ps 10
+"\fR\s16sbox3\s0\fP"  at 198, 325
+"\fR\s16sbox4\s0\fP"  at 198, 293
+"\fR\s16sbox5\s0\fP"  at 198, 261
+"\fR\s16Sandbox-base\s0\fP"  at 54, 325
+"\fR\s10\s0\fP"  at 38, 301
+.ps 40
+line   from 222, 325 \
+	to 262, 469 
+.ps 10
+"\fR\s16rc_files\s0\fP"  at 294, 325
+"\fR\s16sbox1\s0\fP"  at 198, 389
+"\fR\s16sbox2\s0\fP"  at 198, 357
+.ps 40
+line   from 222, 325 \
+	to 262, 325 
+.ps 10
+"\fR\s16obj\s0\fP"  at 278, 469
+.ps 40
+line   from 222, 325 \
+	to 262, 533 
+.ps 10
+"\fR\s16sets\s0\fP"  at 398, 293
+.ps 40
+box dashed wid 64 ht 32 at 398, 293
+line   from 326, 325 \
+	to 382, 293 
+line   from 326, 325 \
+	to 382, 245 
+line   from 326, 325 \
+	to 382, 357 
+line   from 326, 325 \
+	to 382, 213 
+.ps 10
+"\fR\s16Buildconf\s0\fP"  at 422, 245
+"\fR\s16Buildconf.exp\s0\fP"  at 438, 213
+.ps 40
+line   from 326, 325 \
+	to 382, 389 
+.ps 10
+"\fR\s16<project>\s0\fP"  at 422, 357
+"\fR\s16projects\s0\fP"  at 414, 389
+"\fR\s16sb.conf\s0\fP"  at 518, 357
+line   from 462, 357 \
+	to 486, 357 
+.ps 40
+box  wid 64 ht 32 at 398, 293
+.ps 10
+"\fR\s16.BCSset-<user>_sbox3\s0\fP"  at 478, 85
+"\fR\s16.BCSlog-<user>_sbox3\s0\fP"  at 478, 117
+"\fR\s16.BCSlock\s0\fP"  at 425, 147
+.ps 40
+box  wid 208 ht 96 at 470, 117
+.ps 10
+"\fR\s16<subdirs>\s0\fP"  at 422, 5
+"\fR\s16Makeconf\s0\fP"  at 422, 37
+.ps 40
+box dashed 0.1 * scale wid 104 ht 32 at 418, 37
+line   from 294, 69 \
+	to 382, 149 
+line   from 294, 69 \
+	to 382, 117 
+line   from 294, 69 \
+	to 382, 37 
+line   from 294, 69 \
+	to 382, 5 
+.ps 10
+"\fR\s16export\s0\fP"  at 294, 533
+"\fR\s16<machine 1>\s0\fP"  at 438, 549
+"\fR\s16<machine 2>\s0\fP"  at 438, 517
+"\fR\s16<machine 2>\s0\fP"  at 438, 453
+"\fR\s16<machine 1>\s0\fP"  at 438, 485
+.PE
+.ce 
+Figure 1.
+.DE
+.sp 4i
+
+.H 2 "Chaining sandboxes and backing builds"
+.P
+Sandboxes can be chained together.  That is, a sandbox can be set up
+that is backed by another sandbox, which may be backed by yet another
+sandbox.  These sandboxes can be chained together to any depth as long
+as the last link in the chain is a full backing build.
+.P
+Chaining sandboxes is beneficial when it is important to stage
+integration and visibility of source changes into different levels of
+development.  Each level in the chain can represent an integration
+point for a different group of users.  Also, each level up the chain
+can represent some subset of a user community, the lowest level
+representing the smallest set, that is, a developer and his private
+sandbox.  The highest level representing the largest audience, that
+is, the backing build available to everyone.
+.P
+The actual structure of the chain and the function of each level in
+the chain is up to the group of people maintaining it.  The essence of
+each level in a sandbox/backing build chain is to provide an area of
+private development for a small group of people and allow submission
+of those changes to a wider audience.
+.P
+The structure of a backing chain is shown in Figure 2.
+.rs
+.sp 8i
+.DS
+.PS
+scale = 80
+"\fH\s0with a backing build at the end.\s0\fP"  at 256, 3
+"\fH\s0A backing chain is any number (including zero) of shared sandboxes\s0\fP"  at 288, 19
+"\fH\s0backing\s0\fP"  at 40, 203
+"\fH\s0build\s0\fP"  at 40, 187
+ellipse wid 80 ht 40 at 40, 199
+line <-  from 160, 251 \
+	to 160, 227 
+"\fH\s0shared\s0\fP"  at 160, 211
+ellipse wid 80 ht 40 at 160, 199
+"\fH\s0sandbox n\s0\fP"  at 160, 195
+ellipse wid 80 ht 40 at 160, 279
+"\fH\s0build\s0\fP"  at 160, 267
+"\fH\s0backing\s0\fP"  at 160, 283
+line <-  from 280, 251 \
+	to 280, 227 
+"\fH\s0sandbox\s0\fP"  at 280, 115
+line <-  from 280, 171 \
+	to 280, 147 
+"\fH\s0sandbox n\s0\fP"  at 280, 275
+ellipse wid 80 ht 40 at 280, 279
+ellipse wid 80 ht 40 at 280, 359
+"\fH\s0shared\s0\fP"  at 280, 291
+"\fH\s0build\s0\fP"  at 280, 347
+"\fH\s0backing\s0\fP"  at 280, 363
+line <-  from 280, 331 \
+	to 280, 307 
+ellipse wid 80 ht 40 at 280, 119
+"\fH\s0shared\s0\fP"  at 280, 211
+"\fH\s0sandbox 1\s0\fP"  at 280, 195
+ellipse wid 80 ht 40 at 280, 199
+ellipse wid 80 ht 40 at 400, 199
+"\fH\s0sandbox\s0\fP"  at 400, 115
+"\fH\s0sandbox 1\s0\fP"  at 400, 195
+"\fH\s0shared\s0\fP"  at 400, 211
+line <-  from 400, 171 \
+	to 400, 147 
+line <-  from 400, 251 \
+	to 400, 227 
+ellipse wid 80 ht 40 at 400, 119
+"\fH\s0sandbox n\s0\fP"  at 400, 355
+ellipse wid 80 ht 40 at 400, 359
+ellipse wid 80 ht 40 at 400, 439
+"\fH\s0shared\s0\fP"  at 400, 371
+"\fH\s0build\s0\fP"  at 400, 427
+"\fH\s0backing\s0\fP"  at 400, 443
+line <-  from 400, 411 \
+	to 400, 387 
+line <-  from 400, 331 \
+	to 400, 307 
+"\fH\s0.\s0\fP"  at 400, 275
+"\fH\s0.\s0\fP"  at 400, 283
+"\fH\s0.\s0\fP"  at 400, 275
+"\fH\s0.\s0\fP"  at 400, 283
+"\fH\s0sandbox\s0\fP"  at 160, 115
+line <-  from 160, 171 \
+	to 160, 147 
+ellipse wid 80 ht 40 at 160, 119
+"\fH\s0.\s0\fP"  at 400, 283
+"\fH\s0.\s0\fP"  at 400, 291
+"\fH\s0chain\s0\fP"  at 504, 331
+"\fH\s0Backing\s0\fP"  at 504, 347
+line   from 464, 459 \
+	to 480, 459 \
+	to 480, 179 \
+	to 464, 179 
+ellipse wid 80 ht 40 at 40, 119
+line <-  from 40, 171 \
+	to 40, 147 
+"\fH\s0sandbox\s0\fP"  at 40, 115
+.PE
+.ce 
+Figure 2.
+.DE
+.sp 4i
+
+.H 2 "The .sandboxrc File"
+.P
+.iX "file" "user \fBrc\fR"
+.iX "user \fBrc\fR file"
+Each ODE user has a file that contains information about
+the sandboxes the user accesses.  Such information includes:
+the list of the user's sandboxes,
+the base directory to each sandbox, and the user's default sandbox.
+It can also contain default arguments for any of the
+ODE commands.  This file is usually located in
+\fB${HOME}/.sandboxrc\fR.
+.P
+The entries in the \fB.sandboxrc\fR file for
+ODE commands have the following format:
+.sp
+.ti 4
+\fIcmdname \ option ...\fR
+.P
+It is possible to place the \fB.sandboxrc\fR file in a directory other
+than \fB${HOME}\fR.  However, each time any of the ODE
+tools that access this file are used, the user has to 
+specify the new path.
+.P
+.H 2 "Operations within sandboxes"
+The operations on sandboxes supported by ODE include:
+creating sandboxes, working in  sandboxes, populating sandboxes,
+retargeting sandboxes to different backing 
+trees,
+and removing sandboxes.  Here we will discuss these operations
+within ODE and the tools available to perform them.
+
+.H 3 "Creating Sandboxes"
+The command to create a sandbox is \fBmksb\fR.  
+This command is the first step
+in setting up a development environment under ODE.
+\fBmksb\fR creates the sandbox structure
+which includes the directories \fBsrc\fR,
+\fBobj\fR, \fBexport\fR, and a directory \fBrc_files\fR
+that maintains datafiles that
+refer to a 
+backing build or shared sandbox.  \fBmksb\fR also creates the symbolic link
+\fBlink\fR that points to the backing build.
+.P
+Sandboxes can be created to support any or all of the different
+machine types.
+\fBmksb\fR creates each of these directories for each machine type listed
+with the command line option \fB-m\fR.
+.P
+
+You should be aware of the following restrictions when creating a
+sandbox:
+.BL
+.LI
+Sandbox names cannot contain dashes '-', periods '.', or
+slashes '/'.
+.LI
+Each execution of \fBmksb\fR creates only one sandbox.  Do not specify
+more than one sandbox name on the command line.
+.LI
+Each sandbox must be backed by an existing backing build or 
+sandbox.  You cannot create a null sandbox and retarget it later.
+.LI
+Since sandbox names are listed
+in the file \fB${HOME}/.sandboxrc\fR file and 
+the \fB.sandboxrc\fR file maps sandbox names to the directories
+where they reside, 
+a user cannot have more than one sandbox 
+with the same name.  
+.LI
+Moving a sandbox to a different directory will require the following changes:
+symbolic links created to populate the sandbox must be recreated, and
+the \fB.sandboxrc\fR file must to be updated to show the new sandbox base.
+.LE
+.P
+\fBExamples:\fR
+.P
+The following command is used to create the sandbox \fBsymphony\fR  
+in the current working directory backed by the osc1.1 backing build for
+the machine type pmax.
+.P
+.ti 4 
+.B "mksb -back /project/osc/build/osc1.1 -m pmax symphony"
+.P
+The following command is used to create the same sandbox but, supports
+building for the machine types \fBpmax, mmax\fR and \fBat386\fR.
+.P
+.ti 4 
+.B "mksb -back /project/osc/build/osc1.1 -m pmax:mmax:at386 symphony"
+.P
+.H 3 "Working on a Sandbox"
+\fBworkon\fR is used to get into a sandbox environment for editing,
+compiling, and linking.  
+\fBworkon\fR sets the user up in a new shell, establishes the proper
+environment for  working in the sandbox, and places the user in the sandbox
+\fBsrc\fR tree.
+.P
+The command syntax is simple,
+.P
+.ti 4
+\fBworkon [-sb \fIsandbox-name\fB]\fR
+.P
+.H 3 "Populating a Sandbox"
+.iX "sandbox" "populating"
+.iX "mksb" "command"
+.iX "populating sandboxes"
+Sandboxes, by design, do not require sources in them to build.  The
+ODE tools go through a search path to find all sources required to
+build.  The sandbox is searched, and if sources are not available,
+each successive link in the backing chain is searched.  The last link
+in the backing chain is a backing build with a fully populated source
+tree.  We recommend that users of ODE do not populate sandboxes with
+sources, rather, the only sources found in a sandbox should be 
+those checked out for editing.
+.P
+There are times when populating a sandbox may be desirable to the user
+(such as source browsing).  The ODE tools do support populating of
+sandboxes in two ways.  Setting up symbolic links to sources in the
+backing chain and physically copying sources from the backing chain.
+Given a choice between the two, we recommend using symbolic links
+rather than physical copying of files.
+.P
+When you create a sandbox, you can specify to \fBmksb\fR to put links
+to the backing tree in the sandbox for all sources, exported files,
+and tools.  You can also have these files copied into the sandbox.
+Copying them into place limits your ability to retarget your sandbox
+to other backing trees.
+.P
+Whether you copy files from the backing tree or merely create links 
+from the sandbox, you should be aware of the advantages and disadvantages
+of each.  Copying files from the backing build to a sandbox takes up a 
+large amount of space and, if it is a dynamic backing build, the  
+sources copied
+can easily become out of date.  Symbolic links take up less space, 
+however, they can pose problems if the sandbox is ever moved around on
+the file system.
+Each sandbox contains a link to the backing build appropriately named
+\fBlink\fR.  It is through this link that all tools refer to the backing
+build.  Each link in a populated sandbox refers to the backing tree
+through the path \fIabsolute-pathname-to-sandbox\fB/link/...\fR.  If
+the sandbox is moved then the absolute pathnames to the sandbox in each
+symbolic link becomes invalid.  Each of these links will need to be
+recreated.
+.P
+.iX "links" "symbolic"
+.iX "symbolic links"
+The \fBmklinks\fR command can also be used to populate a sandbox.
+This tool provides more flexibility in that
+you can use it to link individual sources, objects, tools, and headers.
+You can populate an area with a single file or and entire subsystem
+By default \fBmklinks\fR uses symbolic links for each file it creates.
+.P
+\fBExample:\fR 
+.P
+The commands:
+.P
+.ti 4
+.B "cd usr/bin"
+.ti 4
+.B "mklinks date"
+.P
+will create symbolic links to all of the sources for the \fBdate\fR command.
+
+.P
+.H 3 "Retargeting a Sandbox"
+.P
+.iX "sandbox" "retargeting"
+.iX "retargeting" "sandbox"
+.iX "build" "backing"
+.iX "backing build, changing"
+.iX "changing backing build"
+.iX "\fBresb\fR" "command"
+.iX "commands" "\fBresb\fR"
+Retargeting a sandbox refers to changing the shared sandbox or backing
+build that a developers sandbox is backed by.  As mentioned earlier,
+sandboxes rely on backing chains for a complete development
+environment.  Since each backing chain represents a different point in
+the development of a software product, developers may find it useful
+to \fIswitch\fR to a newer backing chain as time goes on.
+.P
+When you want to be backed by a different build or
+sandbox, you need to retarget the sandbox using \fBresb\fR.
+.P
+\fBExample:\fR
+.sp
+.ti 4
+.B "resb -sb symphony /project/osc/build/osc1.2"
+
+.H 3 "Removing a Sandbox"
+If a mistake has been made in creating a sandbox, the user can \fB-undo\fR 
+with \fBmksb\fR.
+.P
+\fBExample:\fR
+.P
+.ti 4
+.B "mksb -undo symphony"
+.P
+.H 2 "Accessing the Builds"
+.iX "build" "accessing"
+.iX "accessing" "builds"
+You should consult the release engineers on your project to locate 
+the builds are and how to access them.
+Usually, all the builds for a single project will be available under
+a single directory; however, as this is a project-by-project decision,
+this may not necessarily be the case.
+.H 2 "Split Sandboxes"
+.iX "sandboxes" "split"
+.iX "projects file"
+.iX "split sandboxes"
+.iX "configuration files" "projects"
+A user's sandbox can be set up to be backed by multiple backing builds
+on a directory by directory basis. This is accomplished with the 'projects'
+file which resides in the rc_files directory. The contents of the projects
+file is a list of directories and projects. The first field is the directory
+and the second field is the project to use for that directory.
+.P
+.iX "sb.conf"
+.iX "configuration files" "sb.conf"
+Along with the projects file, you will need an sb.conf file for every
+project listed in the projects file. In sandboxes created with ODE 2.3 mksb,
+there will already be a single line in the projects file corresponding to the
+project of the backing build which the sandbox is backed by. There will also
+be an sb.conf file for that project. You will only need to modify the
+projects file and add an sb.conf file if you wish to have a sandbox backed
+by more than one project.
+.P
+The sb.conf file has 4 entries:
+.P
+.VL 15
+.iX "backing_project"
+.iX "backing_build"
+.iX "ode_sc"
+.iX "ode_build_env"
+.LI \fBbacking_project\fR
+The name of the project that the sandbox is backed by.
+.LI \fBbacking_build\fR
+The logical path used to access the top of the backing build.
+.LI \fBode_sc\fR
+Indicates whether ODE source control is being used, set to 'true' or 'false'.
+.LI \fBode_build_env\fR
+Indicates whether the ODE build environment is being used, set to 'true' or 'false'.
+.LE

@@ -1,0 +1,248 @@
+# COPYRIGHT NOTICE
+# Copyright (c) 1994, 1993
+# Open Software Foundation, Inc. 
+#  
+# Permission is hereby granted to use, copy, modify and freely distribute 
+# the software in this file and its documentation for any purpose without 
+# fee, provided that the above copyright notice appears in all copies and 
+# that both the copyright notice and this permission notice appear in 
+# supporting documentation.  Further, provided that the name of Open 
+# Software Foundation, Inc. ("OSF") not be used in advertising or 
+# publicity pertaining to distribution of the software without prior 
+# written permission from OSF.  OSF makes no representations about the 
+# suitability of this software for any purpose.  It is provided "as is" 
+# without express or implied warranty. 
+# 
+# HISTORY
+# $Log: release_notes.users,v $
+# Revision 1.1.5.6  1994/02/18  15:49:00  marty
+# 	Change history example
+# 	[1994/02/18  15:48:50  marty]
+#
+# Revision 1.1.5.5  1994/02/11  17:11:36  marty
+# 	CR # 1029 - Updated for ODE 2.3.4.
+# 	[1994/02/11  17:11:13  marty]
+# 
+# Revision 1.1.5.4  1994/02/10  16:01:04  damon
+# 	Restored upgrading information. Some people receiving this code may
+# 	not have received previous revisions of ODE 2.3
+# 
+# 	Moved description of features other than COPYRIGHT NOTICE that were not
+# 	already mentioned to changelog.
+# 	[1994/02/10  15:47:11  damon]
+# 
+# Revision 1.1.5.3  1994/02/09  22:01:59  marty
+# 	CR 1029 - Updates about copyright markers.
+# 	[1994/02/09  22:01:36  marty]
+# 
+# Revision 1.1.5.2  1994/02/09  20:47:40  marty
+# 	CR # 1029 - Update man pages.
+# 	[1994/02/09  20:47:24  marty]
+# 
+# Revision 1.1.5.1  1994/02/08  14:42:20  damon
+# 	CR 1029. Corrected upgrade usage with -all
+# 	[1994/02/08  14:42:01  damon]
+# 
+# Revision 1.1.2.3  1993/06/04  03:08:20  damon
+# 	CR 568. Added information on upgrading sandboxes to 2.3
+# 	[1993/06/04  03:08:13  damon]
+# 
+# Revision 1.1.2.2  1993/06/03  18:41:13  damon
+# 	CR 568. Split release notes into users and admins notes
+# 	[1993/06/03  18:40:52  damon]
+# 
+# $EndLog$
+
+Contents:
+ o Upgrading your sandbox ( if necessary )
+ o Usage differences between pre ODE 2.3 and ODE 2.3.4
+ o Description of COPYRIGHT NOTICE handling
+
+Upgrading from previous releases of ODE 2.3 to ODE 2.3.4:
+---------------------------------------------------------
+Not necessary. ODE 2.3.4 is backward compatible with ODE 2.3 sandboxes and
+ODE 2.3 backing trees.
+
+Upgrading pre ODE 2.3 sandboxes to ODE 2.3.4:
+---------------------------------------------
+
+1) For each sandbox you wish to upgrade, run mksb -u:
+
+   mksb -u -back <backing build> <name of sandbox>
+
+   For instance, for the sandbox foo, backed by /project/ode/build/ode2.3:
+
+   mksb -u -back /project/ode/build/ode2.3 foo
+
+   The backing build you specify does not have to be the build that the
+   sandbox was originally backed by. This operation is comparable to a resb.
+   However, resbb will not do what mksb -u does.
+
+2) For each sandbox you wish to upgrade which has files checked-out (although
+   they may be in a checked-in state), run 'upgrade -all'. This will move the
+   ancestry information that is stored in the obsolete .BCSconfig into
+   the corresponding rcs files. The time required will depend on the number
+   of files you have in the sandbox, but is comparable to doing a bstat -all.
+
+If either of these processes are interrupted, simply try again!
+
+Usage differences between ODE 2.1.1 and ODE 2.2:
+------------------------------------------------
+
+You will need to use spaces between all command line switches and their
+arguments. For instance, 'bco -r1.2 foo.c' is now 'bco -r 1.2 foo.c'.
+
+The -*all* switches (except for -all) are gone. These have been replaced with
+-changed and -saved. -changed refers to files that are not in a checked-in
+state. -saved refers to files that are in a checked-in state. So, to check in
+all files that are currently checked-out, you would issue the command:
+
+bci -changed -all
+
+The following commands have a -b switch. -b says to use the version
+corresponding to the check_out_config of the build you are backed by. In
+other words, the version you would get if you checked out the file in an empty
+sandbox.
+
+bstat
+bdiff
+blog
+
+bco -undo is gone. Use bcs -o instead.
+
+bmerge now operates the same as bsubmit. That is, you can say 'bmerge foo.c'
+without having to specify any switches and it will perform the same merge
+that bsubmit would do if one is required.
+
+Usage differences between ODE 2.2 and ODE 2.3:
+----------------------------------------------
+
+There is no rcs locking in ODE 2.3, thus all of the -u and -l switches are
+gone.
+
+sadmin has been gutted. It is still useful for -edit and -copy and that is
+all. The -lock and -unlock commands are gone because all locking operations
+are done as part of regular operations instead of being separated out. The
+-rm option has moved to bsubmit.
+
+bsubmit now supports a -rm option. This will restore the build and rcs tree
+to the state prior to the submission. This will only work for a submission
+which has been interrupted. It will not work for a completed submission.
+Removing a completed submission will be implemented in a future version of
+ODE as bsubmit -undo.
+
+The files 'shared' and 'local' are gone. They have been replaced by the
+following files: Buildconf and Buildconf.exp for build information and build
+information only, sb.conf for sandbox configuration information, and sc.conf
+for source control configuration information. Buildconf* and sb.conf are
+user files, and sc.conf is an administrative file. The Buildconf files are
+totally under source control and can be modified just like any other file
+under source control. See the SAG, section 6.2.2 for further information.
+
+Copyrights in source files
+--------------------------
+The release ODE 2.3 provided support for expanded copyright notices in source
+files.  These copyrights are verified for completeness during check-in's
+with 'bci'.  During a check-in, the copyright in the source file is compared 
+with a list of legal copyrights defined in the backing tree.
+
+A legal copyright in a source file has the following format:
+
+<comment leader>COPYRIGHT NOTICE
+<comment leader>copyright text...............
+<comment leader>copyright text...............
+<comment leader>copyright text...............
+<comment leader>copyright text...............
+<comment leader>copyright text...............
+<end-of-copyright>
+
+	ODE recognizes the end of a copyright section of a source file in 
+	one of two ways.
+
+	1) A '<comment leader>HISTORY' marker is found.
+		For example:
+
+		# COPYRIGHT NOTICE
+		# Copyright (c) 1992 Carnegie Mellon University
+		# All Rights Reserved.
+		#
+		# HISTORY
+
+		This example states that all lines between COPYRIGHT NOTICE and
+		HISTORY are copyrights to be verified in the 'copyrights' file.
+		This behavior allows users to make sure that all copyrights  
+		are legal copyrights.
+
+	2) A line containing any text that DOES NOT START with a comment leader.
+		For example:
+
+		# COPYRIGHT NOTICE
+		# Copyright (c) 1992 Carnegie Mellon University
+		# All Rights Reserved.
+		#
+		Any other text
+		# Copyright (c) 1992 Brockport State University
+		# All Rights Reserved.
+		# HISTORY
+
+		This example states that all lines between "COPYRIGHT NOTICE"
+		and "Any other text" are copyrights to be verified in the
+		'copyrights' file.  The copyright from Brockport State 
+		University is ignored.  This allows users to add copyright
+		notices (or any other text) that need not be verified
+		with the list of legal copyrights.
+
+
+The list of legal copyrights are kept in the "rc_file" directory in the 
+backing tree.
+	<backing-tree-path>/rc_files/<project_name>/copyrights
+or
+	<backing-tree-path>/rc_files/<project_name>/<subproject>/copyrights
+
+The 'copyrights' file contains a series of copyrights that have the 
+following format:
+COPYRIGHT NOTICE DEFAULT
+copyright text...............
+copyright text...............
+copyright text...............
+copyright text...............
+COPYRIGHT NOTICE nameA
+copyright text...............
+copyright text...............
+copyright text...............
+copyright text...............
+COPYRIGHT NOTICE nameB
+copyright text...............
+copyright text...............
+copyright text...............
+copyright text...............
+
+Each legal copyright is prefaced by the text "COPYRIGHT NOTICE" followed by 
+the name of that copyright.  Naming copyrights allows users to enter 
+different copyrights into newly created files.  The command 
+'bcreate -n <name>' will insert the appropriate copyright into the 
+new source file.  If no name is given then the "DEFAULT" copyright is used.
+
+
+We recommend that files using copyrights and history use the following
+format: 
+<copyright section>
+<history section>
+<source code>
+
+The <copyright section> refers to <comment-leader>COPYRIGHT NOTICE described 
+above.  The <history section> refers to the text:
+<comment-leader>HISTORY
+<comment-leader>$Log :  $
+<comment-leader>Revision 1.2.3.4 1994/2/18 12:00:00 user
+<comment-leader><tab><comment>
+<comment-leader><tab><comment>
+<comment-leader>
+<comment-leader>Revision 1.2.3.4 1994/2/18 12:00:00 user
+<comment-leader><tab><comment>
+<comment-leader><tab><comment>
+<comment-leader>
+<comment-leader>$End Log$
+
+
+

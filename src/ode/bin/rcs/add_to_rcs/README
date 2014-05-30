@@ -1,0 +1,7 @@
+Add these RCS files created by OSF to the ../rcs_5.X tree, and build
+them.
+
+Files:
+
+rcsstat.c
+rcsdiff3.c 

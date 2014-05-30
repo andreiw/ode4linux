@@ -1,0 +1,131 @@
+.\" 
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: def_build.3,v $
+.\" Revision 1.2.2.2  1992/12/03  17:25:00  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:33  damon]
+.\"
+.\" Revision 1.2  1991/12/05  21:16:03  devrcs
+.\" 	Man page for routines: default_build, get_rc_value,
+.\" 	buid_base_dir, and rm_newline.
+.\" 	[91/01/30  16:47:38  randyb]
+.\" 
+.\" $EndLog$
+.\" 
+.\" $EndLog$
+.\" 
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH def_build 3 1/28/91
+.SH NAME
+def_build \- holds routines which access rc build information
+.SH SYNOPSIS
+.IP "\fBint default_build ( buildbase, buildname, buildset, sb_rcfile )\fR"
+.sp 0
+.B "char ** buildbase;"
+.sp 0
+.B "char ** buildname;"
+.sp 0
+.B "char ** buildset;"
+.sp 0
+.B "char * sb_rcfile;"
+.IP "\fBint get_rc_value ( keyword, value, contents, msgs )\fR"
+.sp 0
+.B "char * keyword;"
+.sp 0
+.B "char ** output;"
+.sp 0
+.B "struct rcfile contents;"
+.sp 0
+.B "BOOLEAN msgs;"
+.IP "\fBchar * build_base_dir ( keyword, contents, errors, default )\fR"
+.sp 0
+.B "char * keyword;"
+.sp 0
+.B "struct rcfile contents;"
+.sp 0
+.B "BOOLEAN errors;"
+.sp 0
+.B "BOOLEAN default"
+.IP "\fBvoid rm_newline ( char* string )"
+.sp 0
+.B "char * string;"
+.SH DESCRIPTION
+.SS \fBdefault_build\fR
+\fBdefault_build\fR fills in the three arguments; \fBbuildbase, buildname,\fR
+and \fBbuildset\fR, with the values from the sandbox rc file \fBsb_rcfile\fR.
+These values correspond to the three rc file variables:
+\fBbuild_base\fR, \fBdefault_build\fR, and \fBdefault_set\fR.
+If an argument is set to NUL, '\0', no attempt is made to fill it.
+If the argument is not NUL, \fBdefault_build\fR will create space for
+for the value and set the char pointer to it.
+.P
+The build base is the directory the project's builds are under.
+The default build is the build submissions are made to, and the default
+set, the set used for submissions.
+
+.SS \fBget_rc_value\fR
+\fBget_rc_value\fR reads through the contents of \fBcontents\fR
+and returns the value of the \fBkeyword\fR.
+It then creates space for this value and points \fB*output\fR at
+this new space.
+.P
+The structure \fBcontents\fR must previously have been initialized
+with a call to \fBparse_rc_file\fR.
+.P
+If \fBmsgs\fR is set to TRUE and there is a failure in this process,
+the routine prints messages about why it failed.
+
+.SS \fBbuild_base_dir\fR
+\fBbuild_base_dir\fR looks for the base directory of the build specified
+by \fBkeyword\fR.
+If it finds the directory, it returns a pointer to the string with directory
+path, else it returns NUL.
+\fBbuild_base_dir\fR uses the value of the sandbox rc variable \fBbuild_list\fR
+to determine what file to read for the information it is searching for,
+or, if \fBbuild_list\fR is not set, it looks in the file
+\fB/project/projects/build_list\fR.
+.P
+If \fBerrors\fR is TRUE, this routine prints error messages when it fails,
+for any reason, to find the base directory for the \fBkeyword\fR.
+If \fBdefault\fR is TRUE, this routine will use the default build list
+and not search for the one in the backing tree.
+.P
+\fBcontents\fR is an initialized rcfile structure which \fBbuild_base_dir\fR
+will use to get the name of the build list file.
+
+.SS \fBrm_newline\fR
+This function removes the last occurrence of newline, '\n', from a string
+and replaces it with NUL, '\0'.
+.SH FILES
+.IP \fBlibsb.a\fR
+library containing these routines
+.IP \fB/project/projects/build_list\fR
+the default, site file to hold the list of builds, their configuration dates,
+and base directories.
+.SH EXIT VALUES
+\fBdefault_build\fR returns '0' upon successful completion, '-1' otherwise.
+.br
+\fBget_rc_value\fR returns '0' upon successful completion, '-1' otherwise.
+.br
+\fBbuild_base_dir\fR returns a pointer to the string containing the
+base directory upon successful completion; it returns NULL if for any
+reason it cannot get this information.
+.br
+\fBrm_newline\fR does not return a value.

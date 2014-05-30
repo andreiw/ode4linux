@@ -1,0 +1,7 @@
+bison-1.12
+gas
+gcc-1.39
+gdb-3.94
+gld
+include
+END

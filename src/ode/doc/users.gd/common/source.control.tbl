@@ -1,0 +1,592 @@
+.\"
+.\" COPYRIGHT NOTICE 
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\" HISTORY
+.\" $Log: source.control.tbl,v $
+.\" Revision 1.3.8.2  1993/11/23  22:14:16  damon
+.\" 	CR 794. Added COPYRIGHT NOTICE description
+.\" 	[1993/11/23  22:08:22  damon]
+.\"
+.\" Revision 1.3.8.1  1993/11/18  21:35:00  marty
+.\" 	CR # 629 - Updates.
+.\" 	[1993/11/18  21:34:28  marty]
+.\" 
+.\" Revision 1.3.6.1  1993/08/26  16:24:35  marty
+.\" 	CR # 628 - Update to ODE 2.3
+.\" 	[1993/08/26  16:24:21  marty]
+.\" 
+.\" Revision 1.3.4.5  1993/05/14  19:57:52  damon
+.\" 	CR 459. Removed tutorial section
+.\" 	[1993/05/14  19:57:41  damon]
+.\" 
+.\" Revision 1.3.4.4  1993/04/16  18:35:28  damon
+.\" 	CR 459. Updated index entries
+.\" 	[1993/04/16  18:35:11  damon]
+.\" 
+.\" Revision 1.3.4.3  1993/04/16  15:28:54  damon
+.\" 	CR 459. Updated for 2.3
+.\" 	[1993/04/16  13:37:19  damon]
+.\" 
+.\" Revision 1.3.2.2  1992/11/08  17:00:42  damon
+.\" 	CR 12. Updated for 2.2
+.\" 	[1992/11/08  16:59:46  damon]
+.\" 
+.\" Revision 1.3  1991/12/17  21:00:25  devrcs
+.\" 	Fixed up page numbering
+.\" 	[1991/12/11  21:33:40  mckeen]
+.\" 
+.\" 	Final 2.1 review changes
+.\" 	[1991/12/05  20:59:44  mckeen]
+.\" 
+.\" Revision 1.2  1991/12/05  20:56:54  devrcs
+.\" 	 	More edits for ode2.1
+.\" 
+.\" 	 	More edits for ode2.1
+.\" 	[1991/11/05  22:11:22  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/17  13:24:58  marty]
+.\" 
+.\" 	 	More changes.
+.\" 	 	[91/07/16  14:55:52  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/15  15:32:36  marty]
+.\" 
+.\" 	 	More changes
+.\" 	 	[91/07/12  16:01:56  marty]
+.\" 
+.\" 	 	Some edits.
+.\" 	 	[91/06/28  16:41:02  marty]
+.\" 	[91/07/17  13:25:44  marty]
+.\" 
+.\" 	 	preliminary edit/rewrite
+.\" 	 	[91/06/18  13:28:25  casey]
+.\" 	[91/06/18  13:46:39  casey]
+.\" 
+.\" 	 	corrected some typos
+.\" 	 	[91/03/14  16:28:40  ezf]
+.\" 	[91/03/14  16:31:23  ezf]
+.\" 
+.\" 	 	Updated shared sandbox info
+.\" 	 	[91/01/29  09:21:56  randyb]
+.\" 	[91/01/29  09:24:07  randyb]
+.\" 
+.\" 	 	Separating DUG into common and OSC versions
+.\" 	 	[91/01/16  17:03:11  randyb]
+.\" 	[91/01/25  10:48:25  randyb]
+.\" 
+.\" Revision 1.7  90/12/06  14:20:29  devrcs
+.\" 	 	Pre Tools II release
+.\" 
+.\" $EndLog$
+...\"*********************************************************************
+...\"          Reset page information for chapters in DUG
+...\"*********************************************************************
+.OH "'\fB\s10ODE User\'s Guide\fR''\\\\nP\s0'"	\"*** Set even page footers
+.EH "'\s10\\\\nP''\fBSource Control\s0\fR'"	\"*** Set odd page footers
+.SK
+...\"*********************************************************************
+...\"          Contents of common DUG: Source Control    
+...\"*********************************************************************
+.H 1 "Source Control"
+.P
+.iX "source control"
+.iX "controlling source"
+This chapter gives an 
+overview of how source control works in ODE.
+This chapter is divided into three sections.
+The first section gives an overview of ODE source control.
+The second section discusses the tools and operations that apply
+to source files.  Such operations include creating new source, checking out 
+files, 
+deleting obsolete source. 
+The last section describes the grouping of source files into sets 
+and operations
+performed on sets. 
+.H 2 "The ODE Source Control Structure"
+.iX "source control"
+.iX "managing source"
+.P
+Source control in ODE involves maintaining a  revision
+history of the source 
+being developed as well as integrating source developed 
+in sandboxes to 
+backing builds.
+The history of a file is maintained to isolate and retrieve specific
+instances of the software being developed.  During the life cycle of 
+a product, it is not uncommon to have multiple development groups 
+working on a common set of sources.  For instance, at OSF, groups
+of developers may be working on many different instances of OSF/1.
+OSF/1 is currently being developed for release 1.1 while snapshot
+(bugfix) releases 1.0.1 and 1.0.2 are being developed based on release 1.0.
+Software quality testing may be done on the latest versions of the
+sources while benchmarking and test validation 
+may be done on some earlier stable milestone
+revision.
+Each of these tasks needs to be performed on a specific instance of 
+the source being developed and requires a revision control system.
+.P
+.iX "RCS"
+.iX "revision control"
+ODE uses \fBRCS\fR as the basis for its source control.  \fBRCS\fR
+is a basic revision control system available
+on most implementations of Unix.
+.H 2 "Source Control tools and operations"
+The ODE source control commands support a basic set of operations 
+to maintain revision history.
+These include: creating files, checking files out for editing,
+checking files in, deleting files, and getting file 
+status information.  These operations are available in 
+most configuration management systems.  Here we will discuss
+these operations within ODE, 
+the tools available to perform them, 
+and some hints on general usage.
+.H 3 "Creating Files"
+.iX "files" "creating"
+.iX "creating" "files"
+.iX "bcreate" "files"
+
+Files are created in the source control system through the
+.B bcreate
+command. 
+.B bcreate
+will create the new file under source control, 
+create a path in the current sandbox (if necessary),
+and put an initial version in your sandbox that is ready 
+for editing.
+.P
+At this point you can begin to do software development on the
+file.   
+.P
+The syntax for this command is
+.P
+.ti 4
+\fBbcreate \fI/path/filename\fR
+.P
+There are three ways to indicate the location of a file to the ODE tools.
+By specifying the filename, the tools assume that the file is located
+in the current directory.  By specifying a relative pathname, the tools
+assume that the file is located in a directory relative to the current 
+directory.  By specifying  an absolute pathname the tools assume that
+the file is located in a directory relative to the \fBsrc\fR directory at the
+base of the sandbox.
+.P
+.iX "headers"
+.iX "file headers"
+.iX "copyright notice"
+The ODE tools expect header information to 
+precede each file.  This header is to optionally include 
+copyrights or markers for copyright information and a section
+describing the history of the file.  Details of the copyrights
+can be found in the project specific DUG as well as the \fBbci\fR 
+man page.
+.P
+If your project is using full copyrights, the headers have the following
+format:
+.P
+.iX "COPYRIGHT NOTICE"
+.iX "copyrights"
+.iX "expanded copyrights"
+.nf
+\fIcomment-leader\fBCOPYRIGHT NOTICE\fR
+\fIcomment-leader\fB<copyright 1>\fR
+\fIcomment-leader\fB<copyright 1 continued>\fR
+\fIcomment-leader\fB<copyright 2>\fR
+\fIcomment-leader\fB<copyright 3>\fR
+\fIcomment-leader\fB<copyright ...>\fR
+\fIcomment-leader\fBHISTORY\fR
+\fIcomment-leader\fB$L\fBog: $\fR
+\fIcomment-leader\fB$EndL\fBog$\fR
+.fi
+.P
+If your project is using copyright markers, the headers have the following
+format:
+.P
+.iX "copyright markers"
+.iX "copyrights" "markers"
+.iX "OSF_COPYRIGHT"
+.nf
+\fIcomment-leader\fB@OSF_\fBCOPYRIGHT@\fR
+
+\fIcomment-leader\fBHISTORY\fR
+\fIcomment-leader\fB$L\fBog: $
+\fIcomment-leader\fB$EndL\fBog$\fR
+.fi
+.P
+Since the ODE tools expect to find these markers in each file (and
+they must be found within a comment), it is important to indicate to
+\fBbcreate\fR what the comment leader will be.  For example the
+headers for a .c file would be:
+.P
+.ta -.5
+.(O
+\fR
+/*
+ * @OSF_\fRCOPYRIGHT@
+ */
+/*
+ * HIS\fRTORY
+ * $L\fRog: source.control.tbl,v $
+ * $E\fRndLog$
+ */
+.)O
+.ta
+and for a Makefile:
+.P
+.ta -.5
+.(O
+\fR
+# @OSF\fR_COPYRIGHT@
+#
+# HIS\fRTORY
+# $L\fRog: source.control.tbl,v $
+# $E\fRndLog$
+.)O
+.t
+.P
+.iX"comment leaders" "choosing"
+In most cases \fBbcreate\fR will be able to pick the correct leader
+based on the suffix of the filename, for example, \fB.c\fR files are
+given the leader * (an asterisk).  A list of comment leaders and
+associated filename suffixes is maintained in the rc File \fBsc.conf\fR. 
+If \fBbcreate\fR cannot find an appropriate filename suffix entry,
+it will prompt you for the comment leader. 
+.P
+If a file type does not support comments then you should use the
+comment leader of \fBNONE\fR, which tells ODE not to look for headers
+in the file.  The \fBBIN\fR leader will tell ODE that the file
+being created is a binary file and that it should not have a header.
+.P
+.iX "files" "deleting"
+.iX "deleting files"
+If, for any reason, you need to remove a newly created file 
+from source control, you can use the 
+\fB-undo\fR option with 
+\fBbcreate\fR.
+.iX"-undo" "bcreate"
+Be warned that this option is intended as a quick way of removing
+newly created files.   Once people have started making changes
+to a file, \fBbcreate -undo\fR will no longer be able to remove the file from
+source control.  
+.P
+To create a file in the current directory type
+.sp
+.ti 4
+.B "bcreate "
+\fIfood.c\fR
+.P
+If you find a typo in the filename or it has been placed in the
+wrong directory, newly created files can be removed by typing
+.sp 
+.ti 4
+.B "bcreate -undo "
+\fIfood.c\fR
+.P
+Create the file with the correct filename
+.sp
+.ti 4
+.B "bcreate "
+\fIfoo.c\fR
+
+.H 3 "Checking Out Files"
+.iX "files" "checking out"
+.iX "checking out" "files"
+The \fBsrc\fR tree in a sandbox is initially empty.
+Sources can be incorporated into a sandbox by retrieving them
+from the source control system for viewing (read-only, no editing) or
+for editing (also referred to as "locked").
+Retrieving a file from source control it is referred to as 
+\fBchecking out\fR a file.
+.P
+Files are checked out
+with the \fBbco\fR command. 
+.P
+To check a file out for editing the following
+command is used:
+.sp
+.ti 4
+.B "bco "
+\fImyfile.c\fR
+
+To check out a file for reading only use the following command:
+.sp
+.ti 4
+.B "bco -read "
+\fIanotherfile.c\fR
+.P
+
+.H 3 "Checking In Files"
+.iX "checking in files"
+.iX "files" "checking in"
+.iX "\fBbci\fR command"
+.iX "command" "\fBbci\fR"
+
+The command for \fBchecking in\fR files is \fBbci\fR.
+Within a sandbox you can check out a file, edit it, check it in,
+check out the file again, edit it, and so on as many times as
+you want and always know the changes to the file remain local
+to your sandbox.
+.P
+The check-in operation validates the copyright and 
+history markers and prompts you for log information. The log message
+can be put on the command line with the \fB-m\fR option.
+.P
+If the file foo.c has been checked out for editing, it can be checked in
+with the command
+.sp 
+.ti 4
+.B "bci "
+\fIfoo.c\fR
+
+.iX "comment leaders" "NONE"
+.iX "NONE"
+.iX "bcs" "options" "-c"
+If you wish to check in the file and skip the copyright/history
+checking then first set the comment leader to 'NONE' as follows:
+.sp
+.ti 4
+.B "bcs -c NONE "
+\fIfoo.c\fR
+
+You can specify the comment on the command line with the command
+.sp 
+.ti 4
+\fBbci -m "\fIThis is an example comment\fB" \fIfoo.c\fR
+
+
+.H 3 "Deleting Files"
+.iX "files" "deleting"
+.iX "files" "removing"
+.iX "deleting files"
+.iX "removing files"
+Files can be deleted in one of two ways:
+\fBoutdate\fR the private work done to the file in your 
+sandbox,
+or make the file
+.B defunct
+so that it remains under source control, but is no longer  
+accessible and no submissions
+can be made to it. 
+
+.iX "outdating files"
+.iX "files" "outdating"
+.iX "bcs" "options" "-o"
+Files can be outdated from your sandbox
+by using the \fB-o\fR option to \fBbcs\fR.
+Outdating a file causes the file to be removed from the 
+sandbox and the work that was local to the sandbox for that file is
+removed from source control. 
+If there is important work done to the file that 
+was not submitted, then outdating the file will cause this work to be lost.
+.P
+One way to delete a file is simply to make it
+inactive, or defunct.  A defunct file remains under source
+control
+(along with its history) but is no longer part of the backing tree.  
+.iX "defuncting a file"
+.iX "\fB-defunct\fR option:"
+.iX "options" "\fB-defunct\fR"
+.iX "bci" "options" "\fB-defunct\fR"
+.iX "files" "defuncting"
+.P
+To defunct a file, use the \fB-defunct\fR option with \fBbci\fR
+and submit the file to the default build using \fBbsubmit\fR.
+.P
+Making a file defunct in the default build
+does not prevent you from successfully checking out an
+older revision of the file.
+This is done intentionally so that development can continue for
+snapshot (bugfix) 
+releases based on earlier
+revisions  of the source.
+
+To make a file defunct, use the following commands:
+.sp
+.ti 4
+.B "bci -defunct "
+\fIfoo.c\fR
+.sp
+.ti 4
+.B "bsubmit "
+\fIfoo.c\fB
+
+.H 3 "Displaying File Status"
+.iX "status" "displaying and updating"
+.iX "displaying status"
+.iX "updating status"
+.iX "log information"
+.iX "revision information"
+.iX "information, log"
+.iX "information, file"
+There are a number of commands that indicate the current status of
+the files and their branches.
+.iX "\fBblog\fR command"
+.iX "command" "\fBblog\fR"
+.iX "symbolic names"
+.iX "names, symbolic"
+The primary commands for getting information are
+.B blog
+and
+.B bstat.
+These commands print check-in and submission information.
+The user can find out what revisions exist, 
+the changes checked into a local sandbox, and changes submitted to 
+a backing build.
+.P
+To print the log header and revision history information for your branch type
+.sp 
+.ti 4
+.B "blog foo.c"
+.P
+To print the revision that is on the end of the branch labeled
+OSC1_1 type
+.sp
+.ti 4
+.B "bstat -r OSC1_1 -R -V foo.c"
+
+.H 3 "Maintaining files under Source Control"
+.iX "source file maintenance"
+The 
+.B bcs
+command is used for general maintenance of  files under
+source control such as
+outdating files, labelling revisions,
+and for changing a comment leaders.
+
+A private development branch can be outdated with the command
+.sp
+.ti 4
+.B "bcs -o foo.c"
+
+The branch 1.2.3 can be outdated with the command
+.sp
+.ti 4
+.B "bcs -o -r 1.2.3 foo.c"
+
+Finally, a comment leader can be changed with the following command
+.sp
+.ti 4
+.B "bcs -c ' * '  foo.c"
+
+See the \fBbcs\fR man page for more details.
+.H 2 "Merging revisions"
+.iX "merging files"
+.iX "files" "merging"
+The \fBbmerge\fR command provides an automated mechanism for merging
+two revisions of a file with their common ancestor.  The output of the
+merge is supposed to be the combination of changes made to each file
+since it diverged from the common ancestor.  The tool, however, is not
+always able to discern the correct combination of changes, especially
+if the same line has been changed in two different manners.  The
+\fBbmerge\fR, command, therefore, sometimes requires the user
+intervention to resolve these conflicts.  
+.P
+In most cases people are not interested in merging specific revisions
+of files.  Keeping track of the various revisions of a file 
+in which to merge is difficult and error prone. 
+People are much more interested in keeping the file in their sandbox 
+in-sync with submissions made to the backing build.  This can be
+done with the command
+.sp
+.ti 4
+.B "bmerge foo.c"
+
+See the chapter on
+submitting for more information on merging.
+.H 2 "Sets"
+.iX "sets" "managing"
+.P
+Performing the operations described above is relatively simple
+and straight forward.  
+When the number of files being checked out,
+checked in, or submitted is small then using these tools
+is simple.  
+With a large system being developed it helps
+to be able to break the sandbox into groups of manageable working parts.
+Within ODE, files can be grouped into \fBsets\fR whereby each of the operations
+described above can be applied to the set in one invocation of
+each command.
+A user can define a set consisting of all files specific to a subsystem, 
+check them out for editing with one \fBbco\fR command, edit, check them
+in with one \fBbci\fR command, and submit them with one invocation of
+\fBbsubmit\fR.
+.P
+When a sandbox is created a set is automatically defined that includes
+all the files in the sandbox.  This set is the \fBdefault\fR set.
+Additional sets can be added to the sandbox, but at the very least,
+there will always be the default set.
+.P
+.iX "sets" "name restrictions"
+Setnames have the same restrictions as sandbox names.  Namely,
+non-shared sandboxes are made up lower case letters. 
+Shared sandbox setnames contain capital letters.
+Users should not begin a set name
+with a capital letter unless the set is to be shared.
+.P
+All files are referenced through a combination of the user-id and setname.
+.P
+.iX "branches" "private"
+.iX "private branch"
+Keep in mind that when private branches are created they are 
+labeled with and referenced through the setname.  All operations on this
+private branch must be referenced through that setname.
+.P
+.iX "workon"
+.iX "ODE options" "-set"
+.iX "ODE options" "-all"
+.iX "-set"
+.iX "-all"
+Sets are referenced in one of two ways;  
+by entering a set (via \fBworkon\fR) or by the \fB-set\fR option 
+available to most ODE commands.  An individual file can be referenced
+by specifying its name on the command line, or, all files
+can be referenced by using the \fB-all\fR option.
+.P
+A user can create and enter a set as follows:
+.sp
+.ti 4
+\fBworkon -set \fIsetname\fR
+
+A user can also access files in another set as follows:
+.sp
+.ti 4
+\fBbco -set \fIsetname\fB -all\fR
+
+To list the sets in the sandbox use the command
+.sp
+.ti 4
+.iX "workon" "options" "-list"
+.B "workon -list"
+
+To remove a set use the command
+.sp
+.ti 4
+.iX "workon" "options" "-undo"
+\fBworkon -undo\fI -set setname\fR
+
+Files are added to and removed from this set when the file
+is first check out and when it is submitted to a backing build.
+
+If you have been working on a set of files within a set and
+wish to delete this work, you can \fIoutdate\fR each of the 
+private branches that contain this work.
+
+.iX "bcs" "options" "-o"
+The \fB-o\fR option to \fBbcs\fR typically deletes, or outdates
+a private branch associated with a set.  The \fB-all\fR option
+can be used with \fB-o\fR
+to remove the private branches for all files in the set.

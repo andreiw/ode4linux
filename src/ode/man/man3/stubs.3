@@ -1,0 +1,52 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: stubs.3,v $
+.\" Revision 1.2.2.2  1992/12/03  17:25:19  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:43  damon]
+.\"
+.\" Revision 1.2  1991/12/05  21:17:10  devrcs
+.\" 	Man page for print_usage and print_revision stubs.
+.\" 	[91/01/30  16:50:21  randyb]
+.\" 
+.\" $EndLog$
+.\"
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH stubs 3 1/29/91
+.SH NAME
+stubs \- dummy routine
+.SH SYNOPSIS
+.IP \fBprint_usage ()\fR
+.IP \fBprint_revision ()\fR
+.SH DESCRIPTION
+.P
+The \fBprint_usage\fR and \fBprint_revision\fR functions, part of libsb.a,
+are dummy functions so the other libsb.a routines which call them,
+such as \fBinterface\fR, will not fail.
+If the user does not provide these functions,
+these dummy routines will be called.
+As these routines take no arguments and do nothing,
+they have no affect.
+.SH FILES
+libsb.a
+.SH EXIT VALUES
+\fBprint_usage\fR has no return value
+.br
+\fBprint_revision\fR has no return value

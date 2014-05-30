@@ -1,0 +1,160 @@
+#
+# @OSF_FREE_COPYRIGHT@
+# COPYRIGHT NOTICE
+# Copyright (c) 1992, 1991, 1990  
+# Open Software Foundation, Inc. 
+#  
+# Permission is hereby granted to use, copy, modify and freely distribute 
+# the software in this file and its documentation for any purpose without 
+# fee, provided that the above copyright notice appears in all copies and 
+# that both the copyright notice and this permission notice appear in 
+# supporting documentation.  Further, provided that the name of Open 
+# Software Foundation, Inc. ("OSF") not be used in advertising or 
+# publicity pertaining to distribution of the software without prior 
+# written permission from OSF.  OSF makes no representations about the 
+# suitability of this software for any purpose.  It is provided "as is" 
+# without express or implied warranty. 
+# 
+# HISTORY
+# $Log: Makefile.generic,v $
+# Revision 1.2.2.2  1992/12/03  19:09:08  damon
+# 	ODE 2.2 CR 346. Expanded copyright
+# 	[1992/12/03  18:40:40  damon]
+#
+# Revision 1.2  1991/12/05  20:58:58  devrcs
+# 	restructured for ode2.1
+# 	[1991/11/12  19:49:46  hester]
+# 
+# 	Changes for Reno make
+# 	[91/03/22  16:18:32  mckeen]
+# 
+# 	merged from dce/devkit version
+# 	[91/02/21  15:11:15  ezf]
+# 
+# $EndLog$
+#
+# Site specific text processing flags
+TROFF=troff
+TROFF_FLAGS=-Tpsc
+PIC=pic
+TBL=tbl
+POSTP=| psdit
+
+INFORMATION	= title preface contents appA 
+
+CHAPTERS	= component distribution build.instl src.cntrl back.tree trouble 
+
+#
+#	rules for turning table files and pic files into mm files
+#
+
+.tbl.mm:
+		${TBL} ${_TBLFLAGS_} $< > $@
+
+.pic.mm:
+		${PIC} $< > $@
+
+.SUFFIXES:	.mm .tbl .pic
+
+
+#
+#	rules for creating all of SAG as a post script file
+#	or giving it to the printer
+#
+dopass_all: sag.ps
+
+sag.ps: sag.mm ${INFORMATION} ${CHAPTERS}
+		${TROFF} ${TROFF_FLAGS} -mm sag.mm ${POSTP} > sag.ps
+
+sag: sag.mm ${INFORMATION} ${CHAPTERS}
+		${TROFF} -mm sag.mm > sag
+
+#
+#	rules for creating post script files for each portion of SAG
+#
+
+title.ps: title
+		cat title.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > title.ps
+		rm preview.mm
+
+contents.ps: title contents
+		cat title.mm contents.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > contents.ps
+		rm preview.mm
+
+preface.ps: title preface
+		cat title.mm preface.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > preface.ps
+		rm preview.mm
+
+component.ps: title component
+		cat title.mm component.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > componnent.ps
+		rm preview.mm
+
+distribution.ps: title distribution
+		cat title.mm distribution.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > distribution.ps
+		rm preview.mm
+
+src.cntrl.ps: title src.cntrl
+		cat title.mm src.cntrl.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > src.cntrl.ps
+		rm preview.mm
+
+build.instl.ps: title build.instl
+		cat title.mm build.instl.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > build.instl.ps
+		rm preview.mm
+
+self.host.ps: title self.host
+		cat title.mm self.host.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > self.host.ps
+		rm preview.mm
+
+appA.ps: title appA
+		cat title.mm appA.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > appA.ps
+		rm preview.mm
+
+index.ps: title index
+		cat title.mm index.mm ${POSTP} > preview.mm
+		${TROFF} ${TROFF_FLAGS} -mm preview.mm ${POSTP} > index.ps
+		rm preview.mm
+
+#
+#	dependency rules for each information and chapter file
+#	also tbl and pic file conversions
+#
+
+title: title.mm
+
+contents: contents.mm
+contents.mm: contents.tbl
+
+preface: preface.mm
+
+component: component.mm
+component.mm: component.pic
+
+distribution: distribution.mm
+
+build.instl: build.instl.mm
+build.instl.mm: build.instl.tbl
+
+src.cntrl: src.cntrl.mm
+src.cntrl.mm: src.cntrl.tbl
+
+back.tree: back.tree.mm
+
+merge: merge.mm
+merge.mm: merge.pic
+
+trouble: trouble.mm
+
+appA: appA.mm
+appA.mm: appA.tbl
+
+index: index.mm
+index.mm: index.tbl

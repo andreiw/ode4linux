@@ -1,0 +1,156 @@
+.\"
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\"
+.\" HISTORY
+.\" $Log: currentsb.1,v $
+.\" Revision 1.6.6.1  1993/09/14  00:41:24  marty
+.\" 	CR # 623 - Remove -sb_rc
+.\" 	[1993/09/14  00:28:58  marty]
+.\"
+.\" Revision 1.6.4.2  1993/04/21  18:42:05  damon
+.\" 	CR 421. Updated for 2.3
+.\" 	[1993/04/21  18:39:32  damon]
+.\" 
+.\" Revision 1.6.2.2  1992/12/03  17:24:00  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:09  damon]
+.\" 
+.\" Revision 1.6  1991/12/05  21:15:15  devrcs
+.\" 	Update for Tools II changes
+.\" 	[90/12/28  11:59:48  randyb]
+.\" 
+.\" Revision 1.5  90/12/06  14:21:10  devrcs
+.\" 	Pre-OSF/1 changes
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.TH currentsb 1 4/21/93
+.ds ]W ODE 2.3
+.SH NAME
+currentsb \- lists the current sandbox and set environments
+.SH SYNOPSIS
+.IP \fBcurrentsb\fR 10
+[\fB-sb -set -dir -setdir -back\fP] [\fB-all\fP] [\fIODE opts\fR]
+.IP "\fIODE opts\fR:" 10
+[\fB-usage -version\fP] [\fB-rc \fIrcfile\fP] 
+.SH FLAGS
+.IP "\fB-sb\fR"
+Prints out the current sandbox.
+If no options are given, the current sandbox and current set are
+printed out by default.
+.IP "\fB-set\fR"
+Prints out the current set.
+If no options are given, the current sandbox and current set are
+printed out by default.
+.IP "\fB-dir\fR"
+Prints out the base directory for the current sandbox.
+.IP "\fB-setdir\fR"
+Prints out the default set directory for the current sandbox.
+.IP "\fB-back\fR"
+Prints out the backing tree for the current sandbox relative to the
+current working directory.
+.IP "\fB-all\fR"
+Prints out all the information in this order:
+sandbox set sandbox-dir set-dir sb-rcfile backing-tree.
+.P
+.ti 2
+\fIODE opts\fR:
+.IP "\fB\-usage\fR"
+Prints a brief usage message.
+.IP "\fB\-version\fR"
+Prints the revision information.
+.IP "\fB-rc \fIrcfile\fR"
+By default, \fBcurrentsb\fR uses \fB$HOME/.sandboxrc\fR to determine the
+current sandbox.
+If this option is given, the specified user's rc file will be used.
+.SH DESCRIPTION
+.P
+By default,
+.B currentsb
+lists the current sandbox and the current set.
+It returns the string
+\fB"--EMPTY --EMPTY"\fR
+if it cannot find the current sandbox and the string "\fIsbname \fB--EMPTY\fR"
+if it cannot find the current set.
+Otherwise its output is of the form "\fIsbname setname \fR"
+with a single space in between each word and one at the end.
+.P
+The current sandbox is determined by the environment variable
+.B SANDBOX
+first then by the default sandbox listed in the user's rc file
+which defaults to
+.B $HOME/.sandboxrc.
+The current set is determined by the environment variable
+.B BCSSET
+first then by the default set in the sandbox's 
+.B rc_files/sets
+rc file.
+.P
+The other options for
+.B currentsb
+print out other information about the current environment.
+If two or more pieces of information are requested,
+the information is always printed in the following order:
+sandbox set sandbox-dir set-dir sb-rcfile backing-tree.
+.SH EXAMPLES
+.P
+.B currentsb
+can be use as a command to indicate the current state,
+and it can be used in a start up file, such as .cshrc, to automatically
+setup the environment.
+An example of its use in a .cshrc to set the environment and path is:
+.sp
+.nf
+  if ( ! $?SANDBOX ) then         # get SANDBOX if not set already
+    setenv SANDBOX `currentsb -sb`
+
+    if ( "$SANDBOX" == "--EMPTY" ) then       # no default SANDBOX
+      unsetenv SANDBOX
+    endif
+  endif
+
+  if ( $?SANDBOX )
+    if ( $?BCSSET ) then 
+      setenv BCSSET `currentsb -set`
+
+    if ( "$BCSSET" == "--EMPTY" ) then         # no default BCSSET
+      unsetenv BCSSET
+    endif
+
+		      # if there is a SANDBOX put its path first
+    setenv PATH /project/osc/sandboxes/suzieq/${SANDBOX}\\
+                /link/tools/pmax/bin:$PATH
+  endif
+.fi
+
+.SH FILES
+.P
+.IP \fB${HOME}/.sandboxrc\fR 
+rc file that specifies existing sandboxes and the default sandbox.
+.IP \fI/sandbox/\fBrc_files/sets\fR
+list of valid sets in each sandbox.
+.IP \fI/sandbox/\fBrc_files/projects\fR
+list of directories and associated sandbox rc files.
+
+.SH EXIT VALUES
+.P
+\fBcurrentsb\fR returns '0' if okay; -1 if error.
+
+.SH RELATED INFORMATION
+.P
+sbinfo(1)

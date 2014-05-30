@@ -1,0 +1,75 @@
+.TH UQUIT 3 8/13/90
+.CM 4
+.SH NAME
+uquit \- prints error message, program usage, then exits program
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.\" @OSF_FREE_COPYRIGHT@
+.\" COPYRIGHT NOTICE
+.\" Copyright (c) 1992, 1991, 1990  
+.\" Open Software Foundation, Inc. 
+.\"  
+.\" Permission is hereby granted to use, copy, modify and freely distribute 
+.\" the software in this file and its documentation for any purpose without 
+.\" fee, provided that the above copyright notice appears in all copies and 
+.\" that both the copyright notice and this permission notice appear in 
+.\" supporting documentation.  Further, provided that the name of Open 
+.\" Software Foundation, Inc. ("OSF") not be used in advertising or 
+.\" publicity pertaining to distribution of the software without prior 
+.\" written permission from OSF.  OSF makes no representations about the 
+.\" suitability of this software for any purpose.  It is provided "as is" 
+.\" without express or implied warranty. 
+.\"
+.\" HISTORY
+.\" $Log: uquit.3,v $
+.\" Revision 1.4.2.2  1992/12/03  17:25:23  damon
+.\" 	ODE 2.2 CR 183. Added CMU notice
+.\" 	[1992/12/03  17:10:44  damon]
+.\"
+.\" Revision 1.4  1991/12/05  21:17:13  devrcs
+.\" 	Added _FREE_ to copyright marker
+.\" 	[91/08/01  08:17:42  mckeen]
+.\" 
+.\" Revision 1.3  90/10/07  21:59:11  devrcs
+.\" 	Added EndLog Marker.
+.\" 	[90/09/29  14:17:06  gm]
+.\" 
+.\" Revision 1.2  90/08/25  12:23:46  devrcs
+.\" 	Initial revision
+.\" 	[90/08/14  11:19:17  randyb]
+.\" 
+.\" $EndLog$
+.\"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.SH "SYNOPSIS"
+.B "uquit ( status, usage, format [, arg ] ...)"
+.br
+.B "int status;"
+.br
+.B "int usage;"
+.br
+.B "char *format;"
+.SH "DESCRIPTION"
+.I
+uquit
+is a means of terminating a process with an error message
+after having printed a usage message.
+If the second argument, \fBusage\fR, is not 0,
+\fBuquit\fR calls \fBprint_usage ()\fR.
+.sp
+A call to \fBuquit\fR should never return.
+.sp
+.I uquit
+prints to standard error the message given in \fBformat\fR.
+This is an argument list in the form specified by \fIprintf (3).\fR
+\fBuquit\fR then exits with the value of \fBstatus\fR.
+.sp
+All of the process's files will be closed.
+.SH "FILES"
+.IR vfprintf (3), 
+.IR exit (2), 
+.IR wait (2)
+.SH "EXIT VALUES"
+The first argument,
+.IR status ,
+will be the argument passed to
+.IR exit (2)
+and this is the process's return code.
